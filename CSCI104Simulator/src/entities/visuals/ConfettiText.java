@@ -51,11 +51,10 @@ public class ConfettiText extends Text
 	
 	/** Constructor used for spawning a single instance of confetti.
 	 * 	The confetti would always be created at the top of the screen, designated by x
-	 * 		@param x - x Position where the confetti is spawned
-	 * 		@param y - y Position where the confetti is spawned */
-	public ConfettiText (int x, int y)
+	 * 		@param x - x Position where the confetti is spawned */
+	public ConfettiText (int x)
 	{
-		super (x, y, "'");
+		super (x, 0, "*");
 		
 		mCompletedExpandAnim = true;
 		/* Assigns a random color to the confetti */
@@ -64,12 +63,12 @@ public class ConfettiText extends Text
 		this.setFont(new Font ("Consolas", 12));
 		this.setFill(mColor);
 		
-		mGravity = GenerateBetweenRange (0.1, 0.5);
+		mGravity = GenerateBetweenRange (1.4, 2.5);
 		mAngleOffset = GenerateBetweenRange (-0.2, 0.2);
 		mRotationOffset = rand.nextInt(2) + 1;
 		
 		/* Confetti should take longer to despawn */
-		mFadeRate = 0.001;
+		mFadeRate = 0.0005;
 	}
 	
 	/**

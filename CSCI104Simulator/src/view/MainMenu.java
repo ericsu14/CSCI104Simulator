@@ -18,9 +18,13 @@ public class MainMenu
 	/** Scene used to store all components tied to the main menu */
 	private Scene mScene;
 	
+	/** Starfield scene */
+	private StarField mStarField;
+	
 	public MainMenu ()
 	{
 		initializeMainMenu();
+		mStarField.playAnimation();
 	}
 	
 	/** Returns a reference to the main menu's root node */
@@ -44,6 +48,10 @@ public class MainMenu
 	private void initializeMainMenu ()
 	{
 		mRoot = new StackPane ();
+		
+		/* Sets the first background layer to a starfield animation  */
+		mStarField = new StarField();
+		mRoot.getChildren().add(mStarField);
 		
 		/* Main menu borderpane */
 		BorderPane mainMenu = new BorderPane();
