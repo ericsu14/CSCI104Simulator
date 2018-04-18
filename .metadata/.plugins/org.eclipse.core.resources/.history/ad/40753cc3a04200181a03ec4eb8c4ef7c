@@ -1,0 +1,10 @@
+package view;
+
+import javafx.scene.layout.Pane;
+import entities.visuals.*;
+
+public class StarField extends Pane 
+{
+	/** Constructs a new starfield */
+	
+}

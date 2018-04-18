@@ -1,0 +1,56 @@
+/** Represents the main menu of the game */
+package view;
+
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
+
+public class MainMenu 
+{
+	/** Borderpane used to represent the main menu */
+	private BorderPane mRoot;
+	
+	/** Scene used to store all components tied to the main menu */
+	private Scene mScene;
+	
+	public MainMenu ()
+	{
+		initializeMainMenu();
+	}
+	
+	/** Returns a reference to the main menu's root node */
+	public BorderPane getRoot ()
+	{
+		return mRoot;
+	}
+	
+	/** Cleans up all dynamically allocated assets from this scene */
+	public void cleanUp ()
+	{
+		// TODO:
+	}
+	
+	public Scene getScene ()
+	{
+		
+	}
+	/** Initializes the main menu assets */
+	private void initializeMainMenu ()
+	{
+		mRoot = new BorderPane ();
+		
+		/* Title of the game */
+		Label gameTitle = new Label (Launcher.mGameTitle);
+		gameTitle.setFont(new Font ("Comic Sans MS", 36));
+		gameTitle.setAlignment(Pos.TOP_CENTER);
+		mRoot.setTop(gameTitle);
+		
+		/* TODO: Create selectors for the rest of the gameplay components */
+		
+		
+		mScene = new Scene (mRoot);
+	}
+	
+}

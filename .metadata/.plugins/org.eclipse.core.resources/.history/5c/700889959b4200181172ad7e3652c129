@@ -1,0 +1,17 @@
+/** Represents the main menu of the game */
+package view;
+
+import javafx.scene.layout.BorderPane;
+
+public class MainMenu 
+{
+	/* Borderpane used to represent the main menu */
+	private BorderPane mRoot;
+	
+	public MainMenu ()
+	{
+		
+	}
+	
+	/* Initalizes the  */
+}

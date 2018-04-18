@@ -1,0 +1,7 @@
+/** Factory used to  */
+package factories;
+
+public class StarFieldFactory 
+{
+
+}

@@ -1,0 +1,16 @@
+/** Factory used to create and return a new pane with a "StarField" animation effect */
+package factories;
+
+import javafx.scene.layout.Pane;
+
+public class StarFieldFactory 
+{
+	public static Pane GenerateStarField ()
+	{
+		Pane starField = new Pane();
+		
+		/* Adds in a new animation timer  */
+		
+		return starField;
+	}
+}
