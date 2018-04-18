@@ -1,7 +1,0 @@
-/** Factory used to initalize */
-package factories;
-
-public class StarFieldFactory 
-{
-
-}

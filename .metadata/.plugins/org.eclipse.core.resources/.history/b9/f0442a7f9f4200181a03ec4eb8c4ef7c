@@ -1,7 +1,0 @@
-/** Factory used to create a new  */
-package factories;
-
-public class StarFieldFactory 
-{
-
-}

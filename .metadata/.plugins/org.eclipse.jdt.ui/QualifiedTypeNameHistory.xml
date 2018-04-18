@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javafx.application.Application"/>
-<fullyQualifiedTypeName name="javafx.scene.layout.BorderPane"/>
-<fullyQualifiedTypeName name="javafx.scene.control.Label"/>
-<fullyQualifiedTypeName name="javafx.scene.text.Font"/>
-<fullyQualifiedTypeName name="javafx.geometry.Pos"/>
-</qualifiedTypeNameHistroy>

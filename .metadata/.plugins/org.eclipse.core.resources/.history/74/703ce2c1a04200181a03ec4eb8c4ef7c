@@ -1,9 +1,0 @@
-package view;
-
-import javafx.scene.layout.Pane;
-
-public class StarField extends Pane 
-{
-	/** Constructs a new starfield */
-	
-}

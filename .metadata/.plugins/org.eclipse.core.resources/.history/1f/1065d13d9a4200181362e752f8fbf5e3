@@ -1,8 +1,0 @@
-/** The main class that initalizes the UI components */
-
-package view;
-
-public class Launcher 
-{
-
-}

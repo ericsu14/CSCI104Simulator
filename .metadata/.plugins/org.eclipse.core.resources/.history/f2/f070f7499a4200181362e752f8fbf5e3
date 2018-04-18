@@ -1,8 +1,0 @@
-/** The main class that initializes and connects all of the UI components */
-
-package view;
-
-public class Launcher extends Application
-{
-
-}
