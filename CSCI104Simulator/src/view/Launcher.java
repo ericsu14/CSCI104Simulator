@@ -40,7 +40,7 @@ public class Launcher extends Application
 	/** Initializes the scenes for this game */
 	public void initializeScenes()
 	{
-		mMainMenu = new MainMenu();
+		mMainMenu = new MainMenu(this);
 	}
 	
 	/** Switches the current scene to the main menu */
