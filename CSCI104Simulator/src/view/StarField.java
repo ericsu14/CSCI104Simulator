@@ -29,7 +29,7 @@ public class StarField extends Pane
 	private float mSpawnTimer = 0.0f; 
 	
 	/* Total time befor the next star could spawn */
-	private static final float mSpawnTime = 10.0f;
+	private static final float mSpawnTime = 7.0f;
 	
 	/** Constructs a new starfield object */
 	public StarField ()

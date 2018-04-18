@@ -68,7 +68,7 @@ public class ConfettiText extends Text
 		mRotationOffset = rand.nextInt(2) + 1;
 		
 		/* Confetti should take longer to despawn */
-		mFadeRate = 0.0005;
+		mFadeRate = 0.001;
 	}
 	
 	/**
@@ -412,7 +412,6 @@ public class ConfettiText extends Text
 		{
 			mCompletedExpandAnim = true;
 		});
-		// expandAnimation.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);
 		expandAnimation.play();
 	}
 	

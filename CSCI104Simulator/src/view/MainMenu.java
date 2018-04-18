@@ -24,7 +24,7 @@ public class MainMenu
 	public MainMenu ()
 	{
 		initializeMainMenu();
-		mStarField.playAnimation();
+		playAnimations();
 	}
 	
 	/** Returns a reference to the main menu's root node */
@@ -33,10 +33,17 @@ public class MainMenu
 		return mRoot;
 	}
 	
+	/** Plays all of the animations for this scene */
+	public void playAnimations ()
+	{
+		mStarField.playAnimation();
+	}
+	
 	/** Cleans up all dynamically allocated assets from this scene */
 	public void cleanUp ()
 	{
 		// TODO:
+		mStarField.stopAnimation();
 	}
 	
 	/** Returns the main menu's scene object */
