@@ -3,8 +3,9 @@
 package entities.enemies;
 
 import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 
-public class Enemy 
+public class Enemy extends ImageView
 {
 	/** Determines the position where the enemy initially spawns before
 	 *  traveling to its designated position of the game */
@@ -23,6 +24,8 @@ public class Enemy
 	private int mGroup;
 	/* The enemy's initial spawn state */
 	private EntryPosition mEntryPosition;
+	/* The enemy's current rotation */
+	private double mRotation;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -31,10 +34,23 @@ public class Enemy
 	 * 		@param group - The enemy's group number. */
 	public Enemy (EntryPosition initPosition, Point2D origin, int group)
 	{
+		super();
 		mEntryPosition = initPosition;
 		mOriginPoint = origin;
 		mGroup = group;
+		
+		/* Enemy is initially facing downwards */
+		mRotation = Math.toRadians(270.0);
 	}
 	
+	/** @return The enemy's forward vector */
+	public Point2D getForward ()
+	{
+		double forwardX = Math.sin(mRotation);
+		double forwardY = -(Math.cos(mRotation));
+		Point2D forwardVector = new Point2D (forwardX, forwardY);
+		forwardVector.normalize();
+		return forwardVector;
+	}
 	
 }
