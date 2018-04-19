@@ -121,12 +121,17 @@ public class Entity extends ImageView
 			{
 				/* The angle the entity would have to face to in order to reach the waypoint */
 				private double mTheta = 0.0;
+				/* The last instance of theta */
 				private double mLastTheta;
+				/* The number of frames before the rotation angle is recalculated */
 				private int framesTillSetup = 0;
+				/* Used to approximate the destination point by constructing a box around that point with the
+				 * given offset. Once the entity reaches that area, it would then stop. */
 				private int mOffset = 15;
+				/* True if the first calculated theta is negative */
 				private boolean isNegative = false;
+				/* Used to conduct run-once animations */
 				private boolean hasStart = false;
-				private Point2D finalDest = new Point2D (destination.getX(), destination.getY());
 				
 				public void handle(long now)
 				{
@@ -134,7 +139,7 @@ public class Entity extends ImageView
 					if (framesTillSetup <= 0)
 					{
 						Point2D currentPosition = new Point2D (getX(), getY());
-						Point2D waypoint = finalDest;
+						Point2D waypoint = destination;
 						waypoint = waypoint.subtract(currentPosition);
 						mLastTheta = mTheta;
 						mTheta = Math.toDegrees(Math.atan2(-waypoint.getY(), waypoint.getX()));
@@ -201,7 +206,9 @@ public class Entity extends ImageView
 					
 					--framesTillSetup;
 					
-					if (inRange ((int)getX(), (int)finalDest.getX() - mOffset, (int)finalDest.getX() + mOffset) && inRange((int)getY(), (int)finalDest.getY() - mOffset, (int)finalDest.getY() + mOffset))
+					/* If the entity has reached somewhere close to the destination based on the offset,
+					 * stop moving. */
+					if (inRange ((int)getX(), (int)destination.getX() - mOffset, (int)destination.getX() + mOffset) && inRange((int)getY(), (int)destination.getY() - mOffset, (int)destination.getY() + mOffset))
 					{
 						this.stop();
 						setRotate (-90.0);
