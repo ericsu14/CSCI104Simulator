@@ -1,6 +1,8 @@
 /** Represents the main menu of the game */
 package view;
 
+import entities.Entity;
+import entities.enemies.TestEnemy;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -114,6 +116,11 @@ public class MainMenu
 		mainMenu.setCenter(menuOptions);
 		
 		/* TODO: Create selectors for the rest of the gameplay components */
+		
+		/* Test entity for the hell of it */
+		TestEnemy test = new TestEnemy (100.0, 100.0, mLauncher);
+		mainMenu.getChildren().add(test);
+		
 		
 		mRoot.getChildren().add(mainMenu);
 		mRoot.setStyle("-fx-background-color: black");

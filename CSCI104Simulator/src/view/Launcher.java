@@ -3,6 +3,8 @@
 package view;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class Launcher extends Application
@@ -17,11 +19,16 @@ public class Launcher extends Application
 	public static final double mWidth = 1024.0;
 	/* Dimensions of the game's height */
 	public static final double mHeight = 768.0;
+	/* Stores the image file for the dummy test enemy */
+	public ImageView mTestEnemy;
 	
 	/** Initializes the game assets and starts the game */
 	@Override
 	public void start(Stage primaryStage) throws Exception 
 	{
+		/* Init. image content */
+		mTestEnemy = new ImageView (new Image (Launcher.class.getResourceAsStream("testEnemy.png")));
+		
 		initializeScenes();
 		mStage = primaryStage;
 		
