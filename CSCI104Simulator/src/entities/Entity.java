@@ -13,12 +13,17 @@ public class Entity extends ImageView
 	protected double mMovementSpeed;
 	/* Animation timer that allows the entity to rotate based on its current movement */
 	protected AnimationTimer mRotationAnimation;
+	/* Animation timer that allows this entity to move themselves to a desginated waypoint of
+	 * the game grid */
+	protected AnimationTimer mWaypointAnimation;
+	/* A flag that checks if the waypoint move function has been completed */
+	protected boolean mWaypointFlag;
 	/* Tracks the previous coordinate from where the entity was previously at */
 	protected Point2D mPreviousCoord;
 	/* Pointer to the main launcher */
 	protected Launcher mController;
 	/* Rotation rate */
-	protected double mRotationSpeed = 2.0;
+	protected double mRotationSpeed = 1.0;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -37,7 +42,8 @@ public class Entity extends ImageView
 		mPreviousCoord = new Point2D (x, y);
 		
 		/* Init. default variables */
-		mMovementSpeed = 0.0;
+		mMovementSpeed = 10.0;
+		mWaypointFlag = false;
 		
 		/* Initializes basic entity animations */
 		initializeBasicAnimations();
@@ -46,8 +52,8 @@ public class Entity extends ImageView
 	/** @return The entity's forward vector */
 	public Point2D getForward ()
 	{
-		double forwardX = Math.sin(this.getRotate());
-		double forwardY = -(Math.cos(this.getRotate()));
+		double forwardX = (Math.cos(Math.toRadians(this.getRotate())));
+		double forwardY = -(Math.sin(Math.toRadians(this.getRotate())));
 		Point2D forwardVector = new Point2D (forwardX, forwardY);
 		forwardVector.normalize();
 		return forwardVector;
@@ -82,7 +88,7 @@ public class Entity extends ImageView
 				{
 					setRotate(getRotate() + mRotationSpeed);
 				}
-				else if (mTheta >= 0 && getRotate() >= Math.toDegrees(mTheta))
+				else if (mTheta >= 0 && getRotate() > Math.toDegrees(mTheta))
 				{
 					setRotate(getRotate() - mRotationSpeed);
 				}
@@ -90,7 +96,7 @@ public class Entity extends ImageView
 				{
 					setRotate (getRotate() - mRotationSpeed);
 				}
-				else if (mTheta < 0 && getRotate() <= Math.toDegrees(mTheta))
+				else if (mTheta < 0 && getRotate() < Math.toDegrees(mTheta))
 				{
 					setRotate (getRotate() + mRotationSpeed);
 				}
@@ -103,9 +109,85 @@ public class Entity extends ImageView
 		
 	}
 	
+	/** Moves an entity to a designated coordinate of the graph */
+	public void moveEntity (Point2D destination)
+	{
+		/* Only construct a new waypoint if the corresponding flag is false */
+		if (!mWaypointFlag)
+		{
+			mWaypointAnimation = new AnimationTimer ()
+			{
+				/* True if the waypoint has been constructed */
+				private boolean mSetup = false;
+				/* The angle the entity would have to face to in order to reach the waypoint */
+				private double mTheta = 0.0;
+				private int framesTillSetup = 0;
+				private int mOffset = 20;
+				
+				public void handle(long now)
+				{
+					/* Sets up the angle theta if it hasn't been setup already */
+					if (framesTillSetup <= 0)
+					{
+						Point2D currentPosition = new Point2D (getX(), getY());
+						Point2D waypoint = destination;
+						waypoint = waypoint.subtract(currentPosition);
+						mTheta = Math.toDegrees(Math.atan2(-waypoint.getY(), waypoint.getX()));
+						framesTillSetup = 100;
+						System.out.println("Theta: " + mTheta);
+					}
+					
+					/* Once theta has been setup, direct the entity to face and move
+					 * to the waypoint. */
+					if (mTheta >= 0 && getRotate() < mTheta)
+					{
+						setRotate((int)(getRotate() + mRotationSpeed));
+					}
+					else if (mTheta >= 0 && getRotate() > mTheta)
+					{
+						setRotate((int)(getRotate() - mRotationSpeed));
+					}
+					else if (mTheta < 0 && getRotate() > mTheta)
+					{
+						setRotate ((int)(getRotate() - mRotationSpeed));
+					}
+					else if (mTheta < 0 && getRotate() < mTheta)
+					{
+						setRotate ((int)(getRotate() + mRotationSpeed));
+					}
+					
+					Point2D velocity = getForward();
+					velocity.multiply(mMovementSpeed);
+					
+					setX (getX() + velocity.getX());
+					setY (getY() + velocity.getY());
+					
+					--framesTillSetup;
+					
+					if (inRange ((int)getX(), (int)destination.getX() - mOffset, (int)destination.getX() + mOffset) && inRange((int)getY(), (int)destination.getY() - mOffset, (int)destination.getY() + mOffset))
+					{
+						this.stop();
+						mWaypointFlag = true;
+					}
+					else
+					{
+						System.out.println("X: " + (int)getX() + " | Y: " + (int)getY());
+					}
+				}
+			};
+			
+			mWaypointAnimation.start();
+		}
+	}
+	
 	/** Cleans up all assets used by this entity */
 	public void cleanUp()
 	{
 		mRotationAnimation.stop();
+	}
+	
+	private boolean inRange(int target, int min, int max)
+	{
+		return (min <= target && target <= max);
 	}
 }

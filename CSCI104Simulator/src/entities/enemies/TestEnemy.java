@@ -2,6 +2,7 @@ package entities.enemies;
 
 import entities.Entity;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import view.Launcher;
 import java.util.Random;
 
@@ -23,7 +24,6 @@ public class TestEnemy extends Entity {
 		
 		setFitHeight(kSpriteScale + kSpriteHeightOffset);
 		setFitWidth(kSpriteScale);
-		setRotate (Math.toRadians(180));
 		
 		mRand = new Random ();
 		
@@ -33,20 +33,6 @@ public class TestEnemy extends Entity {
 	
 	public void testMovement ()
 	{
-		mTestMovement = new AnimationTimer () {
-
-			@Override
-			public void handle(long arg0) 
-			{
-				// TODO Auto-generated method stub
-				setX (getX() + mRand.nextInt(3));
-				setY (getY() + 1);
-			}
-			
-		};
-		
-		mTestMovement.start();
-		mRotationAnimation.start();
-		
+		this.moveEntity(new Point2D (150.0, 300.0));
 	}
 }
