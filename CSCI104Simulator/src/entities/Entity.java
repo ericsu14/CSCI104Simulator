@@ -42,7 +42,7 @@ public class Entity extends ImageView
 		mPreviousCoord = new Point2D (x, y);
 		
 		/* Init. default variables */
-		mMovementSpeed = 10.0;
+		mMovementSpeed = 3.0;
 		mWaypointFlag = false;
 		
 		/* Initializes basic entity animations */
@@ -115,14 +115,18 @@ public class Entity extends ImageView
 		/* Only construct a new waypoint if the corresponding flag is false */
 		if (!mWaypointFlag)
 		{
+			mWaypointFlag = true;
+			System.out.println(destination.toString());
 			mWaypointAnimation = new AnimationTimer ()
 			{
-				/* True if the waypoint has been constructed */
-				private boolean mSetup = false;
 				/* The angle the entity would have to face to in order to reach the waypoint */
 				private double mTheta = 0.0;
+				private double mLastTheta;
 				private int framesTillSetup = 0;
-				private int mOffset = 20;
+				private int mOffset = 15;
+				private boolean isNegative = false;
+				private boolean hasStart = false;
+				private Point2D finalDest = new Point2D (destination.getX(), destination.getY());
 				
 				public void handle(long now)
 				{
@@ -130,11 +134,44 @@ public class Entity extends ImageView
 					if (framesTillSetup <= 0)
 					{
 						Point2D currentPosition = new Point2D (getX(), getY());
-						Point2D waypoint = destination;
+						Point2D waypoint = finalDest;
 						waypoint = waypoint.subtract(currentPosition);
+						mLastTheta = mTheta;
 						mTheta = Math.toDegrees(Math.atan2(-waypoint.getY(), waypoint.getX()));
-						framesTillSetup = 100;
-						System.out.println("Theta: " + mTheta);
+						
+						/* Slows down the rotation update once theta has reached these two special cases.
+						 * This is to prevent infinite loops while trying to rotate between -360 to 0
+						 * and vice versa. */
+						if (inRange ((int)mLastTheta, -360, -300) || inRange ((int)mLastTheta, 300, 360))
+						{
+							framesTillSetup = 150;
+							mMovementSpeed *= 2;
+						}
+						else
+						{
+							framesTillSetup = 0;
+						}
+						
+						/* Used to determine if the initial theta is either negative or positive */
+						if (!hasStart)
+						{
+							isNegative = (mTheta < 0.0);
+							hasStart = true;
+						}
+						else
+						{
+							/* Some ugly allignment stuff */
+							if (isNegative && mTheta >= 0.0)
+							{
+								mTheta -= 360.0;
+							}
+							else if (!isNegative && mTheta < 0.0)
+							{
+								mTheta += 360.0;
+							}
+						}
+						// System.out.println ("Current theta: " + mTheta);
+						// System.out.println("Current rotation: " + getRotate());
 					}
 					
 					/* Once theta has been setup, direct the entity to face and move
@@ -157,21 +194,20 @@ public class Entity extends ImageView
 					}
 					
 					Point2D velocity = getForward();
-					velocity.multiply(mMovementSpeed);
-					
+
+					velocity = velocity.multiply(mMovementSpeed);
 					setX (getX() + velocity.getX());
 					setY (getY() + velocity.getY());
 					
 					--framesTillSetup;
 					
-					if (inRange ((int)getX(), (int)destination.getX() - mOffset, (int)destination.getX() + mOffset) && inRange((int)getY(), (int)destination.getY() - mOffset, (int)destination.getY() + mOffset))
+					if (inRange ((int)getX(), (int)finalDest.getX() - mOffset, (int)finalDest.getX() + mOffset) && inRange((int)getY(), (int)finalDest.getY() - mOffset, (int)finalDest.getY() + mOffset))
 					{
 						this.stop();
-						mWaypointFlag = true;
-					}
-					else
-					{
-						System.out.println("X: " + (int)getX() + " | Y: " + (int)getY());
+						setRotate (-90.0);
+						mMovementSpeed = 2.0;
+						System.out.println("Reached target!");
+						mWaypointFlag = false;
 					}
 				}
 			};

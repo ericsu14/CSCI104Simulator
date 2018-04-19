@@ -1,8 +1,8 @@
 /** Represents the main menu of the game */
 package view;
 
-import entities.Entity;
 import entities.enemies.TestEnemy;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import java.util.Random;
 
 import util.CSSConstants;
 
@@ -28,6 +29,9 @@ public class MainMenu
 	
 	/** Reference to the launcher object */
 	private Launcher mLauncher;
+	
+	/** Test enemy */
+	private TestEnemy mTest;
 	
 	public MainMenu (Launcher launcher)
 	{
@@ -53,6 +57,9 @@ public class MainMenu
 	{
 		// TODO:
 		mStarField.stopAnimation();
+		
+		Random rand = new Random ();
+		mTest.moveEntity(new Point2D (rand.nextInt(500), rand.nextInt(500)));
 	}
 	
 	/** Returns the main menu's scene object */
@@ -118,8 +125,8 @@ public class MainMenu
 		/* TODO: Create selectors for the rest of the gameplay components */
 		
 		/* Test entity for the hell of it */
-		TestEnemy test = new TestEnemy (100.0, 100.0, mLauncher);
-		mainMenu.getChildren().add(test);
+		mTest = new TestEnemy (100.0, 100.0, mLauncher);
+		mainMenu.getChildren().add(mTest);
 		
 		
 		mRoot.getChildren().add(mainMenu);
