@@ -73,7 +73,7 @@ public class MainMenu
 		/* Header */
 		VBox header = new VBox();
 		/* Title of the game */
-		Label gameTitle = new Label (Launcher.mGameTitle);
+		Label gameTitle = new Label (mLauncher.mGameTitle);
 		gameTitle.setFont(new Font ("Comic Sans MS", 36));
 		gameTitle.setStyle(CSSConstants.WHITE_TEXT);
 		
@@ -105,6 +105,7 @@ public class MainMenu
 		{
 			/* TODO: Switch to the game scene here */
 			cleanUp();
+			mLauncher.switchGameScene();
 		});
 		
 		menuOptions.getChildren().add(playGame);

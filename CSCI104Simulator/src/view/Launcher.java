@@ -2,17 +2,22 @@ package view;
 
 
 
+import engine.GameEngine;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Launcher extends Application
 {
 	/* Title of the game */
-	public static final String mGameTitle = "CSCI 104 Simulator";
+	public final String mGameTitle = "CSCI 104 Simulator";
 	/* Stage object */
 	public Stage mStage;
 	/* Main menu */
 	public MainMenu mMainMenu;
+	/* Game view */
+	public GameView mGameView;
+	/* The main game engine */
+	public GameEngine mGameEngine;
 	/* Dimensions of the game's width */
 	public static final double mWidth = 1024.0;
 	/* Dimensions of the game's height */
@@ -25,10 +30,11 @@ public class Launcher extends Application
 		initializeScenes();
 		mStage = primaryStage;
 		
-		primaryStage.setTitle(mGameTitle);
-		primaryStage.setScene(mMainMenu.getScene());
-		primaryStage.setHeight(mHeight);
-		primaryStage.setWidth(mWidth);
+		mStage.setTitle(mGameTitle);
+		mStage.setScene(mMainMenu.getScene());
+		mStage.setHeight(mHeight);
+		mStage.setWidth(mWidth);
+		mStage.setResizable(false);
 		primaryStage.show();
 	}
 	
@@ -40,12 +46,31 @@ public class Launcher extends Application
 	/** Initializes the scenes for this game */
 	public void initializeScenes()
 	{
+		mGameEngine = new GameEngine ();
 		mMainMenu = new MainMenu(this);
+		mGameView = new GameView (this);
+		mGameView.setGameEngine(mGameEngine);
 	}
 	
 	/** Switches the current scene to the main menu */
 	public void switchMainMenu ()
 	{
 		mStage.setScene(mMainMenu.getScene());
+	}
+	
+	/** Switches to the game scene */
+	public void switchGameScene()
+	{
+		mStage.setScene(mGameView.getScene());
+		mStage.sizeToScene();
+		mStage.setHeight(mHeight);
+		mStage.setWidth(mWidth);
+		mGameView.startNewLevel();
+	}
+	
+	/** Returns the initialized game engine */
+	public GameEngine getGameEngine()
+	{
+		return mGameEngine;
 	}
 }

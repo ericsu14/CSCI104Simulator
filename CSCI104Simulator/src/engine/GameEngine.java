@@ -35,10 +35,8 @@ public class GameEngine
 	/* Defines the maximum width of the playing field */
 	private int mMaxWidth;
 	
-	public GameEngine (GameView gameView)
-	{
-		mGameView = gameView;
-		
+	public GameEngine ()
+	{	
 		/* Initializes the game's sprite content */
 		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
 		mPlayerShipSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerShip.png")));

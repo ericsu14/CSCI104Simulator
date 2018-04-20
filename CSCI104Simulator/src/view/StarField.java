@@ -81,7 +81,7 @@ public class StarField extends Pane
 				/* Spawns a confetti piece */
 				if (mSpawnTimer <= 0.0f)
 				{
-					mSpawnedStars.add(new ConfettiText ((int)(mRand.nextInt((int)getWidth()))));
+					mSpawnedStars.add(new ConfettiText ((int)(mRand.nextInt((int)Launcher.mWidth))));
 					getChildren().addAll(mSpawnedStars.get(mSpawnedStars.size() - 1));
 					mSpawnTimer = mSpawnTime;
 				}
