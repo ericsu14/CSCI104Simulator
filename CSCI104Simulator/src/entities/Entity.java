@@ -9,6 +9,8 @@ import view.Launcher;
 
 public class Entity extends ImageView 
 {
+	/* The default movement speed of this entity */
+	protected double mInitialMovementSpeed = 2.0;
 	/* Entity's movement speed */
 	protected double mMovementSpeed;
 	/* Animation timer that allows the entity to rotate based on its current movement */
@@ -26,6 +28,8 @@ public class Entity extends ImageView
 	protected double mRotationSpeed = 2.0;
 	/* Scale of this entity's sprite */
 	protected double mSpriteScale = 10.0;
+	/* The initial orientation of this entity */
+	protected double mInitialOrientation = -90.0;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -44,7 +48,6 @@ public class Entity extends ImageView
 		mPreviousCoord = new Point2D (x, y);
 		
 		/* Init. default variables */
-		mMovementSpeed = 3.0;
 		mWaypointFlag = false;
 		
 		/* Initializes basic entity animations */
@@ -129,7 +132,7 @@ public class Entity extends ImageView
 				private int framesTillSetup = 0;
 				/* Used to approximate the destination point by constructing a box around that point with the
 				 * given offset. Once the entity reaches that area, it would then stop. */
-				private int mOffset = 15;
+				private int mOffset = 2;
 				/* True if the first calculated theta is negative */
 				private boolean isNegative = false;
 				/* Used to conduct run-once animations */
@@ -146,17 +149,14 @@ public class Entity extends ImageView
 						mLastTheta = mTheta;
 						mTheta = Math.toDegrees(Math.atan2(-waypoint.getY(), waypoint.getX()));
 						
-						/* Slows down the rotation update once theta has reached these two special cases.
-						 * This is to prevent infinite loops while trying to rotate between -360 to 0
-						 * and vice versa. */
+						/* There is a case when if the change of theta is between +- 300 to +- 360,
+						 * the pathfinding algorithm would encounter an infinite loop, since
+						 * arctan2 would force the entity to rotate their negative / positive inverses
+						 * which would cause an infinite loop. This quick hack ensures this never happens.  */
 						if (inRange ((int)mLastTheta, -360, -300) || inRange ((int)mLastTheta, 300, 360))
 						{
-							framesTillSetup = 150;
-							mMovementSpeed *= 2;
-						}
-						else
-						{
-							framesTillSetup = 0;
+							// Instantly rotates the character to theta
+							setRotate (mTheta);
 						}
 						
 						/* Used to determine if the initial theta is either negative or positive */
@@ -211,8 +211,8 @@ public class Entity extends ImageView
 					if (inRange ((int)getX(), (int)destination.getX() - mOffset, (int)destination.getX() + mOffset) && inRange((int)getY(), (int)destination.getY() - mOffset, (int)destination.getY() + mOffset))
 					{
 						this.stop();
-						setRotate (-90.0);
-						mMovementSpeed = 2.0;
+						setRotate (mInitialOrientation);
+						mMovementSpeed = mInitialMovementSpeed;
 						System.out.println("Reached target!");
 						mWaypointFlag = false;
 					}

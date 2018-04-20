@@ -63,7 +63,7 @@ public class MainMenu
 		mStarField.stopAnimation();
 		
 		Random rand = new Random ();
-		mTest.moveEntity(new Point2D (rand.nextInt(500), rand.nextInt(500) + 300));
+		mTest.moveEntity(new Point2D (rand.nextInt(300), rand.nextInt(300)));
 	}
 	
 	/** Returns the main menu's scene object */
