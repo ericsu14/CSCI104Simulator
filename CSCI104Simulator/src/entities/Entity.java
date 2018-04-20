@@ -24,6 +24,8 @@ public class Entity extends ImageView
 	protected Launcher mController;
 	/* Rotation rate */
 	protected double mRotationSpeed = 2.0;
+	/* Scale of this entity's sprite */
+	protected double mSpriteScale = 10.0;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -227,6 +229,19 @@ public class Entity extends ImageView
 		mRotationAnimation.stop();
 	}
 	
+	/** Scales and sets this entity's sprite asset
+	 * 		@param sprite - The sprite this entity is going to use */
+	public void setSprite (ImageView sprite)
+	{
+		setImage (sprite.getImage());
+		setFitHeight(mSpriteScale);
+		setFitWidth(mSpriteScale);
+	}
+	
+	/** @return True if target is between min and max
+	 * 		@param target - Value being compared
+	 * 		@param min - Min. value of selected range
+	 * 		@param max - Max. value of selected range */
 	private boolean inRange(int target, int min, int max)
 	{
 		return (min <= target && target <= max);

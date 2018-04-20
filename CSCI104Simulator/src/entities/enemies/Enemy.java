@@ -26,7 +26,8 @@ public class Enemy extends Entity
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
 	 * 							  origin point.
 	 * 		@param origin - The position where the enemy resides while waiting to attack
-	 * 		@param group - The enemy's group number. */
+	 * 		@param group - The enemy's group number. 
+	 * 		@param controller - A reference to the main Launcher class*/
 	public Enemy (EntryPosition initPosition, Point2D origin, int group, Launcher controller)
 	{
 		super(origin.getX(), origin.getY(), controller);

@@ -20,14 +20,14 @@ public class Launcher extends Application
 	/* Dimensions of the game's height */
 	public static final double mHeight = 768.0;
 	/* Stores the image file for the dummy test enemy */
-	public ImageView mTestEnemy;
+	public ImageView mTestEnemySprite;
 	
 	/** Initializes the game assets and starts the game */
 	@Override
 	public void start(Stage primaryStage) throws Exception 
 	{
 		/* Init. image content */
-		mTestEnemy = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
+		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
 		
 		initializeScenes();
 		mStage = primaryStage;
