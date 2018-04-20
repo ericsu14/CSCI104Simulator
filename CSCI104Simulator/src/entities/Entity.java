@@ -30,6 +30,8 @@ public class Entity extends ImageView
 	protected double mSpriteScale = 10.0;
 	/* The initial orientation of this entity */
 	protected double mInitialOrientation = -90.0;
+	/* The current state of this entity */
+	protected EntityState mState;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -40,6 +42,7 @@ public class Entity extends ImageView
 	{
 		super();
 		
+		mState = EntityState.kActive;
 		mController = controller;
 		
 		/* Sets the current coordinates of the entity */
@@ -126,19 +129,19 @@ public class Entity extends ImageView
 				/* The last instance of theta */
 				private double mLastTheta;
 				/* The number of frames before the rotation angle is recalculated */
-				private int framesTillSetup = 0;
+				private int mFramesTillSetup = 0;
 				/* Used to approximate the destination point by constructing a box around that point with the
 				 * given offset. Once the entity reaches that area, it would then stop. */
 				private int mOffset = 2;
 				/* True if the first calculated theta is negative */
-				private boolean isNegative = false;
+				private boolean mIsNegative = false;
 				/* Used to conduct run-once animations */
-				private boolean hasStart = false;
+				private boolean mHasStart = false;
 				
 				public void handle(long now)
 				{
 					/* Sets up the angle theta if it hasn't been setup already */
-					if (framesTillSetup <= 0)
+					if (mFramesTillSetup <= 0)
 					{
 						Point2D currentPosition = new Point2D (getX(), getY());
 						Point2D waypoint = destination;
@@ -157,19 +160,19 @@ public class Entity extends ImageView
 						}
 						
 						/* Used to determine if the initial theta is either negative or positive */
-						if (!hasStart)
+						if (!mHasStart)
 						{
-							isNegative = (mTheta < 0.0);
-							hasStart = true;
+							mIsNegative = (mTheta < 0.0);
+							mHasStart = true;
 						}
 						else
 						{
 							/* Some ugly allignment stuff */
-							if (isNegative && mTheta >= 0.0)
+							if (mIsNegative && mTheta >= 0.0)
 							{
 								mTheta -= 360.0;
 							}
-							else if (!isNegative && mTheta < 0.0)
+							else if (!mIsNegative && mTheta < 0.0)
 							{
 								mTheta += 360.0;
 							}
@@ -201,7 +204,7 @@ public class Entity extends ImageView
 					setX (getX() + velocity.getX());
 					setY (getY() + velocity.getY());
 					
-					--framesTillSetup;
+					--mFramesTillSetup;
 					
 					/* If the entity has reached somewhere close to the destination based on the offset,
 					 * stop moving. */
@@ -210,7 +213,6 @@ public class Entity extends ImageView
 						this.stop();
 						setRotate (mInitialOrientation);
 						mMovementSpeed = mInitialMovementSpeed;
-						System.out.println("Reached target!");
 						mWaypointFlag = false;
 					}
 				}
@@ -233,6 +235,12 @@ public class Entity extends ImageView
 		setImage (sprite.getImage());
 		setFitHeight(mSpriteScale);
 		setFitWidth(mSpriteScale);
+	}
+	
+	/** @return the entity's current state */
+	public EntityState getState()
+	{
+		return mState;
 	}
 	
 	/** @return True if target is between min and max
