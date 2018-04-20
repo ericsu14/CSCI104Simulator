@@ -23,7 +23,7 @@ public class Entity extends ImageView
 	/* Pointer to the main launcher */
 	protected Launcher mController;
 	/* Rotation rate */
-	protected double mRotationSpeed = 1.0;
+	protected double mRotationSpeed = 2.0;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -175,8 +175,6 @@ public class Entity extends ImageView
 								mTheta += 360.0;
 							}
 						}
-						// System.out.println ("Current theta: " + mTheta);
-						// System.out.println("Current rotation: " + getRotate());
 					}
 					
 					/* Once theta has been setup, direct the entity to face and move

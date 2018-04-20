@@ -1,6 +1,6 @@
-/** The main class that initializes and connects all of the UI components */
-
 package view;
+
+
 
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -27,7 +27,7 @@ public class Launcher extends Application
 	public void start(Stage primaryStage) throws Exception 
 	{
 		/* Init. image content */
-		mTestEnemy = new ImageView (new Image (Launcher.class.getResourceAsStream("testEnemy.png")));
+		mTestEnemy = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
 		
 		initializeScenes();
 		mStage = primaryStage;
