@@ -21,6 +21,8 @@ public class Launcher extends Application
 	public static final double mHeight = 768.0;
 	/* Stores the image file for the dummy test enemy */
 	public ImageView mTestEnemySprite;
+	/* Stores the image file for the playership */
+	public ImageView mPlayerShipSprite;
 	
 	/** Initializes the game assets and starts the game */
 	@Override
@@ -28,6 +30,7 @@ public class Launcher extends Application
 	{
 		/* Init. image content */
 		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
+		mPlayerShipSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerShip.png")));
 		
 		initializeScenes();
 		mStage = primaryStage;
