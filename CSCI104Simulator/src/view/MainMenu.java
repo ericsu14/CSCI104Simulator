@@ -2,6 +2,7 @@
 package view;
 
 import entities.enemies.TestEnemy;
+import entities.projectiles.TestProjectile;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -33,6 +34,9 @@ public class MainMenu
 	/** Test enemy */
 	private TestEnemy mTest;
 	
+	/** Test projectile */
+	private TestProjectile mTestProjectile;
+	
 	public MainMenu (Launcher launcher)
 	{
 		mLauncher = launcher;
@@ -59,7 +63,7 @@ public class MainMenu
 		mStarField.stopAnimation();
 		
 		Random rand = new Random ();
-		mTest.moveEntity(new Point2D (rand.nextInt(500), rand.nextInt(500)));
+		mTest.moveEntity(new Point2D (rand.nextInt(500), rand.nextInt(500) + 300));
 	}
 	
 	/** Returns the main menu's scene object */
@@ -128,6 +132,10 @@ public class MainMenu
 		mTest = new TestEnemy (100.0, 100.0, mLauncher);
 		mainMenu.getChildren().add(mTest);
 		
+		/* Test projectile that follows the enemy */
+		mTestProjectile = new TestProjectile (mTest, mLauncher);
+		mainMenu.getChildren().add(mTestProjectile);
+		mTestProjectile.trackEntity(mTest);
 		
 		mRoot.getChildren().add(mainMenu);
 		mRoot.setStyle("-fx-background-color: black");

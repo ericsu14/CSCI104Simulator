@@ -242,7 +242,7 @@ public class Entity extends ImageView
 	 * 		@param target - Value being compared
 	 * 		@param min - Min. value of selected range
 	 * 		@param max - Max. value of selected range */
-	private boolean inRange(int target, int min, int max)
+	protected boolean inRange(int target, int min, int max)
 	{
 		return (min <= target && target <= max);
 	}
