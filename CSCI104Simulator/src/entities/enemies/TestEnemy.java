@@ -1,12 +1,12 @@
 package entities.enemies;
 
+import engine.GameEngine;
 import entities.Entity;
 import javafx.geometry.Point2D;
-import view.Launcher;
 
 public class TestEnemy extends Entity 
 {
-	public TestEnemy(double x, double y, Launcher controller) 
+	public TestEnemy(double x, double y, GameEngine controller) 
 	{	
 		super(x, y, controller);
 		this.mInitialMovementSpeed = 3.0;
@@ -20,6 +20,6 @@ public class TestEnemy extends Entity
 	
 	public void testMovement ()
 	{
-		this.moveEntity(new Point2D (266.0, 313.0));
+		this.moveEntity(new Point2D (100.0, 313.0));
 	}
 }

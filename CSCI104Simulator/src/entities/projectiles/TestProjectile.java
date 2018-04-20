@@ -1,12 +1,12 @@
 package entities.projectiles;
 
+import engine.GameEngine;
 import entities.Entity;
-import view.Launcher;
 
 public class TestProjectile extends Projectile 
 {
 
-	public TestProjectile(Entity owner, Launcher controller) 
+	public TestProjectile(Entity owner, GameEngine controller) 
 	{
 		super(owner, controller);
 		this.mSpriteScale = 20.0;

@@ -2,9 +2,9 @@
 
 package entities.enemies;
 
+import engine.GameEngine;
 import entities.Entity;
 import javafx.geometry.Point2D;
-import view.Launcher;
 
 public class Enemy extends Entity
 {
@@ -21,14 +21,16 @@ public class Enemy extends Entity
 	protected int mGroup;
 	/* The enemy's initial spawn state */
 	protected EntryPosition mEntryPosition;
+	/* The amount of points this enemy is worth */
+	protected long mPointsValue;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
 	 * 							  origin point.
 	 * 		@param origin - The position where the enemy resides while waiting to attack
 	 * 		@param group - The enemy's group number. 
-	 * 		@param controller - A reference to the main Launcher class*/
-	public Enemy (EntryPosition initPosition, Point2D origin, int group, Launcher controller)
+	 * 		@param controller - A reference to the game engine */
+	public Enemy (EntryPosition initPosition, Point2D origin, int group, GameEngine controller)
 	{
 		super(origin.getX(), origin.getY(), controller);
 		mEntryPosition = initPosition;

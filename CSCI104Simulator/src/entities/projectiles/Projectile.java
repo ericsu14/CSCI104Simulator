@@ -1,9 +1,9 @@
 package entities.projectiles;
 
+import engine.GameEngine;
 import entities.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
-import view.Launcher;
 
 public class Projectile extends Entity 
 {
@@ -28,7 +28,7 @@ public class Projectile extends Entity
 	/** Constructor
 	 * 		@param owner - The entity who shot this projectile
 	 * 		@param controler - A ref. to the main controller  */
-	public Projectile (Entity owner, Launcher controller)
+	public Projectile (Entity owner, GameEngine controller)
 	{
 		super (owner.getX(), owner.getY(), controller);
 		

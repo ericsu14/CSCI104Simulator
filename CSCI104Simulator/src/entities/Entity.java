@@ -5,7 +5,7 @@ package entities;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
-import view.Launcher;
+import engine.GameEngine;
 
 public class Entity extends ImageView 
 {
@@ -19,11 +19,11 @@ public class Entity extends ImageView
 	 * the game grid */
 	protected AnimationTimer mWaypointAnimation;
 	/* A flag that checks if the waypoint move function has been completed */
-	protected boolean mWaypointFlag;
+	protected boolean mWaypointFlag = false;
 	/* Tracks the previous coordinate from where the entity was previously at */
 	protected Point2D mPreviousCoord;
 	/* Pointer to the main launcher */
-	protected Launcher mController;
+	protected GameEngine mController;
 	/* Rotation rate */
 	protected double mRotationSpeed = 2.0;
 	/* Scale of this entity's sprite */
@@ -36,7 +36,7 @@ public class Entity extends ImageView
 	 * 							  origin point.
 	 * 		@param origin - The position where the enemy resides while waiting to attack
 	 * 		@param group - The enemy's group number. */
-	public Entity (double x, double y, Launcher controller)
+	public Entity (double x, double y, GameEngine controller)
 	{
 		super();
 		
@@ -46,9 +46,6 @@ public class Entity extends ImageView
 		this.setX(x);
 		this.setY(y);
 		mPreviousCoord = new Point2D (x, y);
-		
-		/* Init. default variables */
-		mWaypointFlag = false;
 		
 		/* Initializes basic entity animations */
 		initializeBasicAnimations();

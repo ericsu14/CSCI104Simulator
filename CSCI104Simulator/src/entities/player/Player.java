@@ -1,7 +1,7 @@
 package entities.player;
+import engine.GameEngine;
 import entities.Entity;
 import javafx.scene.input.KeyCode;
-import view.Launcher;
 
 public class Player extends Entity
 {
@@ -10,7 +10,7 @@ public class Player extends Entity
 	 * 		@param x - x Position where the player would spawn
 	 * 		@param y - y Position where the player would spawn
 	 * 		@param controller - A pointer to the main launcher class */
-	public Player (double x, double y, Launcher controller)
+	public Player (double x, double y, GameEngine controller)
 	{
 		super (x, y, controller);
 		
