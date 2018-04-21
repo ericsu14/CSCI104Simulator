@@ -1,8 +1,6 @@
 package engine;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import entities.Entity;
@@ -142,18 +140,10 @@ public class GameEngine
 			br.close();
 		}
 		
-        catch(FileNotFoundException ex) 
+		catch (Exception e)
 		{
-            System.out.println(
-                "Unable to open file '" + 
-                fileName + "'");                
-        }
-        catch(IOException ex) 
-		{
-            System.out.println(
-                "Error reading file '" 
-                + fileName + "'");                  
-        }
+			e.printStackTrace();
+		}
 		
 		System.out.println("Width: " + armyWidth + " | Height: " + armyHeight);
 		

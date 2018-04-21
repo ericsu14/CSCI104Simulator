@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.EntityState;
 import javafx.geometry.Point2D;
 import view.Launcher;
 
@@ -34,6 +35,7 @@ public class Enemy extends Entity
 	public Enemy (EnemyPosition initPosition, Point2D origin, int group, GameEngine controller)
 	{
 		super(origin.getX(), origin.getY(), controller);
+		mState = EntityState.kJustSpawned;
 		mEntryPosition = initPosition;
 		mOriginPoint = origin;
 		mGroup = group;
@@ -72,7 +74,12 @@ public class Enemy extends Entity
 				this.moveEntity(mWaypointQueue.remove());
 			}
 		}
-		
+	}
+	
+	/** Adds a new point to this enemy's waypoint queue */
+	public void addWaypoint (Point2D waypoint)
+	{
+		mWaypointQueue.add(waypoint);
 	}
 	
 }

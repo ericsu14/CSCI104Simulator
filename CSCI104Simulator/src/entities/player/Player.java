@@ -1,7 +1,6 @@
 package entities.player;
 import engine.GameEngine;
 import entities.Entity;
-import javafx.scene.input.KeyCode;
 
 public class Player extends Entity
 {

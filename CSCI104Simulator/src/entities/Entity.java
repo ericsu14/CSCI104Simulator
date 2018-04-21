@@ -44,7 +44,7 @@ public abstract class Entity extends ImageView
 	{
 		super();
 		
-		mState = EntityState.kJustSpawned;
+		mState = EntityState.kActive;
 		mController = controller;
 		
 		/* Sets the current coordinates of the entity */
