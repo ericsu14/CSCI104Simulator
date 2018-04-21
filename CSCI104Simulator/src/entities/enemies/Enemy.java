@@ -56,7 +56,7 @@ public class Enemy extends Entity
 		else
 		{
 			mSpawnPoint = new Point2D (screenCenterWidth + offset, -100.0);
-			mWaypointQueue.add(new Point2D (mSpawnPoint.getX() + (offset / 4.0), Launcher.mHeight / 2.0));
+			mWaypointQueue.add(new Point2D (mSpawnPoint.getX() - (offset / 4.0), Launcher.mHeight / 2.0));
 		}
 		
 		this.setX(mSpawnPoint.getX());
