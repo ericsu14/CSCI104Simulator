@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.player.MoveDirection;
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -27,6 +29,8 @@ public class GameView
 	private GameUI mGameUI = null;
 	/* A ref. to the main launcher */
 	private Launcher mLauncher;
+	/* Keeps track of the amount of left / right keys pressed */
+	private int mNumDirKeys = 0;
 	
 	public GameView (Launcher launcher)
 	{
@@ -85,6 +89,46 @@ public class GameView
 			/* Game UI */
 			mGameUI = new GameUI(this);
 			mRoot.getChildren().add(mGameUI);
+			
+			/* Adds in movement instructions to the gameworld scene */
+			mScene.setOnKeyPressed(e -> 
+			{
+				MoveDirection playerMove = mGameEngine.getPlayer().getMoveDirection();
+				if (e.getCode() == KeyCode.LEFT && playerMove != MoveDirection.kLeft)
+				{
+					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kLeft);
+					++mNumDirKeys;
+				}
+				if (e.getCode() == KeyCode.RIGHT && playerMove != MoveDirection.kRight)
+				{
+					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kRight);
+					++mNumDirKeys;
+				}
+				if (e.getCode() == KeyCode.SPACE)
+				{
+					// TODO: Fire ze cannons
+				}
+			});
+			
+			/* Resets movement once key has been released */
+			mScene.setOnKeyReleased(e -> 
+			{
+				MoveDirection playerMove = mGameEngine.getPlayer().getMoveDirection();
+				
+				if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
+				{
+					--mNumDirKeys;
+					if (mNumDirKeys < 0)
+					{
+						mNumDirKeys = 0;
+					}
+				}
+				
+				if (mNumDirKeys <= 0)
+				{
+					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kNone);
+				}
+			});
 		}
 		
 		playAnimations();

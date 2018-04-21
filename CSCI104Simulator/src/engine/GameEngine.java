@@ -45,6 +45,8 @@ public class GameEngine
 	private int mMaxWidth;
 	/* Animation timer used for the game loop */
 	private AnimationTimer mGameLoop;
+	/* Flag that ensures that the player ship is only spawned once throughout the entire lifespan of this application */
+	private boolean spawnedPlayerFlag = false;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -108,9 +110,21 @@ public class GameEngine
 							mSpawnIntervals = 0;
 						}
 					}
+					/* If this entity is NOT a "just spawned entity", continue to update it as normal */
 					else if (e.getState() != EntityState.kJustSpawned)
 					{
 						e.update();
+						
+						/* TODO: Check if the entity just died */
+						if (e.getState() == EntityState.kDead)
+						{
+							/* Checks if this entity is a player. If so, do not delete it */
+							if (e.getType() == EntityType.kPlayer)
+							{
+								// TODO: 
+							}
+						}
+						
 					}
 				}
 			}
@@ -122,8 +136,11 @@ public class GameEngine
 	{
 		spawnEnemies();
 		/* TODO: Ensure that the player is only spawned once throughout this game */
-		addChild (mPlayer);
-		
+		if (!spawnedPlayerFlag)
+		{
+			spawnedPlayerFlag = true;
+			addChild (mPlayer);
+		}
 		/* Starts the game loop */
 		mGameLoop.start();
 	}
