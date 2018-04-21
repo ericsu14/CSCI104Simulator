@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import entities.Entity;
-import entities.enemies.Enemy;
 import entities.enemies.EnemyPosition;
 import entities.enemies.TestEnemy;
 import entities.player.Player;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import view.GameView;
@@ -141,6 +139,7 @@ public class GameEngine
 				contents.add(currentLine);
 				armyHeight += 1;
 			}
+			br.close();
 		}
 		
         catch(FileNotFoundException ex) 

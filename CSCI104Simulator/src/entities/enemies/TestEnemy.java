@@ -16,5 +16,8 @@ public class TestEnemy extends Enemy
 		setRotate (-90.0);
 	}
 
-
+	public void update ()
+	{
+		super.update();
+	}
 }
