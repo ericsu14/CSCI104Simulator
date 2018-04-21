@@ -4,29 +4,17 @@ import engine.GameEngine;
 import entities.Entity;
 import javafx.geometry.Point2D;
 
-public class TestEnemy extends Entity 
+public class TestEnemy extends Enemy 
 {
-	public TestEnemy(double x, double y, GameEngine controller) 
+	public TestEnemy(EnemyPosition initPosition, Point2D origin, int group, GameEngine controller) 
 	{	
-		super(x, y, controller);
+		super (initPosition, origin, group, controller);
 		this.mInitialMovementSpeed = 3.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 20.0;
 		this.setSprite(controller.mTestEnemySprite);
 		setRotate (-90.0);
-		testMovement();
-	}
-	
-	
-	public void testMovement ()
-	{
-		this.moveEntity(new Point2D (100.0, 313.0));
 	}
 
 
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
 }

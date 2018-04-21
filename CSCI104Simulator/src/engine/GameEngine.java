@@ -1,8 +1,17 @@
 package engine;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import entities.Entity;
 import entities.enemies.Enemy;
+import entities.enemies.EnemyPosition;
+import entities.enemies.TestEnemy;
 import entities.player.Player;
+import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,7 +28,7 @@ public class GameEngine
 	/* The current level the player is in */
 	private int mCurrentLevel;
 	/* A vector of game enemies */
-	private ArrayList <Node> mGameEntities;
+	private ArrayList <Entity> mGameEntities;
 	/* The player's current score */
 	private long mPlayerScore;
 	/* The game's player character */
@@ -36,9 +45,12 @@ public class GameEngine
 	private int mMaxHeight;
 	/* Defines the maximum width of the playing field */
 	private int mMaxWidth;
+	/* Animation timer used for the game loop */
+	private AnimationTimer mGameLoop;
 	
-	public GameEngine ()
+	public GameEngine (GameView gameView)
 	{	
+		mGameView = gameView;
 		/* Initializes the game's sprite content */
 		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
 		mPlayerShipSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerShip.png")));
@@ -46,30 +58,164 @@ public class GameEngine
 		/* Initializes member variables */
 		setCurrentLevel(1);
 		setPlayerScore(0);
-		mGameEntities = new ArrayList <Node>();
+		mGameEntities = new ArrayList <Entity>();
 		
 		/* Sets up the game's borders */
 		mMaxWidth = 1000;
-		mLeftBorder = 100;
+		mLeftBorder = 50;
 		mRightBorder = mLeftBorder + mMaxWidth;
-	}
-	
-	public void update()
-	{
-		// TODO: 
-	}
-	
-	public void startLevel ()
-	{
+		
 		mPlayer = new Player (Launcher.mWidth / 2, Launcher.mHeight - 100.0, this);
-		addChild(mPlayer);
-		// TODO: Create code that reads from a data file to spawn new enemies in the game
+		
+		mGameLoop = new AnimationTimer ()
+		{
+			@Override
+			public void handle(long now) 
+			{
+				update (now);
+			}
+			
+			public void update (long now)
+			{
+				/* Updates each individual entity */
+				for (Entity e : mGameEntities)
+				{
+					e.update();
+				}
+			}
+		};
 	}
 	
-	public void addChild (Node child)
+	/** Starts a new level */
+	public void startLevel()
+	{
+		spawnEnemies();
+		/* TODO: Ensure that the player is only spawned once throughout this game */
+		addChild (mPlayer);
+		
+		/* Starts the game loop */
+		mGameLoop.start();
+	}
+	
+	/** Reads a level data file from a text file and spawns in
+	 *  the appropriate enemies */
+	public void spawnEnemies ()
+	{
+		/* Defines the current iterators for enemy placement */
+		double currentX, currentY;
+		double xSpacing = 50.0;
+		double ySpacing = 30.0;
+		
+		/* Curent group of the current entity */
+		int currentGroup = 0;
+		int currentGroupCount = 0;
+		int currentGroupLimit = 1;
+		
+		/* Width and height of the container */
+		int armyWidth = 0, armyHeight = 0;
+		/* Vector of strings used to copy the contents of the text file */
+		ArrayList <String> contents = new ArrayList <String>();
+		/* A vector of enemies would be spawned in later */
+		ArrayList <Entity> enemyContainer = new ArrayList <Entity> ();
+		
+		/* Reads from a text file and uses that data to spawn enemies into the game */
+		String fileName = "src/assets/data/testEnemyLayout.txt";
+		String currentLine = null;
+		try
+		{
+			FileReader reader = new FileReader (fileName);
+			BufferedReader br = new BufferedReader (reader);
+			
+			/* First calculate the dimensions of the enemy army */
+			while ((currentLine = br.readLine()) != null)
+			{
+				currentLine = currentLine.trim();
+				
+				for (int i = 0; i < currentLine.length(); ++i)
+				{
+					if (armyWidth < (i + 1))
+					{
+						armyWidth = (i + 1);
+					}
+				}
+				contents.add(currentLine);
+				armyHeight += 1;
+			}
+		}
+		
+        catch(FileNotFoundException ex) 
+		{
+            System.out.println(
+                "Unable to open file '" + 
+                fileName + "'");                
+        }
+        catch(IOException ex) 
+		{
+            System.out.println(
+                "Error reading file '" 
+                + fileName + "'");                  
+        }
+		
+		System.out.println("Width: " + armyWidth + " | Height: " + armyHeight);
+		
+		/* Now, construct the enemies */
+		currentX = this.mLeftBorder + xSpacing;
+		currentY = this.mLeftBorder + ySpacing;
+		
+		char currentChar;
+		EnemyPosition currentPosition;
+		for (String line : contents)
+		{
+			for (int i = 0; i < line.length(); ++i)
+			{
+				currentChar = line.charAt(i);
+				
+				/* Calculates the initial spawn point based on currentX */
+				if (currentX <= (Launcher.mWidth / 2.0))
+				{
+					currentPosition = EnemyPosition.kLeft;
+				}
+				else
+				{
+					currentPosition = EnemyPosition.kRight;
+				}
+				switch (currentChar)
+				{
+					/* Spawn test enemy */
+					case 'T':
+						enemyContainer.add(new TestEnemy (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						break;
+					default:
+						break;
+				}
+				++currentGroupCount;
+				
+				if (currentGroupCount >= currentGroupLimit)
+				{
+					++currentGroup;
+					currentGroupCount = 0;
+				}
+				
+				currentX += xSpacing;
+				++currentGroupLimit;
+			}
+			currentX = this.mLeftBorder + xSpacing;
+			currentY += ySpacing;
+		}
+		
+		addChildren (enemyContainer);
+	}
+	
+	public void addChild (Entity child)
 	{
 		mGameEntities.add(child);
 		mGameView.addChild(child);
+	}
+	
+	public void addChildren (ArrayList <Entity> children)
+	{
+		mGameEntities.addAll(children);
+		mGameView.addChildren(children);
 	}
 	
 	/** Returns the center region of the playing field */

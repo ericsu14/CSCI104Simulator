@@ -46,11 +46,11 @@ public class Launcher extends Application
 	/** Initializes the scenes for this game */
 	public void initializeScenes()
 	{
-		mGameEngine = new GameEngine ();
-		mMainMenu = new MainMenu(this);
 		mGameView = new GameView (this);
-		mGameView.setGameEngine(mGameEngine);
-		mGameEngine.setGameView(mGameView);
+		mGameEngine = new GameEngine (mGameView);
+		mMainMenu = new MainMenu(this);
+		// mGameView.setGameEngine(mGameEngine);
+		// mGameEngine.setGameView(mGameView);
 	}
 	
 	/** Switches the current scene to the main menu */
@@ -62,11 +62,11 @@ public class Launcher extends Application
 	/** Switches to the game scene */
 	public void switchGameScene()
 	{
+		mGameView.startNewLevel();
 		mStage.setScene(mGameView.getScene());
 		mStage.sizeToScene();
 		mStage.setHeight(mHeight);
 		mStage.setWidth(mWidth);
-		mGameView.startNewLevel();
 	}
 	
 	/** Returns the initialized game engine */

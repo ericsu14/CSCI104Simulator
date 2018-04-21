@@ -3,5 +3,5 @@ package entities;
 
 public enum EntityState 
 {
-	kActive, kDead
+	kActive, kDead, kPlayerDead, kJustSpawned
 }

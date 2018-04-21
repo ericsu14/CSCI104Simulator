@@ -39,20 +39,18 @@ public class Enemy extends Entity
 		mGroup = group;
 		mWaypointQueue = new LinkedList <Point2D>();
 		
-		/* Enemy is initially facing downwards */
-		setRotate(Math.toRadians(270.0));
-		
 		/* Based on the passed initial position, calculate the initial spawn point
 		 * of the enemy based on the passed position */
 		double screenCenterWidth = Launcher.mWidth / 2;
 		double offset = screenCenterWidth / 2;
+		
 		if (initPosition == EnemyPosition.kLeft)
 		{
-			mSpawnPoint = new Point2D (screenCenterWidth - offset, 0);
+			mSpawnPoint = new Point2D (screenCenterWidth - offset, -100);
 		}
 		else
 		{
-			mSpawnPoint = new Point2D (screenCenterWidth + offset, 0);
+			mSpawnPoint = new Point2D (screenCenterWidth + offset, -100);
 		}
 		
 		this.setX(mSpawnPoint.getX());

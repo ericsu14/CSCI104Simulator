@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import engine.GameEngine;
+import entities.Entity;
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -23,14 +24,13 @@ public class GameView
 	 * are going to be contained */
 	private Pane mGameWorld;
 	/* Borderpane containing the UI layer */
-	private GameUI mGameUI;
+	private GameUI mGameUI = null;
 	/* A ref. to the main launcher */
 	private Launcher mLauncher;
 	
 	public GameView (Launcher launcher)
 	{
 		mLauncher = launcher;
-		mGameEngine = mLauncher.getGameEngine();
 		setupScene();
 	}
 	
@@ -47,12 +47,8 @@ public class GameView
 		mGameWorld = new Pane();
 		mRoot.getChildren().add(mGameWorld);
 		
-		/* Game UI */
-		mGameUI = new GameUI(this);
-		mRoot.getChildren().add(mGameUI);
-		mRoot.setStyle("-fx-background-color: black");
-		
 		mScene = new Scene (mRoot);
+		mRoot.setStyle("-fx-background-color: black");
 	}
 	
 	/** @return the Launcher object */
@@ -81,7 +77,16 @@ public class GameView
 	/** Sets up the scene to start a new level */
 	public void startNewLevel()
 	{
-		// TODO: 
+		/* If the game UI hasn't been made yet, create it */
+		if (mGameUI == null)
+		{
+			/* Gets the game engine from the launcher */
+			mGameEngine = mLauncher.getGameEngine();
+			/* Game UI */
+			mGameUI = new GameUI(this);
+			mRoot.getChildren().add(mGameUI);
+		}
+		
 		playAnimations();
 		mGameEngine.startLevel();
 	}
@@ -93,7 +98,7 @@ public class GameView
 	}
 	
 	/** Adds a vector of child nodes into the gameworld layer */
-	public void addChildren (ArrayList <Node> children)
+	public void addChildren (ArrayList<Entity> children)
 	{
 		mGameWorld.getChildren().addAll(FXCollections.observableArrayList(children));
 	}

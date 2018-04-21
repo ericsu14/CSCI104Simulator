@@ -44,7 +44,7 @@ public abstract class Entity extends ImageView
 	{
 		super();
 		
-		mState = EntityState.kActive;
+		mState = EntityState.kJustSpawned;
 		mController = controller;
 		
 		/* Sets the current coordinates of the entity */
@@ -123,8 +123,7 @@ public abstract class Entity extends ImageView
 		/* Only construct a new waypoint if the corresponding flag is false */
 		if (!mWaypointFlag)
 		{
-			mWaypointFlag = true;
-			System.out.println(destination.toString());
+			mWaypointFlag = true;;
 			mWaypointAnimation = new AnimationTimer ()
 			{
 				/* The angle the entity would have to face to in order to reach the waypoint */
