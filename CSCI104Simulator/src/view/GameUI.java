@@ -18,7 +18,7 @@ public class GameUI extends StackPane
 	/* A label displaying the player's current score */
 	private Label mCurrentScore;
 	/* A vertical box displaying the amount of lives the player currently has */
-	private VBox mCurrentLives;
+	private HBox mCurrentLives;
 	/* A label showing the level the player is currently in */
 	private Label mCurrentLevel;
 	

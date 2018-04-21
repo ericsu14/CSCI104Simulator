@@ -18,4 +18,10 @@ public class TestProjectile extends Projectile
 		this.setRotate(-90.0);
 	}
 
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

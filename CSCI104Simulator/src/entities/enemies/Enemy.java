@@ -2,9 +2,13 @@
 
 package entities.enemies;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import engine.GameEngine;
 import entities.Entity;
 import javafx.geometry.Point2D;
+import view.Launcher;
 
 public class Enemy extends Entity
 {	
@@ -16,6 +20,10 @@ public class Enemy extends Entity
 	protected EnemyPosition mEntryPosition;
 	/* The amount of points this enemy is worth */
 	protected long mPointsValue;
+	/* The initial spawn point of the enemy */
+	protected Point2D mSpawnPoint;
+	/* A queue of waypoints where the enemy would be instructed to move to */
+	protected Queue <Point2D> mWaypointQueue;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -29,9 +37,44 @@ public class Enemy extends Entity
 		mEntryPosition = initPosition;
 		mOriginPoint = origin;
 		mGroup = group;
+		mWaypointQueue = new LinkedList <Point2D>();
 		
 		/* Enemy is initially facing downwards */
 		setRotate(Math.toRadians(270.0));
+		
+		/* Based on the passed initial position, calculate the initial spawn point
+		 * of the enemy based on the passed position */
+		double screenCenterWidth = Launcher.mWidth / 2;
+		double offset = screenCenterWidth / 2;
+		if (initPosition == EnemyPosition.kLeft)
+		{
+			mSpawnPoint = new Point2D (screenCenterWidth - offset, 0);
+		}
+		else
+		{
+			mSpawnPoint = new Point2D (screenCenterWidth + offset, 0);
+		}
+		
+		this.setX(mSpawnPoint.getX());
+		this.setY(mSpawnPoint.getY());
+		
+		mWaypointQueue.add(mOriginPoint);
+		
+	}
+
+	@Override
+	public void update() 
+	{
+		/* Checks if there is anything in the waypoint queue.
+		 * If so, start moving to the location. */
+		if (!mWaypointQueue.isEmpty())
+		{
+			if (!mWaypointFlag)
+			{
+				this.moveEntity(mWaypointQueue.remove());
+			}
+		}
+		
 	}
 	
 }

@@ -5,7 +5,7 @@ import entities.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 
-public class Projectile extends Entity 
+public abstract class Projectile extends Entity 
 {
 	/* A ref. to the entity that shot this projectile */
 	protected Entity mOwner;

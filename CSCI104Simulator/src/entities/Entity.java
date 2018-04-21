@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import engine.GameEngine;
 
-public class Entity extends ImageView 
+public abstract class Entity extends ImageView 
 {
 	/* The default movement speed of this entity */
 	protected double mInitialMovementSpeed = 2.0;
@@ -32,6 +32,8 @@ public class Entity extends ImageView
 	protected double mInitialOrientation = -90.0;
 	/* The current state of this entity */
 	protected EntityState mState;
+	/* The entity's type */
+	protected EntityType mType;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -49,6 +51,7 @@ public class Entity extends ImageView
 		this.setX(x);
 		this.setY(y);
 		mPreviousCoord = new Point2D (x, y);
+		mType = EntityType.kUnknown;
 		
 		/* Initializes basic entity animations */
 		initializeBasicAnimations();
@@ -242,6 +245,9 @@ public class Entity extends ImageView
 	{
 		return mState;
 	}
+	
+	/** Called by the game engine to update this individual entity. */
+	public abstract void update();
 	
 	/** @return True if target is between min and max
 	 * 		@param target - Value being compared

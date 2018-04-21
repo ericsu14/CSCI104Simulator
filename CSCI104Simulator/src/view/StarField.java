@@ -13,21 +13,16 @@ public class StarField extends Pane
 	/* Random generator used to randomly generate the coordinates of 
 	 * each newly added star */
 	private Random mRand;
-	
 	/* Animation timer used to randomly generate the stars based on
 	 * the current dimensions of this pane */
 	private AnimationTimer mStarGenerator;
-	
 	/* Container storing all of the spawned "star objects" */
 	private ArrayList <ConfettiText> mSpawnedStars;
-	
 	/* Stores all despawned assets */
 	private ArrayList <ConfettiText> mDespawnedAssets;
-	
 	/* Keeps track of the current amount of milliseconds remaining
 	 * before the next star could spawn */
 	private float mSpawnTimer = 0.0f; 
-	
 	/* Total time befor the next star could spawn */
 	private static final float mSpawnTime = 7.0f;
 	

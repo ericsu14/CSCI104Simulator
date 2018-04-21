@@ -1,6 +1,10 @@
 package view;
 
+import java.util.ArrayList;
+
 import engine.GameEngine;
+import javafx.collections.FXCollections;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -17,7 +21,7 @@ public class GameView
 	private StarField mStarField;
 	/* Contains the playing field layer, where all of the gameplay assets
 	 * are going to be contained */
-	private Pane mPlayingField;
+	private Pane mGameWorld;
 	/* Borderpane containing the UI layer */
 	private GameUI mGameUI;
 	/* A ref. to the main launcher */
@@ -40,8 +44,8 @@ public class GameView
 		mRoot.getChildren().add(mStarField);
 		
 		/* Playing field */
-		mPlayingField = new Pane();
-		mRoot.getChildren().add(mPlayingField);
+		mGameWorld = new Pane();
+		mRoot.getChildren().add(mGameWorld);
 		
 		/* Game UI */
 		mGameUI = new GameUI(this);
@@ -79,6 +83,7 @@ public class GameView
 	{
 		// TODO: 
 		playAnimations();
+		mGameEngine.startLevel();
 	}
 	
 	/** Sets the GameView's game engine */
@@ -87,4 +92,21 @@ public class GameView
 		mGameEngine = engine;
 	}
 	
+	/** Adds a vector of child nodes into the gameworld layer */
+	public void addChildren (ArrayList <Node> children)
+	{
+		mGameWorld.getChildren().addAll(FXCollections.observableArrayList(children));
+	}
+	
+	/** Adds an individual child node into the gameworld layer */
+	public void addChild (Node child)
+	{
+		mGameWorld.getChildren().add(child);
+	}
+	
+	/** Given a vector of child nodes remove all of them from the gameworld layer */
+	public void removeChildren (ArrayList <Node> children)
+	{
+		mGameWorld.getChildren().removeAll(FXCollections.observableArrayList(children));
+	}
 }

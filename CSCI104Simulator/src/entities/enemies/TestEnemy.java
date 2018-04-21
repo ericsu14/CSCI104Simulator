@@ -22,4 +22,11 @@ public class TestEnemy extends Entity
 	{
 		this.moveEntity(new Point2D (100.0, 313.0));
 	}
+
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -3,9 +3,11 @@ import java.util.ArrayList;
 
 import entities.enemies.Enemy;
 import entities.player.Player;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import view.GameView;
+import view.Launcher;
 public class GameEngine 
 {
 	/* SPRITE ASSETS*/
@@ -17,7 +19,7 @@ public class GameEngine
 	/* The current level the player is in */
 	private int mCurrentLevel;
 	/* A vector of game enemies */
-	private ArrayList <Enemy> mGameEnemies;
+	private ArrayList <Node> mGameEntities;
 	/* The player's current score */
 	private long mPlayerScore;
 	/* The game's player character */
@@ -44,19 +46,30 @@ public class GameEngine
 		/* Initializes member variables */
 		setCurrentLevel(1);
 		setPlayerScore(0);
-		setPlayer(new Player(0, 0, this));
-		setGameEnemies(new ArrayList <Enemy> ());
+		mGameEntities = new ArrayList <Node>();
 		
 		/* Sets up the game's borders */
 		mMaxWidth = 1000;
 		mLeftBorder = 100;
 		mRightBorder = mLeftBorder + mMaxWidth;
-		
 	}
 	
-	public void spawnEnemies ()
+	public void update()
 	{
+		// TODO: 
+	}
+	
+	public void startLevel ()
+	{
+		mPlayer = new Player (Launcher.mWidth / 2, Launcher.mHeight - 100.0, this);
+		addChild(mPlayer);
 		// TODO: Create code that reads from a data file to spawn new enemies in the game
+	}
+	
+	public void addChild (Node child)
+	{
+		mGameEntities.add(child);
+		mGameView.addChild(child);
 	}
 	
 	/** Returns the center region of the playing field */
@@ -118,7 +131,8 @@ public class GameEngine
 	/**
 	 * @return the mCurrentLevel
 	 */
-	public int getCurrentLevel() {
+	public int getCurrentLevel() 
+	{
 		return mCurrentLevel;
 	}
 
@@ -128,21 +142,6 @@ public class GameEngine
 	public void setCurrentLevel(int mCurrentLevel) 
 	{
 		this.mCurrentLevel = mCurrentLevel;
-	}
-
-	/**
-	 * @return the mGameEnemies
-	 */
-	public ArrayList <Enemy> getGameEnemies() {
-		return mGameEnemies;
-	}
-
-	/**
-	 * @param mGameEnemies the mGameEnemies to set
-	 */
-	public void setGameEnemies(ArrayList <Enemy> mGameEnemies) 
-	{
-		this.mGameEnemies = mGameEnemies;
 	}
 
 	/**
@@ -159,6 +158,16 @@ public class GameEngine
 	public void setPlayerScore(long mPlayerScore) 
 	{
 		this.mPlayerScore = mPlayerScore;
+	}
+	
+	public void setGameView (GameView gameView)
+	{
+		mGameView = gameView;
+	}
+	
+	public GameView getGameView ()
+	{
+		return mGameView;
 	}
 	
 }
