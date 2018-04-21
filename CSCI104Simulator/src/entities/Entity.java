@@ -245,6 +245,18 @@ public abstract class Entity extends ImageView
 		return mState;
 	}
 	
+	/** Sets this entity's state to a new state */
+	public void setState (EntityState state)
+	{
+		mState = state;
+	}
+	
+	/** @return the entity's type */
+	public EntityType getType ()
+	{
+		return mType;
+	}
+	
 	/** Called by the game engine to update this individual entity. */
 	public abstract void update();
 	

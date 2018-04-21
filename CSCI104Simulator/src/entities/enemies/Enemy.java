@@ -8,6 +8,7 @@ import java.util.Queue;
 import engine.GameEngine;
 import entities.Entity;
 import entities.EntityState;
+import entities.EntityType;
 import javafx.geometry.Point2D;
 import view.Launcher;
 
@@ -36,6 +37,7 @@ public class Enemy extends Entity
 	{
 		super(origin.getX(), origin.getY(), controller);
 		mState = EntityState.kJustSpawned;
+		mType = EntityType.kEnemy;
 		mEntryPosition = initPosition;
 		mOriginPoint = origin;
 		mGroup = group;
@@ -48,11 +50,13 @@ public class Enemy extends Entity
 		
 		if (initPosition == EnemyPosition.kLeft)
 		{
-			mSpawnPoint = new Point2D (screenCenterWidth - offset, -100);
+			mSpawnPoint = new Point2D (screenCenterWidth - offset, -100.0);
+			mWaypointQueue.add(new Point2D (mSpawnPoint.getX() - (offset / 4.0), Launcher.mHeight / 2.0));
 		}
 		else
 		{
-			mSpawnPoint = new Point2D (screenCenterWidth + offset, -100);
+			mSpawnPoint = new Point2D (screenCenterWidth + offset, -100.0);
+			mWaypointQueue.add(new Point2D (mSpawnPoint.getX() + (offset / 4.0), Launcher.mHeight / 2.0));
 		}
 		
 		this.setX(mSpawnPoint.getX());

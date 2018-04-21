@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import entities.Entity;
+import entities.EntityState;
+import entities.EntityType;
 import entities.enemies.EnemyPosition;
 import entities.enemies.TestEnemy;
 import entities.player.Player;
@@ -65,6 +67,11 @@ public class GameEngine
 		
 		mGameLoop = new AnimationTimer ()
 		{
+			/* Variables used for calculating the initial spawn animation for game enemies */
+			private int mSpawnIntervals = 0;
+			private int mMaxSpawnInterval = 15;
+			private Entity mFocusedEnemy = null;
+			
 			@Override
 			public void handle(long now) 
 			{
@@ -76,7 +83,35 @@ public class GameEngine
 				/* Updates each individual entity */
 				for (Entity e : mGameEntities)
 				{
-					e.update();
+					/* Sets the current focused enemy to the first enemy that has just been spawned in */
+					if (mFocusedEnemy == null)
+					{
+						if (e.getState() == EntityState.kJustSpawned)
+						{
+							mFocusedEnemy = e;
+						}
+					}
+					
+					/* Ensures that only one (just spawned in enemy) could move to their location once every 
+					 * mMaxSpawnInterval frames */
+					if (e.getState() == EntityState.kJustSpawned && e == mFocusedEnemy)
+					{
+						if (mSpawnIntervals < mMaxSpawnInterval)
+						{
+							mSpawnIntervals++;
+						}
+						else
+						{
+							mFocusedEnemy.update();
+							mFocusedEnemy.setState(EntityState.kActive);
+							mFocusedEnemy = null;
+							mSpawnIntervals = 0;
+						}
+					}
+					else if (e.getState() != EntityState.kJustSpawned)
+					{
+						e.update();
+					}
 				}
 			}
 		};

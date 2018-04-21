@@ -1,6 +1,7 @@
 package entities.player;
 import engine.GameEngine;
 import entities.Entity;
+import entities.EntityType;
 
 public class Player extends Entity
 {
@@ -13,7 +14,7 @@ public class Player extends Entity
 		super (x, y, controller);
 		mMovementSpeed = 10.0;
 		this.mSpriteScale = 30.0;
-		
+		mType = EntityType.kPlayer;
 		setSprite (controller.mPlayerShipSprite);
 	}
 
