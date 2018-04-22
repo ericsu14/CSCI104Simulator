@@ -116,6 +116,18 @@ public class MainMenu
 		
 		/* TODO: Create selectors for the rest of the gameplay components */
 		
+		/* Footer */
+		VBox footer = new VBox();
+		Label author = new Label ("Created by Eric Su");
+		author.setStyle(CSSConstants.AUTHOR_FONT);
+		Label version = new Label ("V. 0.28a");
+		version.setStyle(CSSConstants.AUTHOR_FONT);
+		
+		footer.getChildren().addAll(version, author);
+		footer.setAlignment(Pos.BOTTOM_CENTER);
+		
+		mainMenu.setBottom(footer);
+		
 		mRoot.getChildren().add(mainMenu);
 		mRoot.setStyle("-fx-background-color: black");
 		mScene = new Scene (mRoot);
