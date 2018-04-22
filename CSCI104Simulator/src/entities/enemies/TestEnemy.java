@@ -19,4 +19,10 @@ public class TestEnemy extends Enemy
 	{
 		super.update();
 	}
+
+	@Override
+	public void createAttackVectors() 
+	{
+		
+	}
 }

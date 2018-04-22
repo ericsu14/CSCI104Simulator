@@ -33,6 +33,7 @@ public class Player extends Entity
 		/* Moves this character's position if the playe is set to move either left or right */
 		if (mCurrentDirection != MoveDirection.kNone)
 		{
+			double moveX;
 			/* Sets the player's current rotation based on the updated direction */
 			if (mCurrentDirection == MoveDirection.kRight)
 			{
@@ -46,8 +47,13 @@ public class Player extends Entity
 			/* Moves the player in that current direction */
 			Point2D velocity = getForward();
 			velocity = velocity.multiply(mMovementSpeed);
+			moveX = getX() + velocity.getX();
 			
-			this.setX(getX() + velocity.getX());
+			/* Checks if the player is attempting to move out of the game's set boundries */
+			if (inRange ((int)moveX, mController.getLeftBorder(), mController.getRightBorder()))
+			{
+				this.setX(getX() + velocity.getX());
+			}
 		}
 		
 		else
@@ -58,7 +64,7 @@ public class Player extends Entity
 	}
 	
 	/** Because the player's sprite never rotates, the player would have to use a slightly altered forward vector calculation algorithm
-	 *  that uses a "hidden" rotation approach */
+	 *  that uses the player's "hidden rotation angle" */
 	@Override
 	public Point2D getForward ()
 	{

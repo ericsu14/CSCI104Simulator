@@ -12,7 +12,7 @@ import entities.EntityType;
 import javafx.geometry.Point2D;
 import view.Launcher;
 
-public class Enemy extends Entity
+public abstract class Enemy extends Entity
 {	
 	/* The coordinate in which the enemy is initially at on the grid */
 	protected Point2D mOriginPoint;
@@ -66,6 +66,7 @@ public class Enemy extends Entity
 		
 	}
 
+	/** A fairly basic update method that allows this entity to compute move instructions. */
 	@Override
 	public void update() 
 	{
@@ -86,4 +87,6 @@ public class Enemy extends Entity
 		mWaypointQueue.add(waypoint);
 	}
 	
+	/** Calculates the enemy's attack vector. Must be overridden by other classes */
+	public abstract void createAttackVectors();
 }

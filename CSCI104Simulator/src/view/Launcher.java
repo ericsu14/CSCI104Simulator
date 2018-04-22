@@ -49,8 +49,6 @@ public class Launcher extends Application
 		mGameView = new GameView (this);
 		mGameEngine = new GameEngine (mGameView);
 		mMainMenu = new MainMenu(this);
-		// mGameView.setGameEngine(mGameEngine);
-		// mGameEngine.setGameView(mGameView);
 	}
 	
 	/** Switches the current scene to the main menu */

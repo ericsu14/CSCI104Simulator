@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
+import entities.enemies.Bohrbug;
 import entities.enemies.EnemyPosition;
+import entities.enemies.Heisenbug;
+import entities.enemies.Mandelbug;
 import entities.enemies.TestEnemy;
 import entities.player.Player;
 import javafx.animation.AnimationTimer;
@@ -22,6 +25,12 @@ public class GameEngine
 	public ImageView mTestEnemySprite;
 	/* Stores the image file for the playership */
 	public ImageView mPlayerShipSprite;
+	/* Stores the image file for the bohrbug, formally known as the test enemy sprite */
+	public ImageView mBohrbugSprite;
+	/* Stores the image file for the heisenbug */
+	public ImageView mHeisenbugSprite;
+	/* Stores the image file for the mandelbug */
+	public ImageView mMandelBugSprite;
 	
 	/* The current level the player is in */
 	private int mCurrentLevel;
@@ -52,8 +61,11 @@ public class GameEngine
 	{	
 		mGameView = gameView;
 		/* Initializes the game's sprite content */
-		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
+		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/cote.png")));
 		mPlayerShipSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerShip.png")));
+		mBohrbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
+		mHeisenbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/heisenbug.png")));
+		mMandelBugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/mandelBug.png")));
 		
 		/* Initializes member variables */
 		setCurrentLevel(1);
@@ -61,9 +73,9 @@ public class GameEngine
 		mGameEntities = new ArrayList <Entity>();
 		
 		/* Sets up the game's borders */
-		mMaxWidth = 1000;
+		mMaxWidth = (int)Launcher.mWidth;
 		mLeftBorder = 50;
-		mRightBorder = mLeftBorder + mMaxWidth;
+		mRightBorder = mMaxWidth - mLeftBorder - 24;
 		
 		mPlayer = new Player (Launcher.mWidth / 2, Launcher.mHeight - 100.0, this);
 		
@@ -152,7 +164,7 @@ public class GameEngine
 		/* Defines the current iterators for enemy placement */
 		double currentX, currentY;
 		double xSpacing = 50.0;
-		double ySpacing = 30.0;
+		double ySpacing = 40.0;
 		
 		/* Curent group of the current entity */
 		int currentGroup = 0;
@@ -167,7 +179,7 @@ public class GameEngine
 		ArrayList <Entity> enemyContainer = new ArrayList <Entity> ();
 		
 		/* Reads from a text file and uses that data to spawn enemies into the game */
-		String fileName = "src/assets/data/testEnemyLayout.txt";
+		String fileName = "src/assets/data/enemyLayout.txt";
 		String currentLine = null;
 		try
 		{
@@ -197,8 +209,6 @@ public class GameEngine
 			e.printStackTrace();
 		}
 		
-		System.out.println("Width: " + armyWidth + " | Height: " + armyHeight);
-		
 		/* Now, construct the enemies */
 		currentX = this.mLeftBorder + xSpacing;
 		currentY = this.mLeftBorder + ySpacing;
@@ -226,6 +236,18 @@ public class GameEngine
 					case 'T':
 						enemyContainer.add(new TestEnemy (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
 						break;
+					/* Spawn Bohrbug */
+					case 'B':
+						enemyContainer.add(new Bohrbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						break;
+					/* Spawns heisenbug */
+					case 'H':
+						enemyContainer.add(new Heisenbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						break;
+					/* Spawns mandelbug */
+					case 'M':
+						enemyContainer.add(new Mandelbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						break;	
 					default:
 						break;
 				}
