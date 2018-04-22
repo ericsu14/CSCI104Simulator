@@ -81,4 +81,10 @@ public abstract class Projectile extends Entity
 		}
 	}
 	
+	/** Returns the owner who fired this projectile */
+	public Entity getOwner()
+	{
+		return mOwner;
+	}
+	
 }

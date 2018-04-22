@@ -2,6 +2,7 @@
 
 package entities.enemies;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -9,6 +10,7 @@ import engine.GameEngine;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
+import entities.projectiles.Projectile;
 import javafx.geometry.Point2D;
 import view.Launcher;
 
@@ -77,6 +79,38 @@ public abstract class Enemy extends Entity
 			if (!mWaypointFlag)
 			{
 				this.moveEntity(mWaypointQueue.remove());
+			}
+		}
+		
+		/* Collision detection */
+		ArrayList <Entity> currentGameEntities = mController.getEntities();
+		
+		for (Entity e : currentGameEntities)
+		{
+			if (e != this)
+			{
+				if (e.intersects(this.getBoundsInLocal()))
+				{
+					/* TODO: Kill the player and the enemy */
+					if (e.getType() == EntityType.kPlayer)
+					{
+						
+					}
+					
+					/* TODO: Kill the enemy once it collides with a player made projectile */
+					if (e.getType() == EntityType.kProjectile)
+					{
+						Projectile projectile = (Projectile) e;
+						
+						if (projectile.getOwner().getType() == EntityType.kPlayer)
+						{
+							projectile.setState(EntityState.kDead);
+							this.setState(EntityState.kDead);
+							
+							// TODO: Blow up fireworks on the entity's position
+						}
+					}
+				}
 			}
 		}
 	}

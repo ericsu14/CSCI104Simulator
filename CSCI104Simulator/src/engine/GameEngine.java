@@ -61,7 +61,7 @@ public class GameEngine
 	{	
 		mGameView = gameView;
 		/* Initializes the game's sprite content */
-		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/cote.png")));
+		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
 		mPlayerShipSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerShip.png")));
 		mBohrbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
 		mHeisenbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/heisenbug.png")));
@@ -179,7 +179,7 @@ public class GameEngine
 		ArrayList <Entity> enemyContainer = new ArrayList <Entity> ();
 		
 		/* Reads from a text file and uses that data to spawn enemies into the game */
-		String fileName = "src/assets/data/enemyLayout.txt";
+		String fileName = "src/assets/data/testEnemyLayout.txt";
 		String currentLine = null;
 		try
 		{
@@ -269,12 +269,16 @@ public class GameEngine
 		addChildren (enemyContainer);
 	}
 	
+	/** Adds a new entity into the game.
+	 * 		@param child - The new entity being added */
 	public void addChild (Entity child)
 	{
 		mGameEntities.add(child);
 		mGameView.addChild(child);
 	}
 	
+	/** Adds an arraylist of entities into the game
+	 * 		@param children - The container of children being added */
 	public void addChildren (ArrayList <Entity> children)
 	{
 		mGameEntities.addAll(children);
@@ -369,14 +373,23 @@ public class GameEngine
 		this.mPlayerScore = mPlayerScore;
 	}
 	
+	/** Sets the game's view component to a new view
+	 * 		@param gameView - The new gameView component */
 	public void setGameView (GameView gameView)
 	{
 		mGameView = gameView;
 	}
 	
+	/** @return the game's view component */
 	public GameView getGameView ()
 	{
 		return mGameView;
+	}
+	
+	/** @return the ArrayList of entities currently in this game */
+	public ArrayList <Entity> getEntities()
+	{
+		return this.mGameEntities;
 	}
 	
 }
