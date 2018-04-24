@@ -97,22 +97,10 @@ public abstract class Enemy extends Entity
 						
 					}
 					
-					/* TODO: Kill the enemy once it collides with a player made projectile */
-					if (e.getType() == EntityType.kProjectile)
-					{
-						Projectile projectile = (Projectile) e;
-						
-						if (projectile.getOwner().getType() == EntityType.kPlayer)
-						{
-							projectile.setState(EntityState.kDead);
-							this.setState(EntityState.kDead);
-							
-							// TODO: Blow up fireworks on the entity's position
-						}
-					}
 				}
 			}
 		}
+		
 	}
 	
 	/** Adds a new point to this enemy's waypoint queue */
@@ -123,4 +111,5 @@ public abstract class Enemy extends Entity
 	
 	/** Calculates the enemy's attack vector. Must be overridden by other classes */
 	public abstract void createAttackVectors();
+
 }

@@ -31,11 +31,15 @@ public class GameEngine
 	public ImageView mHeisenbugSprite;
 	/* Stores the image file for the mandelbug */
 	public ImageView mMandelBugSprite;
+	/* Stores the image file for the player bullet */
+	public ImageView mPlayerBulletSprite;
 	
 	/* The current level the player is in */
 	private int mCurrentLevel;
 	/* A vector of game enemies */
 	private ArrayList <Entity> mGameEntities;
+	/* Vector of dead game entities */
+	private ArrayList <Entity> mDeadEntities;
 	/* The player's current score */
 	private long mPlayerScore;
 	/* The game's player character */
@@ -66,11 +70,13 @@ public class GameEngine
 		mBohrbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
 		mHeisenbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/heisenbug.png")));
 		mMandelBugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/mandelBug.png")));
+		mPlayerBulletSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerBullet.png")));
 		
 		/* Initializes member variables */
 		setCurrentLevel(1);
 		setPlayerScore(0);
 		mGameEntities = new ArrayList <Entity>();
+		mDeadEntities = new ArrayList <Entity>();
 		
 		/* Sets up the game's borders */
 		mMaxWidth = (int)Launcher.mWidth;
@@ -122,8 +128,8 @@ public class GameEngine
 							mSpawnIntervals = 0;
 						}
 					}
-					/* If this entity is NOT a "just spawned entity", continue to update it as normal */
-					else if (e.getState() != EntityState.kJustSpawned)
+					/* If this entity is NOT a "just spawned entity" (or dead), continue to update it as normal */
+					else if (e.getState() == EntityState.kActive)
 					{
 						e.update();
 						
@@ -135,9 +141,22 @@ public class GameEngine
 							{
 								// TODO: 
 							}
+							
+							else
+							{
+								mDeadEntities.add(e);
+							}
 						}
 						
 					}
+				}
+				
+				/* Removes all dead game entities */
+				if (!mDeadEntities.isEmpty())
+				{
+					// System.out.println("Removing " + mDeadEntities.size() + " entities from the game...");
+					removeChildren(mDeadEntities);
+					mDeadEntities.clear();
 				}
 			}
 		};
@@ -265,7 +284,6 @@ public class GameEngine
 			currentX = this.mLeftBorder + xSpacing;
 			currentY += ySpacing;
 		}
-		
 		addChildren (enemyContainer);
 	}
 	
@@ -283,6 +301,12 @@ public class GameEngine
 	{
 		mGameEntities.addAll(children);
 		mGameView.addChildren(children);
+	}
+	
+	public void removeChildren (ArrayList<Entity> children)
+	{
+		mGameEntities.removeAll(children);
+		mGameView.removeChildren(children);
 	}
 	
 	/** Returns the center region of the playing field */

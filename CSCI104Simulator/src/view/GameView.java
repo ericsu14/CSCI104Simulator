@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import engine.GameEngine;
 import entities.Entity;
 import entities.player.MoveDirection;
+import entities.projectiles.PlayerProjectile;
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -106,7 +107,7 @@ public class GameView
 				}
 				if (e.getCode() == KeyCode.SPACE)
 				{
-					// TODO: Fire ze cannons
+					mGameEngine.addChild(new PlayerProjectile (mGameEngine.getPlayer(), this.getEngine(), false));
 				}
 			});
 			
@@ -148,14 +149,16 @@ public class GameView
 	}
 	
 	/** Adds an individual child node into the gameworld layer */
-	public void addChild (Node child)
+	public void addChild (Entity child)
 	{
 		mGameWorld.getChildren().add(child);
 	}
 	
 	/** Given a vector of child nodes remove all of them from the gameworld layer */
-	public void removeChildren (ArrayList <Node> children)
+	public void removeChildren (ArrayList<Entity> deadEntities)
 	{
-		mGameWorld.getChildren().removeAll(FXCollections.observableArrayList(children));
+		System.out.println(mGameWorld.getChildren().size());
+		mGameWorld.getChildren().removeAll(FXCollections.observableArrayList(deadEntities));
+		System.out.println(mGameWorld.getChildren().size());
 	}
 }

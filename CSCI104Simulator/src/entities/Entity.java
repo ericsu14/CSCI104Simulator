@@ -260,6 +260,38 @@ public abstract class Entity extends ImageView
 	/** Called by the game engine to update this individual entity. */
 	public abstract void update();
 	
+	/** Allows this entity to "die" by killing off all animations */
+	public void die()
+	{
+		if (getType() != EntityType.kPlayer)
+		{
+			mState = EntityState.kDead;
+		}
+		else
+		{
+			mState = EntityState.kPlayerDead;
+		}
+		
+		/* Stops all active animations */
+		if (mWaypointFlag)
+		{
+			mWaypointAnimation.stop();
+		}
+		
+		/* Sets the opacity of this entity to 0 */
+		this.setOpacity(0.0);
+	}
+	
+	/** Allows this entity to kill off another entity */
+	public void kill (Entity victim, boolean intersect)
+	{
+		if (intersect)
+		{
+			this.die();
+		}
+		victim.die();
+	}
+	
 	/** @return True if target is between min and max
 	 * 		@param target - Value being compared
 	 * 		@param min - Min. value of selected range
@@ -268,4 +300,5 @@ public abstract class Entity extends ImageView
 	{
 		return (min <= target && target <= max);
 	}
+
 }

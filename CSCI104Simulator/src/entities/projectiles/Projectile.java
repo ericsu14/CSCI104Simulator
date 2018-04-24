@@ -87,4 +87,16 @@ public abstract class Projectile extends Entity
 		return mOwner;
 	}
 	
+	/** Overrides the existing die method to stop the newly added 
+	 *  tracking animation. */
+	@Override
+	public void die()
+	{
+		super.die();
+		if (mIsTracking)
+		{
+			mTrackAnimation.stop();
+		}
+	}
+	
 }
