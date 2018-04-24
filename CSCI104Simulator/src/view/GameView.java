@@ -154,11 +154,15 @@ public class GameView
 		mGameWorld.getChildren().add(child);
 	}
 	
+	/** Removes an individual child node into the gameworld layer */
+	public void removeChild (Entity child)
+	{
+		mGameWorld.getChildren().remove(child);
+	}
+	
 	/** Given a vector of child nodes remove all of them from the gameworld layer */
 	public void removeChildren (ArrayList<Entity> deadEntities)
 	{
-		System.out.println(mGameWorld.getChildren().size());
 		mGameWorld.getChildren().removeAll(FXCollections.observableArrayList(deadEntities));
-		System.out.println(mGameWorld.getChildren().size());
 	}
 }

@@ -94,8 +94,9 @@ public class GameEngine
 			
 			@Override
 			public void handle(long now) 
-			{
+			{	
 				update (now);
+				checkDeadEntities();
 			}
 			
 			public void update (long now)
@@ -132,31 +133,34 @@ public class GameEngine
 					else if (e.getState() == EntityState.kActive)
 					{
 						e.update();
-						
-						/* TODO: Check if the entity just died */
-						if (e.getState() == EntityState.kDead)
-						{
-							/* Checks if this entity is a player. If so, do not delete it */
-							if (e.getType() == EntityType.kPlayer)
-							{
-								// TODO: 
-							}
-							
-							else
-							{
-								mDeadEntities.add(e);
-							}
-						}
-						
+					}
+				}
+			}
+			
+			public void checkDeadEntities ()
+			{
+				for (Entity e : mGameEntities)
+				{
+					if (e.getState() == EntityState.kDead)
+					{
+						mDeadEntities.add(e);
 					}
 				}
 				
 				/* Removes all dead game entities */
 				if (!mDeadEntities.isEmpty())
 				{
-					// System.out.println("Removing " + mDeadEntities.size() + " entities from the game...");
-					removeChildren(mDeadEntities);
-					mDeadEntities.clear();
+					try
+					{
+						// System.out.println("Removing " + mDeadEntities.size() + " entities from the game...");
+						removeChildren (mDeadEntities);
+						mDeadEntities.clear();
+					}
+					
+					catch (IllegalArgumentException e)
+					{
+						// Does nothing (for now)
+					}
 				}
 			}
 		};
@@ -307,6 +311,12 @@ public class GameEngine
 	{
 		mGameEntities.removeAll(children);
 		mGameView.removeChildren(children);
+	}
+	
+	public void removeChild (Entity child)
+	{
+		mGameEntities.remove(child);
+		mGameView.removeChild(child);
 	}
 	
 	/** Returns the center region of the playing field */

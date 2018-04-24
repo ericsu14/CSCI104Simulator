@@ -278,8 +278,6 @@ public abstract class Entity extends ImageView
 			mWaypointAnimation.stop();
 		}
 		
-		/* Sets the opacity of this entity to 0 */
-		this.setOpacity(0.0);
 	}
 	
 	/** Allows this entity to kill off another entity */
@@ -299,6 +297,79 @@ public abstract class Entity extends ImageView
 	protected boolean inRange(int target, int min, int max)
 	{
 		return (min <= target && target <= max);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mController == null) ? 0 : mController.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(mInitialMovementSpeed);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(mInitialOrientation);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(mMovementSpeed);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((mPreviousCoord == null) ? 0 : mPreviousCoord.hashCode());
+		result = prime * result + ((mRotationAnimation == null) ? 0 : mRotationAnimation.hashCode());
+		temp = Double.doubleToLongBits(mRotationSpeed);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(mSpriteScale);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((mState == null) ? 0 : mState.hashCode());
+		result = prime * result + ((mType == null) ? 0 : mType.hashCode());
+		result = prime * result + ((mWaypointAnimation == null) ? 0 : mWaypointAnimation.hashCode());
+		result = prime * result + (mWaypointFlag ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Entity other = (Entity) obj;
+		if (mController == null) {
+			if (other.mController != null)
+				return false;
+		} else if (!mController.equals(other.mController))
+			return false;
+		if (Double.doubleToLongBits(mInitialMovementSpeed) != Double.doubleToLongBits(other.mInitialMovementSpeed))
+			return false;
+		if (Double.doubleToLongBits(mInitialOrientation) != Double.doubleToLongBits(other.mInitialOrientation))
+			return false;
+		if (Double.doubleToLongBits(mMovementSpeed) != Double.doubleToLongBits(other.mMovementSpeed))
+			return false;
+		if (mPreviousCoord == null) {
+			if (other.mPreviousCoord != null)
+				return false;
+		} else if (!mPreviousCoord.equals(other.mPreviousCoord))
+			return false;
+		if (mRotationAnimation == null) {
+			if (other.mRotationAnimation != null)
+				return false;
+		} else if (!mRotationAnimation.equals(other.mRotationAnimation))
+			return false;
+		if (Double.doubleToLongBits(mRotationSpeed) != Double.doubleToLongBits(other.mRotationSpeed))
+			return false;
+		if (Double.doubleToLongBits(mSpriteScale) != Double.doubleToLongBits(other.mSpriteScale))
+			return false;
+		if (mState != other.mState)
+			return false;
+		if (mType != other.mType)
+			return false;
+		if (mWaypointAnimation == null) {
+			if (other.mWaypointAnimation != null)
+				return false;
+		} else if (!mWaypointAnimation.equals(other.mWaypointAnimation))
+			return false;
+		if (mWaypointFlag != other.mWaypointFlag)
+			return false;
+		return true;
 	}
 
 }

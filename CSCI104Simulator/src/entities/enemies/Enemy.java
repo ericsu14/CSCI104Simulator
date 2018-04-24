@@ -112,4 +112,50 @@ public abstract class Enemy extends Entity
 	/** Calculates the enemy's attack vector. Must be overridden by other classes */
 	public abstract void createAttackVectors();
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((mEntryPosition == null) ? 0 : mEntryPosition.hashCode());
+		result = prime * result + mGroup;
+		result = prime * result + ((mOriginPoint == null) ? 0 : mOriginPoint.hashCode());
+		result = prime * result + (int) (mPointsValue ^ (mPointsValue >>> 32));
+		result = prime * result + ((mSpawnPoint == null) ? 0 : mSpawnPoint.hashCode());
+		result = prime * result + ((mWaypointQueue == null) ? 0 : mWaypointQueue.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Enemy other = (Enemy) obj;
+		if (mEntryPosition != other.mEntryPosition)
+			return false;
+		if (mGroup != other.mGroup)
+			return false;
+		if (mOriginPoint == null) {
+			if (other.mOriginPoint != null)
+				return false;
+		} else if (!mOriginPoint.equals(other.mOriginPoint))
+			return false;
+		if (mPointsValue != other.mPointsValue)
+			return false;
+		if (mSpawnPoint == null) {
+			if (other.mSpawnPoint != null)
+				return false;
+		} else if (!mSpawnPoint.equals(other.mSpawnPoint))
+			return false;
+		if (mWaypointQueue == null) {
+			if (other.mWaypointQueue != null)
+				return false;
+		} else if (!mWaypointQueue.equals(other.mWaypointQueue))
+			return false;
+		return true;
+	}
+
 }
