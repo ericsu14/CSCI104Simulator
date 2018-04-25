@@ -4,6 +4,7 @@ import engine.GameEngine;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
+import entities.player.Player;
 import javafx.geometry.Point2D;
 
 public class PlayerProjectile extends Projectile 
@@ -16,6 +17,8 @@ public class PlayerProjectile extends Projectile
 		super(owner, controller);
 		mRapidFire = isRapidFire;
 		this.mSpriteScale = 20.0;
+		this.setX(getX() + 5.0);
+		
 		/* TODO: Set the bullet's traits depending if it is fired in rapid fire
 		 * mode or not */
 		if (mRapidFire)
@@ -25,7 +28,7 @@ public class PlayerProjectile extends Projectile
 		
 		else
 		{
-			this.mInitialMovementSpeed = 7.0;
+			this.mInitialMovementSpeed = 10.0;
 			this.mMovementSpeed = mInitialMovementSpeed;
 			this.setSprite(controller.mPlayerBulletSprite);
 			setRotate (90.0);
@@ -44,8 +47,6 @@ public class PlayerProjectile extends Projectile
 					&& e.getState() == EntityState.kActive
 					&& e.intersects(this.getBoundsInLocal()))
 			{
-				
-				// System.out.println("Collision!");
 				kill(e, true);
 				/* TODO: Update the player's score */
 				break;
@@ -55,11 +56,19 @@ public class PlayerProjectile extends Projectile
 		/* Checks if this projectile has left the screen */
 		if (this.getY() < 0.0)
 		{
-			this.setState(EntityState.kDead);
+			die();
 		}
 		
-		/* TODO: If the projectile's state is dead, then update the player's
-		 * ammo pool */
+	}
+	
+	/** Overridden die method that updates the player's ammo pool once this entity is
+	 *  despawned */
+	@Override
+	public void die()
+	{
+		super.die();
+		Player p = (Player) mOwner;
+		p.incrementPlayerAmmo();
 	}
 
 }

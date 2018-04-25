@@ -2,6 +2,7 @@ package entities.player;
 import engine.GameEngine;
 import entities.Entity;
 import entities.EntityType;
+import entities.projectiles.PlayerProjectile;
 import javafx.geometry.Point2D;
 
 public class Player extends Entity
@@ -10,6 +11,10 @@ public class Player extends Entity
 	private MoveDirection mCurrentDirection;
 	/* The player's own rotation angle */
 	private double mPlayerRotation;
+	/* The player's current ammo */
+	private int mCurrentAmmo;
+	/* The player's max ammo pool */
+	private int mMaxAmmoPool;
 	
 	/** Constructs a new playership
 	 * 		@param x - x Position where the player would spawn
@@ -24,6 +29,8 @@ public class Player extends Entity
 		mType = EntityType.kPlayer;
 		mCurrentDirection = MoveDirection.kNone;
 		mPlayerRotation = this.getRotate();
+		mMaxAmmoPool = 2;
+		mCurrentAmmo = mMaxAmmoPool;
 		setSprite (controller.mPlayerShipSprite);
 	}
 
@@ -85,6 +92,44 @@ public class Player extends Entity
 	public MoveDirection getMoveDirection()
 	{
 		return mCurrentDirection;
+	}
+	
+	/** Fires a projectile at the player's current position */
+	public void shoot()
+	{
+		if (mCurrentAmmo > 0)
+		{
+			mController.addChild(new PlayerProjectile (this, mController, false));
+			--mCurrentAmmo;
+		}
+	}
+	
+	/** Increments the player's current ammo (capped at the player's max
+	 *  capacity) */
+	public void incrementPlayerAmmo ()
+	{
+		if (mCurrentAmmo < mMaxAmmoPool)
+		{
+			++mCurrentAmmo;
+		}
+	}
+	
+	/** Sets the player's max ammo pool to a new value*/
+	public void setMaxAmmoPool (int ammo)
+	{
+		mMaxAmmoPool = ammo;
+	}
+	
+	/** @return the player's max ammo pool count */
+	public int getMaxAmmoPool()
+	{
+		return mMaxAmmoPool;
+	}
+	
+	/** @return the player's current ammo */
+	public int getPlayerAmmo ()
+	{
+		return mCurrentAmmo;
 	}
 
 	@Override

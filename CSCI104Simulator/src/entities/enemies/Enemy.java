@@ -10,7 +10,6 @@ import engine.GameEngine;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
-import entities.projectiles.Projectile;
 import javafx.geometry.Point2D;
 import view.Launcher;
 
@@ -28,6 +27,14 @@ public abstract class Enemy extends Entity
 	protected Point2D mSpawnPoint;
 	/* A queue of waypoints where the enemy would be instructed to move to */
 	protected Queue <Point2D> mWaypointQueue;
+	/* The current phase that the enemy is in */
+	protected EnemyPhase mPhase;
+	/* The number of waypoints in this enemy's spawning phase */
+	protected int mNumSpawnWaypoints;
+	/* The number of waypoints in this enemy's attack phase */
+	protected int mNumAttackWaypoints;
+	/* The number of waypoints in this enemy's retreat phase */
+	protected int mNumRetreatWaypoints;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -65,7 +72,8 @@ public abstract class Enemy extends Entity
 		this.setY(mSpawnPoint.getY());
 		
 		mWaypointQueue.add(mOriginPoint);
-		
+		mPhase = EnemyPhase.kSpawning;
+		mNumSpawnWaypoints = mWaypointQueue.size();
 	}
 
 	/** A fairly basic update method that allows this entity to compute move instructions. */
@@ -96,17 +104,100 @@ public abstract class Enemy extends Entity
 					{
 						
 					}
-					
 				}
 			}
 		}
 		
 	}
 	
+	/** Overridden die method for the enemy */
+	@Override
+	public void die ()
+	{
+		super.die();
+		
+		/* Adds this enemy's score to the player's total score */
+		mController.setPlayerScore(mController.getPlayerScore() + this.getScore());
+	}
+	
+	/** Overridden stopWaypointAnimation method for the enemy */
+	@Override
+	protected void stopWaypointAnimation ()
+	{
+		super.stopWaypointAnimation();
+		
+		/* Changes the entity's current phase based on its last phase */
+		switch (mPhase)
+		{
+			case kSpawning:
+			{
+				/* First check if the enemy has reached it's spawn location */
+				if (mNumSpawnWaypoints > 1)
+				{
+					--mNumSpawnWaypoints;
+				}
+				else
+				{
+					mPhase = EnemyPhase.kIdle;
+					mNumSpawnWaypoints = 0;
+				}
+				break;
+			}
+			case kAttack:
+			{
+				if (mNumAttackWaypoints > 1)
+				{
+					--mNumAttackWaypoints;
+				}
+				else
+				{
+					mPhase = EnemyPhase.kRetreat;
+					mNumAttackWaypoints = 0;
+				}
+				break;
+			}
+			case kRetreat:
+			{
+				if (mNumRetreatWaypoints > 1)
+				{
+					--mNumRetreatWaypoints;
+				}
+				else
+				{
+					mPhase = EnemyPhase.kIdle;
+					mNumRetreatWaypoints = 0;
+				}
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
+	
 	/** Adds a new point to this enemy's waypoint queue */
 	public void addWaypoint (Point2D waypoint)
 	{
 		mWaypointQueue.add(waypoint);
+	}
+	
+	/** @return this enemy's score value */
+	public long getScore()
+	{
+		return mPointsValue;
+	}
+	
+	/** @return this enemy's phase */
+	public EnemyPhase getPhase ()
+	{
+		return mPhase;
+	}
+	
+	/** @return the enemy's assigned attack group */
+	public int getAttackGroup ()
+	{
+		return mGroup;
 	}
 	
 	/** Calculates the enemy's attack vector. Must be overridden by other classes */

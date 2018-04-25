@@ -2,11 +2,14 @@ package engine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
 import entities.enemies.Bohrbug;
+import entities.enemies.Enemy;
+import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
 import entities.enemies.Heisenbug;
 import entities.enemies.Mandelbug;
@@ -56,6 +59,10 @@ public class GameEngine
 	private int mMaxHeight;
 	/* Defines the maximum width of the playing field */
 	private int mMaxWidth;
+	/* The total number of enemy groupings in this current level */
+	private int mMaxGroups;
+	/* The random number generator used for calculating groups */
+	private Random mRand;
 	/* Animation timer used for the game loop */
 	private AnimationTimer mGameLoop;
 	/* Flag that ensures that the player ship is only spawned once throughout the entire lifespan of this application */
@@ -77,6 +84,7 @@ public class GameEngine
 		setPlayerScore(0);
 		mGameEntities = new ArrayList <Entity>();
 		mDeadEntities = new ArrayList <Entity>();
+		mRand = new Random ();
 		
 		/* Sets up the game's borders */
 		mMaxWidth = (int)Launcher.mWidth;
@@ -92,15 +100,45 @@ public class GameEngine
 			private int mMaxSpawnInterval = 15;
 			private Entity mFocusedEnemy = null;
 			
+			/* Number of attack groups that could attack at a time */
+			private int mNumAttackGroups = 3;		
+			/* Stores the enemy groups currently attacking */
+			private ArrayList <Integer> mAttackGroups = new ArrayList <Integer>();
+			
 			@Override
 			public void handle(long now) 
 			{	
 				update (now);
 				checkDeadEntities();
+				
+				/* Updates the UI component */
+				mGameView.refreshUI();
 			}
 			
+			/** The main game loop */
 			public void update (long now)
 			{
+				/* Randomly selects groups of enemies to attack the player once they
+				 * are ready */
+				if (canAttack())
+				{
+					mAttackGroups.clear();
+					for (int i = 0; i < mNumAttackGroups; ++i)
+					{
+						mAttackGroups.add(mRand.nextInt(mMaxGroups));
+						System.out.println(mAttackGroups.get(i));
+					}
+					
+					for (int i = 0; i < mAttackGroups.size(); ++i)
+					{
+						ArrayList <Enemy> currentGroup = getEnemies (mAttackGroups.get(i));
+						for (Enemy e : currentGroup)
+						{
+							e.createAttackVectors();
+						}
+					}
+				}
+				
 				/* Updates each individual entity */
 				for (Entity e : mGameEntities)
 				{
@@ -129,7 +167,7 @@ public class GameEngine
 							mSpawnIntervals = 0;
 						}
 					}
-					/* If this entity is NOT a "just spawned entity" (or dead), continue to update it as normal */
+					/* If this entity is NOT a "just spawned entity" (and still alive), continue to update it as normal */
 					else if (e.getState() == EntityState.kActive)
 					{
 						e.update();
@@ -137,6 +175,8 @@ public class GameEngine
 				}
 			}
 			
+			
+			/** Removes all of the dead entities from the game */
 			public void checkDeadEntities ()
 			{
 				for (Entity e : mGameEntities)
@@ -162,6 +202,44 @@ public class GameEngine
 						// Does nothing (for now)
 					}
 				}
+			}
+			
+			/** Checks if all enemies in the game is ready to attack */
+			private boolean canAttack ()
+			{
+				boolean result = true;
+				/* Enemies can attack once all of their phases are currently
+				 * in the idle phase */
+				for (Entity e : mGameEntities)
+				{
+					if (e.getType() == EntityType.kEnemy)
+					{
+						Enemy enemy = (Enemy) e;
+						result &= (enemy.getPhase() == EnemyPhase.kIdle);
+					}
+				}
+				return result;
+			}
+			
+			/** @return the set of enemies who are in the desginated attack group */
+			public ArrayList <Enemy> getEnemies (int attackGroup)
+			{
+				ArrayList <Enemy> found = new ArrayList <Enemy>();
+				
+				for (Entity e : mGameEntities)
+				{
+					if (e.getType() == EntityType.kEnemy && e.getState() == EntityState.kActive)
+					{
+						Enemy enemy = (Enemy) e;
+						
+						if (enemy.getAttackGroup() == attackGroup)
+						{
+							found.add(enemy);
+						}
+					}
+				}
+				
+				return found;
 			}
 		};
 	}
@@ -195,7 +273,7 @@ public class GameEngine
 		int currentGroupLimit = 1;
 		
 		/* Width and height of the container */
-		int armyWidth = 0, armyHeight = 0;
+		int armyWidth = 0;
 		/* Vector of strings used to copy the contents of the text file */
 		ArrayList <String> contents = new ArrayList <String>();
 		/* A vector of enemies would be spawned in later */
@@ -222,7 +300,6 @@ public class GameEngine
 					}
 				}
 				contents.add(currentLine);
-				armyHeight += 1;
 			}
 			br.close();
 		}
@@ -275,7 +352,6 @@ public class GameEngine
 						break;
 				}
 				++currentGroupCount;
-				
 				if (currentGroupCount >= currentGroupLimit)
 				{
 					++currentGroup;
@@ -283,12 +359,14 @@ public class GameEngine
 				}
 				
 				currentX += xSpacing;
-				++currentGroupLimit;
 			}
+			++currentGroupLimit;
 			currentX = this.mLeftBorder + xSpacing;
 			currentY += ySpacing;
 		}
+		
 		addChildren (enemyContainer);
+		mMaxGroups = currentGroup + 1;
 	}
 	
 	/** Adds a new entity into the game.

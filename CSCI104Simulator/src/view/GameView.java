@@ -107,7 +107,7 @@ public class GameView
 				}
 				if (e.getCode() == KeyCode.SPACE)
 				{
-					mGameEngine.addChild(new PlayerProjectile (mGameEngine.getPlayer(), this.getEngine(), false));
+					mGameEngine.getPlayer().shoot();
 				}
 			});
 			
@@ -164,5 +164,11 @@ public class GameView
 	public void removeChildren (ArrayList<Entity> deadEntities)
 	{
 		mGameWorld.getChildren().removeAll(FXCollections.observableArrayList(deadEntities));
+	}
+	
+	/** Refreshes the UI to display present time stats */
+	public void refreshUI ()
+	{
+		this.mGameUI.update();
 	}
 }

@@ -212,10 +212,7 @@ public abstract class Entity extends ImageView
 					 * stop moving. */
 					if (inRange ((int)getX(), (int)destination.getX() - mOffset, (int)destination.getX() + mOffset) && inRange((int)getY(), (int)destination.getY() - mOffset, (int)destination.getY() + mOffset))
 					{
-						this.stop();
-						setRotate (mInitialOrientation);
-						mMovementSpeed = mInitialMovementSpeed;
-						mWaypointFlag = false;
+						stopWaypointAnimation();
 					}
 				}
 			};
@@ -297,6 +294,16 @@ public abstract class Entity extends ImageView
 	protected boolean inRange(int target, int min, int max)
 	{
 		return (min <= target && target <= max);
+	}
+	
+	/** Stops the waypoint animation. Can be overridden by
+	 *  other classes to have different effects. */
+	protected void stopWaypointAnimation ()
+	{
+		mWaypointAnimation.stop();
+		setRotate (mInitialOrientation);
+		mMovementSpeed = mInitialMovementSpeed;
+		mWaypointFlag = false;
 	}
 
 	@Override
