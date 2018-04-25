@@ -11,13 +11,13 @@ public class TestEnemy extends Enemy
 		super (initPosition, origin, group, controller);
 		this.mInitialMovementSpeed = 4.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
-		this.mSpriteScale = 100.0;
+		this.mSpriteScale = 20.0;
 		this.mPointsValue = 1000;
 		this.mMaxAmmoPool = 10;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
 		this.mOffset = (int)(mSpriteScale / 10);
-		this.setSprite(controller.mCote);
+		this.setSprite(controller.mTestEnemySprite);
 		setRotate (-90.0);
 	}
 

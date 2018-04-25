@@ -9,8 +9,8 @@ public class TestProjectile extends Projectile
 	public TestProjectile(Entity owner, GameEngine controller) 
 	{
 		super(owner, controller);
-		this.mSpriteScale = 30.0;
-		this.mMovementSpeed = 10.0;
+		this.mSpriteScale = 10.0;
+		this.mMovementSpeed = 5.0;
 		this.setSprite(mController.mBook);
 		
 		this.mMaxTurnRadius = -45.0;
