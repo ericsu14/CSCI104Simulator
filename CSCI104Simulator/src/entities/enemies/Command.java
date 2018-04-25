@@ -74,10 +74,12 @@ public class Command
 				if (mOwner.getEntryPosition() == EnemyPosition.kLeft)
 				{
 					xOffset = -(mRand.nextInt(mOffsetThreshold) + 30.0);
+					mOwner.setRotate(315);
 				}
 				else
 				{
 					xOffset = (mRand.nextInt(mOffsetThreshold) + 30.0);
+					mOwner.setRotate(-135);
 				}
 				yOffset = -200.0;
 				
