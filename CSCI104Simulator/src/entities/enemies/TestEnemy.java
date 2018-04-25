@@ -29,13 +29,12 @@ public class TestEnemy extends Enemy
 		Player p = mController.getPlayer();
 		
 		/* Creates the attack vector based on the player's position */
-		this.addWaypoint(new Point2D (p.getX() - 10.0, p.getY() - 200.0));
-		this.addWaypoint(new Point2D (p.getX() - 150.0, p.getY() - 200.0));
+		this.addCommand(CommandType.kPrepareAttack);
+		this.addCommand(CommandType.kAttack);
+		this.addCommand(CommandType.kPrepareAttack);
+		this.addCommand(CommandType.kAttack);
 		/* Creates the retreat vector */
-		this.addWaypoint(this.mOriginPoint);
+		this.addCommand(CommandType.kRetreat);
 		
-		this.mNumAttackWaypoints = 2;
-		this.mNumRetreatWaypoints = 1;
-		this.setRotate(90.0);
 	}
 }

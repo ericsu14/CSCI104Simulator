@@ -26,7 +26,7 @@ public abstract class Enemy extends Entity
 	/* The initial spawn point of the enemy */
 	protected Point2D mSpawnPoint;
 	/* A queue of waypoints where the enemy would be instructed to move to */
-	protected Queue <Point2D> mWaypointQueue;
+	protected Queue <Command> mCommandQueue;
 	/* The current phase that the enemy is in */
 	protected EnemyPhase mPhase;
 	/* The number of waypoints in this enemy's spawning phase */
@@ -50,7 +50,7 @@ public abstract class Enemy extends Entity
 		mEntryPosition = initPosition;
 		mOriginPoint = origin;
 		mGroup = group;
-		mWaypointQueue = new LinkedList <Point2D>();
+		mCommandQueue = new LinkedList <Command>();
 		
 		/* Based on the passed initial position, calculate the initial spawn point
 		 * of the enemy based on the passed position */
@@ -60,20 +60,20 @@ public abstract class Enemy extends Entity
 		if (initPosition == EnemyPosition.kLeft)
 		{
 			mSpawnPoint = new Point2D (screenCenterWidth - offset, -100.0);
-			mWaypointQueue.add(new Point2D (mSpawnPoint.getX() - (offset / 4.0), Launcher.mHeight / 2.0));
+			mCommandQueue.add(new Command (CommandType.kMove, this, new Point2D (mSpawnPoint.getX() - (offset / 4.0), Launcher.mHeight / 2.0)));
 		}
 		else
 		{
 			mSpawnPoint = new Point2D (screenCenterWidth + offset, -100.0);
-			mWaypointQueue.add(new Point2D (mSpawnPoint.getX() - (offset / 4.0), Launcher.mHeight / 2.0));
+			mCommandQueue.add(new Command (CommandType.kMove, this, new Point2D (mSpawnPoint.getX() - (offset / 4.0), Launcher.mHeight / 2.0)));
 		}
 		
 		this.setX(mSpawnPoint.getX());
 		this.setY(mSpawnPoint.getY());
 		
-		mWaypointQueue.add(mOriginPoint);
+		mCommandQueue.add(new Command (CommandType.kMove, this, mOriginPoint));
 		mPhase = EnemyPhase.kSpawning;
-		mNumSpawnWaypoints = mWaypointQueue.size();
+		mNumSpawnWaypoints = mCommandQueue.size();
 	}
 
 	/** A fairly basic update method that allows this entity to compute move instructions. */
@@ -82,11 +82,11 @@ public abstract class Enemy extends Entity
 	{
 		/* Checks if there is anything in the waypoint queue.
 		 * If so, start moving to the location. */
-		if (!mWaypointQueue.isEmpty())
+		if (!mCommandQueue.isEmpty())
 		{
 			if (!mWaypointFlag)
 			{
-				this.moveEntity(mWaypointQueue.remove());
+				this.moveEntity(mCommandQueue.remove().execute());
 			}
 		}
 		
@@ -176,11 +176,28 @@ public abstract class Enemy extends Entity
 		}
 	}
 	
-	/** Adds a new point to this enemy's waypoint queue */
+	/** Adds a new move command to the enemy's instruction queue */
 	public void addWaypoint (Point2D waypoint)
 	{
-		mWaypointQueue.add(waypoint);
+		mCommandQueue.add(new Command (CommandType.kMove, this, waypoint));
 	}
+	
+	/** Adds in a new command with a specified type (other than kMove) */
+	public void addCommand (CommandType type)
+	{
+		mCommandQueue.add(new Command (type, this));
+		
+		if (type == CommandType.kAttack || type == CommandType.kPrepareAttack)
+		{
+			++mNumAttackWaypoints;
+		}
+		
+		if (type == CommandType.kRetreat)
+		{
+			++mNumRetreatWaypoints;
+		}
+	}
+	
 	
 	/** @return this enemy's score value */
 	public long getScore()
@@ -200,6 +217,24 @@ public abstract class Enemy extends Entity
 		return mGroup;
 	}
 	
+	/** @return the enemy's spawn point */
+	public Point2D getSpawnPoint()
+	{
+		return mOriginPoint;
+	}
+	
+	/** @return the enemy's position of the game world */
+	public EnemyPosition getEntryPosition ()
+	{
+		return mEntryPosition;
+	}
+	
+	/** @return a pointer to the main engine */
+	public GameEngine getController ()
+	{
+		return mController;
+	}
+	
 	/** Calculates the enemy's attack vector. Must be overridden by other classes */
 	public abstract void createAttackVectors();
 
@@ -212,7 +247,7 @@ public abstract class Enemy extends Entity
 		result = prime * result + ((mOriginPoint == null) ? 0 : mOriginPoint.hashCode());
 		result = prime * result + (int) (mPointsValue ^ (mPointsValue >>> 32));
 		result = prime * result + ((mSpawnPoint == null) ? 0 : mSpawnPoint.hashCode());
-		result = prime * result + ((mWaypointQueue == null) ? 0 : mWaypointQueue.hashCode());
+		result = prime * result + ((mCommandQueue == null) ? 0 : mCommandQueue.hashCode());
 		return result;
 	}
 
@@ -241,10 +276,10 @@ public abstract class Enemy extends Entity
 				return false;
 		} else if (!mSpawnPoint.equals(other.mSpawnPoint))
 			return false;
-		if (mWaypointQueue == null) {
-			if (other.mWaypointQueue != null)
+		if (mCommandQueue == null) {
+			if (other.mCommandQueue != null)
 				return false;
-		} else if (!mWaypointQueue.equals(other.mWaypointQueue))
+		} else if (!mCommandQueue.equals(other.mCommandQueue))
 			return false;
 		return true;
 	}
