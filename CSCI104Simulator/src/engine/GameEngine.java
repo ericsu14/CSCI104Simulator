@@ -2,6 +2,8 @@ package engine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import entities.Entity;
@@ -36,6 +38,12 @@ public class GameEngine
 	public ImageView mMandelBugSprite;
 	/* Stores the image file for the player bullet */
 	public ImageView mPlayerBulletSprite;
+	/* Stores the image file for the linked list projectile */
+	public ImageView mLinkedList;
+	/* The second in command dark lord aCote */
+	public ImageView mCote;
+	/* The book that the dark lord aCote loves more than life itself */
+	public ImageView mBook;
 	
 	/* The current level the player is in */
 	private int mCurrentLevel;
@@ -43,6 +51,8 @@ public class GameEngine
 	private ArrayList <Entity> mGameEntities;
 	/* Vector of dead game entities */
 	private ArrayList <Entity> mDeadEntities;
+	/* A queue of entities that are going to be added into the next game tick */
+	private Queue <Entity> mQueuedEntities;
 	/* The player's current score */
 	private long mPlayerScore;
 	/* The game's player character */
@@ -78,12 +88,16 @@ public class GameEngine
 		mHeisenbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/heisenbug.png")));
 		mMandelBugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/mandelBug.png")));
 		mPlayerBulletSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerBullet.png")));
+		mLinkedList = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/linkedList.png")));
+		mCote = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/cote.png")));
+		mBook = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/theBook.jpeg")));
 		
 		/* Initializes member variables */
 		setCurrentLevel(1);
 		setPlayerScore(0);
 		mGameEntities = new ArrayList <Entity>();
 		mDeadEntities = new ArrayList <Entity>();
+		mQueuedEntities = new LinkedList <Entity> ();
 		mRand = new Random ();
 		
 		/* Sets up the game's borders */
@@ -102,8 +116,6 @@ public class GameEngine
 			
 			/* Number of attack groups that could attack at a time */
 			private int mNumAttackGroups = 3;		
-			/* Stores the enemy groups currently attacking */
-			private ArrayList <Integer> mAttackGroups = new ArrayList <Integer>();
 			
 			@Override
 			public void handle(long now) 
@@ -113,6 +125,12 @@ public class GameEngine
 				
 				/* Updates the UI component */
 				mGameView.refreshUI();
+				
+				/* Adds all queued entities into the game */
+				if (!mQueuedEntities.isEmpty())
+				{
+					addChild (mQueuedEntities.remove());
+				}
 			}
 			
 			/** The main game loop */
@@ -122,21 +140,23 @@ public class GameEngine
 				 * are ready */
 				if (canAttack())
 				{
-					mAttackGroups.clear();
 					for (int i = 0; i < mNumAttackGroups; ++i)
 					{
-						mAttackGroups.add(mRand.nextInt(mMaxGroups));
-						System.out.println(mAttackGroups.get(i));
-					}
-					
-					for (int i = 0; i < mAttackGroups.size(); ++i)
-					{
-						ArrayList <Enemy> currentGroup = getEnemies (mAttackGroups.get(i));
-						for (Enemy e : currentGroup)
+						int currentGroup;
+						ArrayList <Enemy> currentEnemies;
+						
+						do
+						{
+							currentGroup = mRand.nextInt(mMaxGroups);
+							currentEnemies = this.getEnemies(currentGroup);
+						} while (currentEnemies.isEmpty());
+						
+						for (Enemy e : currentEnemies)
 						{
 							e.createAttackVectors();
 						}
 					}
+					
 				}
 				
 				/* Updates each individual entity */
@@ -256,6 +276,12 @@ public class GameEngine
 		}
 		/* Starts the game loop */
 		mGameLoop.start();
+	}
+	
+	/** Queues an entity into the game, which would be added before the next tick starts */
+	public void queueEntity (Entity e)
+	{
+		mQueuedEntities.add(e);
 	}
 	
 	/** Reads a level data file from a text file and spawns in

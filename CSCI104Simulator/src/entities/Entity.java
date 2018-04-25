@@ -34,6 +34,9 @@ public abstract class Entity extends ImageView
 	protected EntityState mState;
 	/* The entity's type */
 	protected EntityType mType;
+	/* Used to approximate the destination point by constructing a box around that point with the
+	 * given offset. Once the entity reaches that area, it would then stop. */
+	protected int mOffset = 2;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -132,9 +135,6 @@ public abstract class Entity extends ImageView
 				private double mLastTheta;
 				/* The number of frames before the rotation angle is recalculated */
 				private int mFramesTillSetup = 0;
-				/* Used to approximate the destination point by constructing a box around that point with the
-				 * given offset. Once the entity reaches that area, it would then stop. */
-				private int mOffset = 2;
 				/* True if the first calculated theta is negative */
 				private boolean mIsNegative = false;
 				/* Used to conduct run-once animations */
@@ -248,6 +248,12 @@ public abstract class Entity extends ImageView
 		mState = state;
 	}
 	
+	/** Sets this entity's movement offset to a new value */
+	public void setOffset (int newOffset)
+	{
+		mOffset = newOffset;
+	}
+	
 	/** @return the entity's type */
 	public EntityType getType ()
 	{
@@ -287,6 +293,11 @@ public abstract class Entity extends ImageView
 		victim.die();
 	}
 	
+	public double getSpriteScale ()
+	{
+		return mSpriteScale;
+	}
+	
 	/** @return True if target is between min and max
 	 * 		@param target - Value being compared
 	 * 		@param min - Min. value of selected range
@@ -301,7 +312,6 @@ public abstract class Entity extends ImageView
 	protected void stopWaypointAnimation ()
 	{
 		mWaypointAnimation.stop();
-		setRotate (mInitialOrientation);
 		mMovementSpeed = mInitialMovementSpeed;
 		mWaypointFlag = false;
 	}

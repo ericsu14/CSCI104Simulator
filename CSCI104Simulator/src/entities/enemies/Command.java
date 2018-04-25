@@ -16,7 +16,7 @@ public class Command
 	 * where the enemy would move to */
 	private Point2D mWaypoint;
 	/* Defines the offset threshold. */
-	private int mOffsetThreshold = 150;
+	private int mOffsetThreshold = 100;
 	/* A random generator that randomly computes the offset to make things more intresting */
 	private static Random mRand = new Random();
 	
@@ -61,6 +61,7 @@ public class Command
 				
 				yOffset = -100.0;
 				
+				mOwner.setOffset(10);
 				Player p = mOwner.getController().getPlayer();
 				mWaypoint = new Point2D (p.getX() + xOffset, p.getY() + yOffset);
 				break;
@@ -81,13 +82,15 @@ public class Command
 					xOffset = (mRand.nextInt(mOffsetThreshold) + 30.0);
 					mOwner.setRotate(-135);
 				}
-				yOffset = -200.0;
+				yOffset = -50.0;
 				
+				mOwner.setOffset((int)(mOwner.getSpriteScale()));
 				mWaypoint = new Point2D (mOwner.getX() + xOffset, mOwner.getY() + yOffset);
 				break;
 			}
 			case kRetreat:
 			{
+				mOwner.setOffset((int)mOwner.getSpriteScale() / 10);
 				mWaypoint = mOwner.getSpawnPoint();
 				break;
 			}

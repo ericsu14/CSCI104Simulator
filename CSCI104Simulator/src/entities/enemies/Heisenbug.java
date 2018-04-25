@@ -21,5 +21,10 @@ public class Heisenbug extends Enemy {
 	{
 		
 	}
-
+	
+	@Override
+	public void fire()
+	{
+		
+	}
 }

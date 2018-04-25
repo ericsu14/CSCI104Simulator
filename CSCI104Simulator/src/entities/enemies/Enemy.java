@@ -35,6 +35,15 @@ public abstract class Enemy extends Entity
 	protected int mNumAttackWaypoints;
 	/* The number of waypoints in this enemy's retreat phase */
 	protected int mNumRetreatWaypoints;
+	/* The total ammo pool this enemy has */
+	protected int mCurrentAmmo;
+	/* The max ammo pool this enemy has */
+	protected int mMaxAmmoPool;
+	/* Controls the enemy's rate of fire in shots per frame */
+	protected int mShotsPerFrame = 10;
+	/* Cooldown timer for the enemy's cannons */
+	protected int mCooldown;
+	
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -50,6 +59,7 @@ public abstract class Enemy extends Entity
 		mEntryPosition = initPosition;
 		mOriginPoint = origin;
 		mGroup = group;
+		mCooldown = mShotsPerFrame;
 		mCommandQueue = new LinkedList <Command>();
 		
 		/* Based on the passed initial position, calculate the initial spawn point
@@ -108,6 +118,17 @@ public abstract class Enemy extends Entity
 			}
 		}
 		
+		/* Starts spawning projectiles when this enemy is attacking */
+		if (mPhase == EnemyPhase.kAttack)
+		{
+			if (mCooldown <= 0)
+			{
+				fire();
+				mCooldown = mShotsPerFrame;
+			}
+			--mCooldown;
+		}
+		
 	}
 	
 	/** Overridden die method for the enemy */
@@ -140,6 +161,7 @@ public abstract class Enemy extends Entity
 				{
 					mPhase = EnemyPhase.kIdle;
 					mNumSpawnWaypoints = 0;
+					mCurrentAmmo = mMaxAmmoPool;
 				}
 				break;
 			}
@@ -174,6 +196,12 @@ public abstract class Enemy extends Entity
 				break;
 			}
 		}
+		
+		/* Resets enemy orientation if its new state is Idle */
+		if (mPhase == EnemyPhase.kIdle)
+		{
+			setRotate (mInitialOrientation);
+		}
 	}
 	
 	/** Adds a new move command to the enemy's instruction queue */
@@ -190,6 +218,7 @@ public abstract class Enemy extends Entity
 		if (type == CommandType.kAttack || type == CommandType.kPrepareAttack)
 		{
 			++mNumAttackWaypoints;
+			mCooldown = this.mShotsPerFrame;
 		}
 		
 		if (type == CommandType.kRetreat)
@@ -234,6 +263,15 @@ public abstract class Enemy extends Entity
 	{
 		return mController;
 	}
+	
+	/** Sets this enemy's projectile cooldown timer to a new value */
+	public void setCurrentCooldown (int cooldown)
+	{
+		mCooldown = cooldown;
+	}
+	
+	/** Spawns an enemy projectile */
+	public abstract void fire();
 	
 	/** Calculates the enemy's attack vector. Must be overridden by other classes */
 	public abstract void createAttackVectors();

@@ -22,5 +22,10 @@ public class Bohrbug extends Enemy
 	{
 		
 	}
-
+	
+	@Override
+	public void fire()
+	{
+		
+	}
 }

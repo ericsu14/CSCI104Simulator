@@ -22,5 +22,11 @@ public class Mandelbug extends Enemy
 	{
 		
 	}
-
+	
+	@Override
+	public void fire()
+	{
+		
+	}
+	
 }
