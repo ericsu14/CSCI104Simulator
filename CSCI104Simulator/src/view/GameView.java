@@ -73,6 +73,12 @@ public class GameView
 		return mScene;
 	}
 	
+	/** @return the starfield scene */
+	public StarField getStarField()
+	{
+		return mStarField;
+	}
+	
 	/** Plays the background animations */
 	public void playAnimations()
 	{

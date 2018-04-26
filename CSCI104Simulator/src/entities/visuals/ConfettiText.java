@@ -37,6 +37,10 @@ public class ConfettiText extends Text
 	private MoveTo mStartingCoordinates;
 	/* Checks if the text has completed its expanding animation */
 	private boolean mCompletedExpandAnim;
+	/* Determines if this text is either part of a fireworks animation or explosion */
+	private boolean mIsFireworks;
+	/* Duration of fireworks expand animation in seconds */
+	private int mExpandDuration;
 	
 	/* Randomly generated offset values */
 	private double mAngleOffset;
@@ -69,6 +73,175 @@ public class ConfettiText extends Text
 		
 		/* Confetti should take longer to despawn */
 		mFadeRate = 0.001;
+	}
+
+	/** Constructor used for shooting up the text in a fireworks like manner
+	 *  before turning into confetti.
+	 *  	@param x - X pos of the fireworks explosion point
+	 *  	@param y - Y pos of the fireworks explosion point
+	 *  	@param destX - X pos of the position where the letter should expand to before falling
+	 *  	@param destY - Y pos of the position where the letter should expand to before falling
+	 *  	@param text - The String of the text object
+	 *  	@param color - The initial color of the text object
+	 *  	@param isFireworks - Determines if this entity is part of a firework animation or an explosion */
+	public ConfettiText (int x, int y, int destX, int destY, String text, Color color, boolean isFirework)
+	{
+		super (x, y, text);
+		
+		mOriginX = x;
+		mOriginY = y;
+		mColor = color;
+		mDestX = destX;
+		mDestY = destY;
+		mIsFireworks = isFirework;
+		
+		/* If this text is part of a fireworks animation, shoot this text up from the
+		 * bottom of the screen */
+		if (mIsFireworks)
+		{
+			mStartingCoordinates = new MoveTo (x, y + 500.0);
+			mExpandDuration = 3;
+			mFadeRate = 0.01;
+		}
+		/* Otherwise, explode in place */
+		else
+		{
+			mStartingCoordinates = new MoveTo (x, y);
+			mExpandDuration = 1;
+			mFadeRate = 0.02;
+		}
+		mCompletedExpandAnim = false;
+		
+		this.setFont(new Font ("Consolas", 10));
+		this.setFill(mColor);
+		
+		mGravity = GenerateBetweenRange (0.1, 0.5);
+		mAngleOffset = GenerateBetweenRange (-0.2, 0.2);
+		mRotationOffset = rand.nextInt(2) + 1;
+		
+		expand();
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(mAngleOffset);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((mColor == null) ? 0 : mColor.hashCode());
+		result = prime * result + (mCompletedExpandAnim ? 1231 : 1237);
+		result = prime * result + mDestX;
+		result = prime * result + mDestY;
+		result = prime * result + mExpandDuration;
+		temp = Double.doubleToLongBits(mFadeRate);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(mGravity);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (mIsFireworks ? 1231 : 1237);
+		result = prime * result + mOriginX;
+		result = prime * result + mOriginY;
+		result = prime * result + mRotationOffset;
+		result = prime * result + ((mStartingCoordinates == null) ? 0 : mStartingCoordinates.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ConfettiText other = (ConfettiText) obj;
+		if (Double.doubleToLongBits(mAngleOffset) != Double.doubleToLongBits(other.mAngleOffset))
+			return false;
+		if (mColor == null) {
+			if (other.mColor != null)
+				return false;
+		} else if (!mColor.equals(other.mColor))
+			return false;
+		if (mCompletedExpandAnim != other.mCompletedExpandAnim)
+			return false;
+		if (mDestX != other.mDestX)
+			return false;
+		if (mDestY != other.mDestY)
+			return false;
+		if (mExpandDuration != other.mExpandDuration)
+			return false;
+		if (Double.doubleToLongBits(mFadeRate) != Double.doubleToLongBits(other.mFadeRate))
+			return false;
+		if (Double.doubleToLongBits(mGravity) != Double.doubleToLongBits(other.mGravity))
+			return false;
+		if (mIsFireworks != other.mIsFireworks)
+			return false;
+		if (mOriginX != other.mOriginX)
+			return false;
+		if (mOriginY != other.mOriginY)
+			return false;
+		if (mRotationOffset != other.mRotationOffset)
+			return false;
+		if (mStartingCoordinates == null) {
+			if (other.mStartingCoordinates != null)
+				return false;
+		} else if (!mStartingCoordinates.equals(other.mStartingCoordinates))
+			return false;
+		return true;
+	}
+
+	/** Shoots up the text in a fireworks like manner */
+	private void expand()
+	{
+		/* Constructs a line to bring the object to it's desginated location
+		 * in a fireworks missle like manner */
+		LineTo shootUpWayPoint = new LineTo (mOriginX, mOriginY);
+		/* Constructs a line from the starting position to the target */
+		LineTo expandWaypoint = new LineTo (mDestX, mDestY);
+		
+		/* Creates a new path connecting the assets */
+		Path expandPath = new Path();
+		expandPath.getElements().addAll (mStartingCoordinates, shootUpWayPoint, expandWaypoint);
+		
+		/* Creates a new path transition */
+		PathTransition expandAnimation = new PathTransition ();
+		
+		/* Set up its assets */
+		expandAnimation.setAutoReverse(false);
+		expandAnimation.setDuration(Duration.seconds(mExpandDuration));
+		expandAnimation.setCycleCount(0);
+		expandAnimation.setNode(this);
+		expandAnimation.setPath(expandPath);
+		expandAnimation.setOnFinished(e -> 
+		{
+			mCompletedExpandAnim = true;
+		});
+		expandAnimation.play();
+	}
+	
+	/** Starts playing the confetti falling down animation
+	 *  once its expand animation is completed. */
+	public void update ()
+	{
+		if (mCompletedExpandAnim)
+		{
+			/* Starts falling down based on gravity */
+			
+			/* The idea is to create a random offset to give the illusion of confetti */
+			this.setX(this.getX() + mAngleOffset);					// Angle
+			this.setY(this.getY() + mGravity);						// Gravity fall rate
+			this.setRotate(this.getRotate() + mRotationOffset);		// Rotation (gives the illusion of falling confetti)
+			
+			/* Makes the entity less visable over time */
+			this.setOpacity(this.getOpacity() - mFadeRate);
+		}
+	}
+	
+	/** Returns true if this object is barely visable to the screen, labeling it ready to be
+	 *  despawned */
+	public boolean canDespawn ()
+	{
+		return (this.getOpacity() <= 0.05);
 	}
 	
 	/**
@@ -245,199 +418,6 @@ public class ConfettiText extends Text
 	public void setmFadeRate(double mFadeRate)
 	{
 		this.mFadeRate = mFadeRate;
-	}
-
-	/** Constructor used for shooting up the text in a fireworks like manner
-	 *  before turning into confetti.
-	 *  	@param x - X pos of the fireworks explosion point
-	 *  	@param y - Y pos of the fireworks explosion point
-	 *  	@param destX - X pos of the position where the letter should expand to before falling
-	 *  	@param destY - Y pos of the position where the letter should expand to before falling
-	 *  	@param text - The String of the text object
-	 *  	@param color - The initial color of the text object */
-	public ConfettiText (int x, int y, int destX, int destY, String text, Color color)
-	{
-		super (x, y, text);
-		
-		mOriginX = x;
-		mOriginY = y;
-		mColor = color;
-		mDestX = destX;
-		mDestY = destY;
-		
-		mStartingCoordinates = new MoveTo (x, y + 500.0);
-		mCompletedExpandAnim = false;
-		
-		this.setFont(new Font ("Consolas", 10));
-		this.setFill(mColor);
-		
-		mGravity = GenerateBetweenRange (0.1, 0.5);
-		mAngleOffset = GenerateBetweenRange (-0.2, 0.2);
-		mRotationOffset = rand.nextInt(2) + 1;
-		
-		mFadeRate = 0.01;
-		
-		expand();
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(mAngleOffset);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((mColor == null) ? 0 : mColor.hashCode());
-		result = prime * result + (mCompletedExpandAnim ? 1231 : 1237);
-		result = prime * result + mDestX;
-		result = prime * result + mDestY;
-		temp = Double.doubleToLongBits(mFadeRate);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(mGravity);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + mOriginX;
-		result = prime * result + mOriginY;
-		result = prime * result + mRotationOffset;
-		result = prime * result + ((mStartingCoordinates == null) ? 0 : mStartingCoordinates.hashCode());
-		return result;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		ConfettiText other = (ConfettiText) obj;
-		if (Double.doubleToLongBits(mAngleOffset) != Double.doubleToLongBits(other.mAngleOffset))
-		{
-			return false;
-		}
-		if (mColor == null)
-		{
-			if (other.mColor != null)
-			{
-				return false;
-			}
-		} 
-		else if (!mColor.equals(other.mColor))
-		{
-			return false;
-		}
-		if (mCompletedExpandAnim != other.mCompletedExpandAnim)
-		{
-			return false;
-		}
-		if (mDestX != other.mDestX)
-		{
-			return false;
-		}
-		if (mDestY != other.mDestY)
-		{
-			return false;
-		}
-		if (Double.doubleToLongBits(mFadeRate) != Double.doubleToLongBits(other.mFadeRate))
-		{
-			return false;
-		}
-		if (Double.doubleToLongBits(mGravity) != Double.doubleToLongBits(other.mGravity))
-		{
-			return false;
-		}
-		if (mOriginX != other.mOriginX)
-		{
-			return false;
-		}
-		if (mOriginY != other.mOriginY)
-		{
-			return false;
-		}
-		if (mRotationOffset != other.mRotationOffset)
-		{
-			return false;
-		}
-		if (mStartingCoordinates == null)
-		{
-			if (other.mStartingCoordinates != null)
-			{
-				return false;
-			}
-		} 
-		else if (!mStartingCoordinates.equals(other.mStartingCoordinates))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	/** Shoots up the text in a fireworks like manner */
-	private void expand()
-	{
-		/* Constructs a line to bring the object to it's desginated location
-		 * in a fireworks missle like manner */
-		LineTo shootUpWayPoint = new LineTo (mOriginX, mOriginY);
-		/* Constructs a line from the starting position to the target */
-		LineTo expandWaypoint = new LineTo (mDestX, mDestY);
-		
-		/* Creates a new path connecting the assets */
-		Path expandPath = new Path();
-		expandPath.getElements().addAll (mStartingCoordinates, shootUpWayPoint, expandWaypoint);
-		
-		/* Creates a new path transition */
-		PathTransition expandAnimation = new PathTransition ();
-		
-		/* Set up its assets */
-		expandAnimation.setAutoReverse(false);
-		expandAnimation.setDuration(Duration.seconds(3));
-		expandAnimation.setCycleCount(0);
-		expandAnimation.setNode(this);
-		expandAnimation.setPath(expandPath);
-		expandAnimation.setOnFinished(e -> 
-		{
-			mCompletedExpandAnim = true;
-		});
-		expandAnimation.play();
-	}
-	
-	/** Starts playing the confetti falling down animation
-	 *  once its expand animation is completed. */
-	public void update ()
-	{
-		if (mCompletedExpandAnim)
-		{
-			/* Starts falling down based on gravity */
-			
-			/* The idea is to create a random offset to give the illusion of confetti */
-			this.setX(this.getX() + mAngleOffset);					// Angle
-			this.setY(this.getY() + mGravity);						// Gravity fall rate
-			this.setRotate(this.getRotate() + mRotationOffset);		// Rotation (gives the illusion of falling confetti)
-			
-			/* Makes the entity less visable over time */
-			this.setOpacity(this.getOpacity() - mFadeRate);
-		}
-	}
-	
-	/** Returns true if this object is barely visable to the screen, labeling it ready to be
-	 *  despawned */
-	public boolean canDespawn ()
-	{
-		return (this.getOpacity() <= 0.05);
 	}
 	
 	/** Helper function that generates a random double between the ranges

@@ -139,6 +139,7 @@ public abstract class Enemy extends Entity
 		
 		/* Adds this enemy's score to the player's total score */
 		mController.setPlayerScore(mController.getPlayerScore() + this.getScore());
+		mController.getGameView().getStarField().spawnExplosion((int)getX(), (int)getY());
 	}
 	
 	/** Overridden stopWaypointAnimation method for the enemy */

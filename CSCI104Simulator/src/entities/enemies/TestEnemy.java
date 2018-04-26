@@ -30,6 +30,7 @@ public class TestEnemy extends Enemy
 	public void createAttackVectors() 
 	{
 		this.mPhase = EnemyPhase.kAttack;
+		this.mCurrentAmmo = this.mMaxAmmoPool;
 		
 		/* Creates the attack vector based on the player's position */
 		this.addCommand(CommandType.kPrepareAttack);
