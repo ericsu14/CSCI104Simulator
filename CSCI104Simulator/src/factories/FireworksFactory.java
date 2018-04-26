@@ -456,14 +456,18 @@ public class FireworksFactory
 	/** Returns a randomly selected fireworks explosion */
 	public static FireworkStyles getRandomExplosion ()
 	{
-		int type = rand.nextInt(2);
+		int type = rand.nextInt(15);
 		
 		switch (type)
 		{
 			case 0:
-				return FireworkStyles.fireworks;
+				return FireworkStyles.fighton;
+			case 1:
+				return FireworkStyles.USC;
+			case 2:
+				return FireworkStyles.fightonsymbol;
 			default:
-				return FireworkStyles.fireworks3;
+				return FireworkStyles.fireworks;
 		}
 	}
 	/** Returns an arraylist of ConfettiText entities ready to display the selected ASCII
