@@ -3,7 +3,7 @@ package entities.projectiles;
 import engine.GameEngine;
 import entities.Entity;
 
-public class TestProjectile extends Projectile 
+public class TestProjectile extends EnemyProjectile 
 {
 
 	public TestProjectile(Entity owner, GameEngine controller) 
@@ -22,7 +22,7 @@ public class TestProjectile extends Projectile
 	@Override
 	public void update() 
 	{
-		// TODO Auto-generated method stub
+		super.update();
 		
 	}
 

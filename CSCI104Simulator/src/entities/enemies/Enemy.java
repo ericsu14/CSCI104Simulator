@@ -188,6 +188,7 @@ public abstract class Enemy extends Entity
 				{
 					mPhase = EnemyPhase.kIdle;
 					mNumRetreatWaypoints = 0;
+					mCurrentAmmo = mMaxAmmoPool;
 				}
 				break;
 			}

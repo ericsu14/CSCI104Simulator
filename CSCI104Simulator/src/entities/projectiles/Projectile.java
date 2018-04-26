@@ -10,21 +10,20 @@ public abstract class Projectile extends Entity
 {
 	/* A ref. to the entity that shot this projectile */
 	protected Entity mOwner;
-	
 	/* The maximum angle in which this projectile could turn while
 	 * tracking an enemy player */
 	protected double mMaxTurnRadius;
-	
 	/* The min. angle in which this projectile could turn while
 	 * tracking an enemy player */
 	protected double mMinTurnRadius;
-	
 	/* Animation timer used for allowing a projectile to
 	 * track an enemy */
 	protected AnimationTimer mTrackAnimation;
-	
 	/* Flag used to determine if this projectile is tracking an enemy */
 	protected boolean mIsTracking = false;
+	/* The max Y value threshold a projectile could travel before being unable to
+	 * rotate anymore */
+	protected double mMaxY;
 	
 	/** Constructor
 	 * 		@param owner - The entity who shot this projectile
@@ -35,6 +34,7 @@ public abstract class Projectile extends Entity
 		
 		mOwner = owner;
 		this.mType = EntityType.kProjectile;
+		mMaxY = controller.getPlayer().getY() - 100.0;
 	}
 	
 	/** Allows this projectile to track another entity.
@@ -69,8 +69,10 @@ public abstract class Projectile extends Entity
 						mTheta = mMaxTurnRadius;
 					}
 					
-					setRotate (mTheta);
-					
+					if (getY() <= mMaxY)
+					{
+						setRotate (mTheta);
+					}
 					Point2D velocity = getForward();
 					velocity = velocity.multiply(mMovementSpeed);
 					

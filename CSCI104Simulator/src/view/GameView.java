@@ -114,8 +114,6 @@ public class GameView
 			/* Resets movement once key has been released */
 			mScene.setOnKeyReleased(e -> 
 			{
-				MoveDirection playerMove = mGameEngine.getPlayer().getMoveDirection();
-				
 				if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
 				{
 					--mNumDirKeys;

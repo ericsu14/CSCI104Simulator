@@ -99,7 +99,7 @@ public class Player extends Entity
 	{
 		if (mCurrentAmmo > 0)
 		{
-			mController.addChild(new PlayerProjectile (this, mController, false));
+			mController.queueEntity(new PlayerProjectile (this, mController, false));
 			--mCurrentAmmo;
 		}
 	}

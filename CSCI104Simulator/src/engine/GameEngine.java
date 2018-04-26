@@ -77,6 +77,12 @@ public class GameEngine
 	private AnimationTimer mGameLoop;
 	/* Flag that ensures that the player ship is only spawned once throughout the entire lifespan of this application */
 	private boolean spawnedPlayerFlag = false;
+	/* Time it takes (in frames) before the next attack wave could start */
+	private int mAttackWaveTime;
+	/* Timer for attack waves */
+	private int mAttackWaveTimer;
+	/* The number of enemies on the game world */
+	private int mNumEnemies;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -99,6 +105,10 @@ public class GameEngine
 		mDeadEntities = new ArrayList <Entity>();
 		mQueuedEntities = new LinkedList <Entity> ();
 		mRand = new Random ();
+		
+		/* Attack wave timer */
+		mAttackWaveTime = 650;
+		mAttackWaveTimer = 0;
 		
 		/* Sets up the game's borders */
 		mMaxWidth = (int)Launcher.mWidth;
@@ -204,6 +214,12 @@ public class GameEngine
 					if (e.getState() == EntityState.kDead)
 					{
 						mDeadEntities.add(e);
+						
+						/* Dec. number of enemies if an enemy just died */
+						if (e.getType() == EntityType.kEnemy)
+						{
+							--mNumEnemies;
+						}
 					}
 				}
 				
@@ -228,6 +244,13 @@ public class GameEngine
 			private boolean canAttack ()
 			{
 				boolean result = true;
+				/* First check if the attack wave timer has expired */
+				if (mAttackWaveTimer > 0 || mNumEnemies <= 0)
+				{
+					--mAttackWaveTimer;
+					return false;
+				}
+				
 				/* Enemies can attack once all of their phases are currently
 				 * in the idle phase */
 				for (Entity e : mGameEntities)
@@ -235,9 +258,15 @@ public class GameEngine
 					if (e.getType() == EntityType.kEnemy)
 					{
 						Enemy enemy = (Enemy) e;
-						result &= (enemy.getPhase() == EnemyPhase.kIdle);
+						result &= (enemy.getPhase() != EnemyPhase.kSpawning);
 					}
 				}
+				
+				if (result)
+				{
+					mAttackWaveTimer = mAttackWaveTime;
+				}
+				
 				return result;
 			}
 			
@@ -392,6 +421,7 @@ public class GameEngine
 		}
 		
 		addChildren (enemyContainer);
+		mNumEnemies = enemyContainer.size();
 		mMaxGroups = currentGroup + 1;
 	}
 	
@@ -528,6 +558,12 @@ public class GameEngine
 	public ArrayList <Entity> getEntities()
 	{
 		return this.mGameEntities;
+	}
+	
+	/** @return the number of enemies on the game world */
+	public int getNumEnemies ()
+	{
+		return this.mNumEnemies;
 	}
 	
 }
