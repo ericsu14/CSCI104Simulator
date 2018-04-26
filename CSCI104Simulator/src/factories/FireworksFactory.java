@@ -456,15 +456,15 @@ public class FireworksFactory
 	/** Returns a randomly selected fireworks explosion */
 	public static FireworkStyles getRandomExplosion ()
 	{
-		int type = rand.nextInt(15);
+		int type = rand.nextInt(25);
 		
 		switch (type)
 		{
 			case 0:
 				return FireworkStyles.fighton;
-			case 1:
+			case 7:
 				return FireworkStyles.USC;
-			case 2:
+			case 15:
 				return FireworkStyles.fightonsymbol;
 			default:
 				return FireworkStyles.fireworks;
