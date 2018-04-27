@@ -7,10 +7,13 @@ import view.Launcher;
 
 public class EnemyProjectile extends Projectile 
 {
-
+	/* True when this projectile has left the playing field  */
+	private boolean mLeftField;
+	
 	public EnemyProjectile(Entity owner, GameEngine controller) 
 	{
 		super(owner, controller);
+		mLeftField = false;
 	}
 
 	@Override
@@ -21,7 +24,6 @@ public class EnemyProjectile extends Projectile
 		{
 			if (e.getType() == EntityType.kPlayer &&  e.intersects(this.getBoundsInLocal()))
 			{
-				// e.setState(EntityState.kPlayerDead);
 				die();
 			}
 		}
@@ -29,9 +31,19 @@ public class EnemyProjectile extends Projectile
 		/* Despawns this projectile once it exits the screen */
 		if (this.getY() > Launcher.mHeight)
 		{
+			mLeftField = true;
 			die();
 		}
 	}
 	
+	@Override
+	public void die()
+	{
+		super.die();
+		if (!mLeftField)
+		{
+			mController.getGameView().getStarField().spawnExplosion((int)getX(), (int)getY());
+		}
+	}	
 
 }
