@@ -293,9 +293,22 @@ public abstract class Entity extends ImageView
 		victim.die();
 	}
 	
+	/** Returns the scale multiplier of this entity's sprite */
 	public double getSpriteScale ()
 	{
 		return mSpriteScale;
+	}
+	
+	/** Returns the center X coordiante of this entity */
+	public double getCenterX ()
+	{
+		return getX() + (this.getFitWidth() / 2.0);
+	}
+	
+	/** Returns the center Y coordinate of this entity */
+	public double getCenterY()
+	{
+		return getY() + (this.getFitHeight() / 2.0);
 	}
 	
 	/** @return True if target is between min and max

@@ -42,7 +42,7 @@ public class EnemyProjectile extends Projectile
 		super.die();
 		if (!mLeftField)
 		{
-			mController.getGameView().getStarField().spawnExplosion((int)getX(), (int)getY());
+			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY());
 		}
 	}	
 

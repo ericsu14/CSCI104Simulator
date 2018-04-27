@@ -700,7 +700,7 @@ public class FireworksFactory
 		centerY = y;
 		
 		originX = centerX - ((artWidth * spacing) / 2);
-		originY = centerY - ((artHeight * (spacing + spacing)) / 2);
+		originY = centerY - ((artHeight * (spacing * 2)) / 2);
 		
 		/* Thirdly, read through the asciiArt again and construct the fireworks based on its origin point */
 		int currX = originX, currY = originY;
