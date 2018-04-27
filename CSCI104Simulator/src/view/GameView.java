@@ -62,9 +62,16 @@ public class GameView
 		return mLauncher;
 	}
 	
+	/** @return the game engine object */
 	public GameEngine getEngine()
 	{
 		return mGameEngine;
+	}
+	
+	/** @return the GameUI object */
+	public GameUI getGameUI()
+	{
+		return mGameUI;
 	}
 	
 	/** @return the scene object */

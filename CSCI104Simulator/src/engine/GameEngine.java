@@ -303,6 +303,8 @@ public class GameEngine
 			spawnedPlayerFlag = true;
 			addChild (mPlayer);
 		}
+		this.setCurrentLives(3);
+		this.getGameView().getGameUI().renderLives();
 		/* Starts the game loop */
 		mGameLoop.start();
 	}

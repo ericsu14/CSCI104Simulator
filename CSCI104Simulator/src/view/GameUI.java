@@ -2,7 +2,10 @@ package view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -17,10 +20,12 @@ public class GameUI extends StackPane
 	private Label mScoreLabel;
 	/* A label displaying the player's current score */
 	private Label mCurrentScore;
-	/* A vertical box displaying the amount of lives the player currently has */
+	/* A horizontal box displaying the amount of lives the player currently has */
 	private HBox mCurrentLives;
 	/* A label showing the level the player is currently in */
 	private Label mCurrentLevel;
+	/* Keeps track of the current lives remaining */
+	private int mLivesRemaining;
 	
 	public GameUI (GameView gameView)
 	{
@@ -61,6 +66,16 @@ public class GameUI extends StackPane
 		topLeft.setTop(topLeftHeader);
 		
 		/* TODO: setup lives counter */
+		VBox bottomLeftFooter = new VBox();
+		Label lives = new Label ("Lives: ");
+		lives.setStyle(CSSConstants.GAME_FONT);
+		mCurrentLives = new HBox();
+		renderLives ();
+		mCurrentLives.setAlignment(Pos.BOTTOM_LEFT);
+		mCurrentLives.setSpacing(6);
+		bottomLeftFooter.getChildren().addAll(lives, mCurrentLives);
+		bottomLeftFooter.setAlignment(Pos.BOTTOM_LEFT);
+		topLeft.setBottom(bottomLeftFooter);
 		
 		this.getChildren().addAll(topCenter, topLeft);
 	}
@@ -70,5 +85,39 @@ public class GameUI extends StackPane
 	{
 		mCurrentScore.setText("" + mGameView.getEngine().getPlayerScore());
 		mCurrentLevel.setText("" + mGameView.getEngine().getCurrentLevel());
+	}
+	
+	public void renderLives ()
+	{
+		/* Only update if there is a change on the amount of lives left */
+		if (mLivesRemaining != mGameView.getEngine().getCurrentLives())
+		{
+			mLivesRemaining = mGameView.getEngine().getCurrentLives();
+			
+			/* Removes any previous added lives */
+			getChildren().removeAll(mCurrentLives.getChildren());
+			mCurrentLives.getChildren().clear();
+			
+			/* Recalculates the amount of lives the player has */
+			for (int i = 0;  i < mLivesRemaining; ++i)
+			{
+				ImageView playerIcon = createPlayerIcon();
+				mCurrentLives.getChildren().add(playerIcon);
+			}
+		}
+	}
+	
+	/** Constructs a new playership icon used for rendering the amount of
+	 *  lives a player has left */
+	private ImageView createPlayerIcon ()
+	{
+		double iconScale = 20.0;
+		
+		ImageView icon = new ImageView();
+		icon.setImage(mGameView.getEngine().mPlayerShipSprite.getImage());
+		icon.setFitWidth (iconScale);
+		icon.setFitHeight(iconScale);
+		
+		return icon;
 	}
 }
