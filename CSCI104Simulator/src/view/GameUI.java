@@ -79,13 +79,12 @@ public class GameUI extends StackPane
 		
 		/* TODO: setup lives counter */
 		VBox bottomLeftFooter = new VBox();
-		Label lives = new Label ("Lives: ");
-		lives.setStyle(CSSConstants.GAME_FONT);
 		mCurrentLives = new HBox();
 		renderLives ();
 		mCurrentLives.setAlignment(Pos.BOTTOM_LEFT);
+		mCurrentLives.setPadding(new Insets (0, 0, 10, 10));
 		mCurrentLives.setSpacing(6);
-		bottomLeftFooter.getChildren().addAll(lives, mCurrentLives);
+		bottomLeftFooter.getChildren().addAll(mCurrentLives);
 		bottomLeftFooter.setAlignment(Pos.BOTTOM_LEFT);
 		topLeft.setBottom(bottomLeftFooter);
 		
@@ -136,7 +135,7 @@ public class GameUI extends StackPane
 				mPromptText.setText("segmentation fault (core dumped)");
 				break;
 			case kGameOver:
-				mPromptText.setText("Kernel panic!\nGame Over.");
+				mPromptText.setText("Kernel panic!\nGame Over");
 				break;
 			case kLevelEnd:
 				mPromptText.setText(ShindlerFactory.getJokeOfTheDay() + "\n\t- Michael Shindler");
