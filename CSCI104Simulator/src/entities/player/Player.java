@@ -1,6 +1,7 @@
 package entities.player;
 import engine.GameEngine;
 import entities.Entity;
+import entities.EntityState;
 import entities.EntityType;
 import entities.projectiles.PlayerProjectile;
 import javafx.geometry.Point2D;
@@ -102,6 +103,30 @@ public class Player extends Entity
 			mController.queueEntity(new PlayerProjectile (this, mController, false));
 			--mCurrentAmmo;
 		}
+	}
+	
+	/** Overridden die method */
+	public void die()
+	{
+		super.die();
+		
+		/* Sets this player's opacity to 0 */
+		this.setOpacity(0);
+	}
+	
+	/** Respawns the player */
+	public void respawn()
+	{
+		/* Sets the player's state to active */
+		mState = EntityState.kActive;
+		
+		/* Makes this player visable to the game again */
+		this.setOpacity(1.0);
+		
+		/* Recenters this player's coordinates to the center of the screen */
+		Point2D centerCoordinates = mController.getPlayerCenterCoordinates();
+		this.setX(centerCoordinates.getX());
+		this.setY(centerCoordinates.getY());
 	}
 	
 	/** Increments the player's current ammo (capped at the player's max

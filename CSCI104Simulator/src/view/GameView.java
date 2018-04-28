@@ -3,15 +3,18 @@ package view;
 import java.util.ArrayList;
 
 import engine.GameEngine;
+import engine.GameState;
 import entities.Entity;
 import entities.player.MoveDirection;
 import entities.projectiles.PlayerProjectile;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 public class GameView 
 {
@@ -92,8 +95,8 @@ public class GameView
 		mStarField.playAnimation();
 	}
 	
-	/** Sets up the scene to start a new level */
-	public void startNewLevel()
+	/** Sets up the scene to start a new game */
+	public void startNewGame()
 	{
 		/* If the game UI hasn't been made yet, create it */
 		if (mGameUI == null)
@@ -108,39 +111,59 @@ public class GameView
 			mScene.setOnKeyPressed(e -> 
 			{
 				MoveDirection playerMove = mGameEngine.getPlayer().getMoveDirection();
-				if (e.getCode() == KeyCode.LEFT && playerMove != MoveDirection.kLeft)
+				/* Checks if the current game state is running */
+				if (getEngine().getGameState() == GameState.kGameRunning)
 				{
-					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kLeft);
-					++mNumDirKeys;
+					if (e.getCode() == KeyCode.LEFT && playerMove != MoveDirection.kLeft)
+					{
+						mGameEngine.getPlayer().setMoveDirection(MoveDirection.kLeft);
+						++mNumDirKeys;
+					}
+					if (e.getCode() == KeyCode.RIGHT && playerMove != MoveDirection.kRight)
+					{
+						mGameEngine.getPlayer().setMoveDirection(MoveDirection.kRight);
+						++mNumDirKeys;
+					}
+					if (e.getCode() == KeyCode.SPACE)
+					{
+						mGameEngine.getPlayer().shoot();
+					}
 				}
-				if (e.getCode() == KeyCode.RIGHT && playerMove != MoveDirection.kRight)
+				else
 				{
-					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kRight);
-					++mNumDirKeys;
-				}
-				if (e.getCode() == KeyCode.SPACE)
-				{
-					mGameEngine.getPlayer().shoot();
+					mNumDirKeys = 0;
+					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kNone);
 				}
 			});
 			
 			/* Resets movement once key has been released */
 			mScene.setOnKeyReleased(e -> 
 			{
-				if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
+				/* Checks if the current game state is running */
+				if (getEngine().getGameState() == GameState.kGameRunning)
 				{
-					--mNumDirKeys;
-					if (mNumDirKeys < 0)
+					if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
 					{
-						mNumDirKeys = 0;
+						--mNumDirKeys;
+						if (mNumDirKeys < 0)
+						{
+							mNumDirKeys = 0;
+						}
+					}
+					
+					if (mNumDirKeys <= 0)
+					{
+						mGameEngine.getPlayer().setMoveDirection(MoveDirection.kNone);
 					}
 				}
-				
-				if (mNumDirKeys <= 0)
+				else
 				{
+					mNumDirKeys = 0;
 					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kNone);
 				}
 			});
+			
+			mGameEngine.setCurrentLives(3);
 		}
 		
 		playAnimations();

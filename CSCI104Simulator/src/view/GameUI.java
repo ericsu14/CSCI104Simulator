@@ -1,5 +1,6 @@
 package view;
 
+import engine.GameState;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -24,6 +25,10 @@ public class GameUI extends StackPane
 	private HBox mCurrentLives;
 	/* A label showing the level the player is currently in */
 	private Label mCurrentLevel;
+	/* A container for the game's prompt screen  */
+	private VBox mPromptContainer;
+	/* The text that goes into the prompt */
+	private Label mPromptText;
 	/* Keeps track of the current lives remaining */
 	private int mLivesRemaining;
 	
@@ -65,6 +70,14 @@ public class GameUI extends StackPane
 		topLeftHeader.setPadding(new Insets (0, 0, 0, 10));
 		topLeft.setTop(topLeftHeader);
 		
+		/* Center prompt text */
+		mPromptContainer = new VBox();
+		mPromptText = new Label ("");
+		mPromptText.setStyle(CSSConstants.GAME_FONT);
+		mPromptContainer.getChildren().addAll(mPromptText);
+		mPromptContainer.setAlignment(Pos.CENTER);
+		topLeft.setCenter(mPromptContainer);
+		
 		/* TODO: setup lives counter */
 		VBox bottomLeftFooter = new VBox();
 		Label lives = new Label ("Lives: ");
@@ -77,7 +90,7 @@ public class GameUI extends StackPane
 		bottomLeftFooter.setAlignment(Pos.BOTTOM_LEFT);
 		topLeft.setBottom(bottomLeftFooter);
 		
-		this.getChildren().addAll(topCenter, topLeft);
+		this.getChildren().addAll(topCenter, mPromptContainer, topLeft);
 	}
 	
 	/** Updates the UI based on the current state of the game */
@@ -85,8 +98,10 @@ public class GameUI extends StackPane
 	{
 		mCurrentScore.setText("" + mGameView.getEngine().getPlayerScore());
 		mCurrentLevel.setText("" + mGameView.getEngine().getCurrentLevel());
+		renderLives();
 	}
 	
+	/** Renders the lives container */
 	public void renderLives ()
 	{
 		/* Only update if there is a change on the amount of lives left */
@@ -104,6 +119,29 @@ public class GameUI extends StackPane
 				ImageView playerIcon = createPlayerIcon();
 				mCurrentLives.getChildren().add(playerIcon);
 			}
+		}
+	}
+	
+	/** Displays the promt text depending on the current status of the game */
+	public void showPromptText(GameState state)
+	{
+		switch (state)
+		{
+			case kGameStart:
+				mPromptText.setText("GET READY");
+				break;
+			case kNewLevel:
+				mPromptText.setText("LEVEL " + mGameView.getEngine().getCurrentLevel());
+				break;
+			case kRespawning:
+				mPromptText.setText("segmentation fault (core dumped)");
+				break;
+			case kGameOver:
+				mPromptText.setText("Kernel panic!\nGame Over.");
+				break;
+			default:
+				mPromptText.setText("");
+				break;
 		}
 	}
 	

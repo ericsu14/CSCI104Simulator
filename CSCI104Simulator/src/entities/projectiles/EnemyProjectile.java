@@ -2,6 +2,7 @@ package entities.projectiles;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.EntityState;
 import entities.EntityType;
 import view.Launcher;
 
@@ -22,9 +23,10 @@ public class EnemyProjectile extends Projectile
 		/* Checks for any collisions with the player */
 		for (Entity e : this.mController.getEntities())
 		{
-			if (e.getType() == EntityType.kPlayer &&  e.intersects(this.getBoundsInLocal()))
+			if (e.getType() == EntityType.kPlayer &&  e.intersects(this.getBoundsInLocal())
+					&& e.getState() == EntityState.kActive)
 			{
-				die();
+				kill (e, true);
 			}
 		}
 		

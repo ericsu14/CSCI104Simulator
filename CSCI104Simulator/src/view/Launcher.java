@@ -60,7 +60,7 @@ public class Launcher extends Application
 	/** Switches to the game scene */
 	public void switchGameScene()
 	{
-		mGameView.startNewLevel();
+		mGameView.startNewGame();
 		mStage.setScene(mGameView.getScene());
 		mStage.sizeToScene();
 		mStage.setHeight(mHeight);

@@ -18,9 +18,11 @@ import entities.enemies.Mandelbug;
 import entities.enemies.TestEnemy;
 import entities.player.Player;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 import view.GameView;
 import view.Launcher;
 public class GameEngine 
@@ -83,6 +85,17 @@ public class GameEngine
 	private int mAttackWaveTimer;
 	/* The number of enemies on the game world */
 	private int mNumEnemies;
+	/* Y offset that dictates where the player would be fixed to */
+	private int mPlayerYOffset = 100;
+	/* The current state of the game */
+	private GameState mGameState;
+	/* Pause transition used to display a prompt to the player 
+	 * before the game or new level starts */
+	private PauseTransition mPromptTimer;
+	/* Time it takes for the pause transition to display the prompt before starting the game */
+	private int mPromptTime = 3;
+	/* Flag that determines if the prompt is currently being displayed */
+	private boolean mPromptFlag = false;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -104,6 +117,7 @@ public class GameEngine
 		mGameEntities = new ArrayList <Entity>();
 		mDeadEntities = new ArrayList <Entity>();
 		mQueuedEntities = new LinkedList <Entity> ();
+		mGameState = GameState.kGameStart;
 		mRand = new Random ();
 		
 		/* Attack wave timer */
@@ -115,7 +129,7 @@ public class GameEngine
 		mLeftBorder = 50;
 		mRightBorder = mMaxWidth - mLeftBorder - 24;
 		
-		mPlayer = new Player (Launcher.mWidth / 2, Launcher.mHeight - 100.0, this);
+		mPlayer = new Player (Launcher.mWidth / 2, Launcher.mHeight - mPlayerYOffset, this);
 		
 		mGameLoop = new AnimationTimer ()
 		{
@@ -132,7 +146,7 @@ public class GameEngine
 			{	
 				update (now);
 				checkDeadEntities();
-				
+				checkGameStatus();
 				/* Updates the UI component */
 				mGameView.refreshUI();
 				
@@ -251,6 +265,12 @@ public class GameEngine
 					return false;
 				}
 				
+				/* If the current game state is not running, then return false */
+				if (mGameState != GameState.kGameRunning)
+				{
+					return false;
+				}
+				
 				/* Enemies can attack once all of their phases are currently
 				 * in the idle phase */
 				for (Entity e : mGameEntities)
@@ -290,23 +310,95 @@ public class GameEngine
 				
 				return found;
 			}
+			
+			public void checkGameStatus()
+			{
+				/* Checks if a prompt is not currently being played */
+				if (!mPromptFlag)
+				{
+					/* Checks if the player has died */
+					if (mPlayer.getState() == EntityState.kPlayerDead)
+					{
+						--mCurrentLives;
+						mGameState = GameState.kRespawning;
+						mPromptTimer.playFrom(Duration.seconds(0));
+						mPromptFlag = true;
+					}
+					
+					if (mPromptFlag)
+					{
+						mGameView.getGameUI().showPromptText(mGameState);
+					}
+				}
+			}
 		};
+		
+		/* Sets up the prompt animation timer */
+		mPromptTimer = new PauseTransition (Duration.seconds(mPromptTime));
+		
+		mPromptTimer.setOnFinished(e -> 
+		{
+			/* Once the prompt timer ends, perform an action */
+			switch (mGameState)
+			{
+				case kGameStart:
+				{
+					mGameState = GameState.kGameRunning;
+					spawnEnemies();
+					mGameLoop.start();
+					mPlayer.respawn();
+					break;
+				}
+				case kNewLevel:
+				{
+					mGameState = GameState.kGameRunning;
+					spawnEnemies();
+					break;
+				}
+				case kRespawning:
+				{
+					mGameState = GameState.kGameRunning;
+					mAttackWaveTimer = mAttackWaveTime;
+					mPlayer.respawn();
+					break;
+				}
+				case kLevelEnd:
+				{
+					++mCurrentLevel;
+					mGameState = GameState.kNewLevel;
+					break;
+				}
+				case kGameOver:
+				{
+					// TODO: Switch back to main menu
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+			
+			mGameView.getGameUI().showPromptText(mGameState);
+			mPromptFlag = false;
+		});
 	}
 	
 	/** Starts a new level */
 	public void startLevel()
 	{
-		spawnEnemies();
 		/* TODO: Ensure that the player is only spawned once throughout this game */
 		if (!spawnedPlayerFlag)
 		{
 			spawnedPlayerFlag = true;
 			addChild (mPlayer);
+			/* Hides the player for now */
+			mPlayer.setState(EntityState.kPlayerDead);
+			mPlayer.setOpacity(0.0);
 		}
-		this.setCurrentLives(3);
-		this.getGameView().getGameUI().renderLives();
-		/* Starts the game loop */
-		mGameLoop.start();
+		mGameView.getGameUI().showPromptText(mGameState);
+		mPromptTimer.playFrom(Duration.seconds(0));
+		mPromptFlag = true;
 	}
 	
 	/** Queues an entity into the game, which would be added before the next tick starts */
@@ -566,6 +658,18 @@ public class GameEngine
 	public int getNumEnemies ()
 	{
 		return this.mNumEnemies;
+	}
+	
+	/** @return the current state of the game */
+	public GameState getGameState()
+	{
+		return mGameState;
+	}
+	
+	/** @returns the centerized player coordinates */
+	public Point2D getPlayerCenterCoordinates()
+	{
+		return new Point2D (Launcher.mWidth / 2, Launcher.mHeight - mPlayerYOffset);
 	}
 	
 }
