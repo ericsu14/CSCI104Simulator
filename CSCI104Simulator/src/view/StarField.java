@@ -2,7 +2,6 @@ package view;
 
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import entities.visuals.ConfettiText;
 import factories.FireworksFactory;

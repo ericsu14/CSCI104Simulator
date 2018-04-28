@@ -1,6 +1,7 @@
 package entities.projectiles;
 
 import engine.GameEngine;
+import engine.GameState;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
@@ -30,8 +31,9 @@ public class EnemyProjectile extends Projectile
 			}
 		}
 		
-		/* Despawns this projectile once it exits the screen */
-		if (this.getY() > Launcher.mHeight)
+		/* Despawns this projectile once it exits the screen, 
+		 * or if the game state is not in running anymore  */
+		if (mController.getGameState() != GameState.kGameRunning || this.getY() > Launcher.mHeight)
 		{
 			mLeftField = true;
 			die();

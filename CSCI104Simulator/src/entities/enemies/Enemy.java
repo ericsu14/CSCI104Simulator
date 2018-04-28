@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import engine.GameEngine;
+import engine.GameState;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
@@ -118,8 +119,9 @@ public abstract class Enemy extends Entity
 			}
 		}
 		
-		/* Starts spawning projectiles when this enemy is attacking */
-		if (mPhase == EnemyPhase.kAttack)
+		/* Starts spawning projectiles when this enemy is attacking
+		 * and the game state is still running */
+		if (mPhase == EnemyPhase.kAttack && mController.getGameState() == GameState.kGameRunning)
 		{
 			if (mCooldown <= 0)
 			{
@@ -128,7 +130,12 @@ public abstract class Enemy extends Entity
 			}
 			--mCooldown;
 		}
-		
+		/* If this enemy is in the attacking stage, but the game state changes
+		 * from running, stop the current attacking routine. */
+		else if (mPhase == EnemyPhase.kAttack && mController.getGameState() != GameState.kGameRunning)
+		{
+			stopWaypointAnimation();
+		}
 	}
 	
 	/** Overridden die method for the enemy */

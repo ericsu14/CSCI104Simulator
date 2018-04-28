@@ -93,7 +93,7 @@ public class GameEngine
 	 * before the game or new level starts */
 	private PauseTransition mPromptTimer;
 	/* Time it takes for the pause transition to display the prompt before starting the game */
-	private int mPromptTime = 3;
+	private int mPromptTime = 4;
 	/* Flag that determines if the prompt is currently being displayed */
 	private boolean mPromptFlag = false;
 	
@@ -258,6 +258,13 @@ public class GameEngine
 			private boolean canAttack ()
 			{
 				boolean result = true;
+				
+				/* If the current game state is not running, then return false */
+				if (mGameState != GameState.kGameRunning)
+				{
+					return false;
+				}
+				
 				/* First check if the attack wave timer has expired */
 				if (mAttackWaveTimer > 0 || mNumEnemies <= 0)
 				{
@@ -265,11 +272,6 @@ public class GameEngine
 					return false;
 				}
 				
-				/* If the current game state is not running, then return false */
-				if (mGameState != GameState.kGameRunning)
-				{
-					return false;
-				}
 				
 				/* Enemies can attack once all of their phases are currently
 				 * in the idle phase */
@@ -320,7 +322,25 @@ public class GameEngine
 					if (mPlayer.getState() == EntityState.kPlayerDead)
 					{
 						--mCurrentLives;
-						mGameState = GameState.kRespawning;
+						/* Checks if the player still has n remaining lives */
+						if (mCurrentLives > 0)
+						{
+							mGameState = GameState.kRespawning;
+						}
+						else
+						{
+							mGameState = GameState.kGameOver;
+						}
+						
+						mPromptTimer.playFrom(Duration.seconds(0));
+						mPromptFlag = true;
+					}
+					
+					/* Checks if there are no more enemies on the game.
+					 * Thus, we can advance to the next level */
+					else if (mNumEnemies <= 0)
+					{
+						mGameState = GameState.kLevelEnd;
 						mPromptTimer.playFrom(Duration.seconds(0));
 						mPromptFlag = true;
 					}
@@ -358,7 +378,7 @@ public class GameEngine
 				case kRespawning:
 				{
 					mGameState = GameState.kGameRunning;
-					mAttackWaveTimer = mAttackWaveTime;
+					mAttackWaveTimer = mAttackWaveTime / 3;
 					mPlayer.respawn();
 					break;
 				}
@@ -366,11 +386,16 @@ public class GameEngine
 				{
 					++mCurrentLevel;
 					mGameState = GameState.kNewLevel;
+					mPromptTimer.playFrom(Duration.seconds(0));
 					break;
 				}
 				case kGameOver:
 				{
 					// TODO: Switch back to main menu
+					mGameLoop.stop();
+					cleanup();
+					spawnedPlayerFlag = false;
+					mGameView.getLauncher().switchMainMenu();
 					break;
 				}
 				default:
@@ -380,7 +405,11 @@ public class GameEngine
 			}
 			
 			mGameView.getGameUI().showPromptText(mGameState);
-			mPromptFlag = false;
+			
+			if (mGameState != GameState.kNewLevel)
+			{
+				mPromptFlag = false;
+			}
 		});
 	}
 	
@@ -396,6 +425,7 @@ public class GameEngine
 			mPlayer.setState(EntityState.kPlayerDead);
 			mPlayer.setOpacity(0.0);
 		}
+		mGameState = GameState.kGameStart;
 		mGameView.getGameUI().showPromptText(mGameState);
 		mPromptTimer.playFrom(Duration.seconds(0));
 		mPromptFlag = true;
@@ -517,6 +547,22 @@ public class GameEngine
 		addChildren (enemyContainer);
 		mNumEnemies = enemyContainer.size();
 		mMaxGroups = currentGroup + 1;
+	}
+	
+	/** Cleans up assets */
+	public void cleanup ()
+	{
+		/* Resets all player score / lives / level counters */
+		mPlayerScore = 0;
+		mCurrentLevel = 1;
+		mCurrentLives = 3;
+		
+		/* Cleans up all containers */
+		mDeadEntities.clear();
+		mGameEntities.clear();
+		mQueuedEntities.clear();
+		
+		mGameView.cleanup();
 	}
 	
 	/** Adds a new entity into the game.

@@ -6,15 +6,11 @@ import engine.GameEngine;
 import engine.GameState;
 import entities.Entity;
 import entities.player.MoveDirection;
-import entities.projectiles.PlayerProjectile;
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 public class GameView 
 {
@@ -162,12 +158,26 @@ public class GameView
 					mGameEngine.getPlayer().setMoveDirection(MoveDirection.kNone);
 				}
 			});
-			
-			mGameEngine.setCurrentLives(3);
 		}
 		
 		playAnimations();
+		mGameEngine.setCurrentLives(3);
 		mGameEngine.startLevel();
+	}
+	
+	/** Cleans up all assets in this view component */
+	public void cleanup ()
+	{
+		mStarField.stopAnimation();
+		try
+		{
+			mGameWorld.getChildren().clear();
+		}
+		catch (IllegalArgumentException e)
+		{
+			// A really cheap hack, but it works
+			mGameWorld.getChildren().clear();
+		}
 	}
 	
 	/** Sets the GameView's game engine */

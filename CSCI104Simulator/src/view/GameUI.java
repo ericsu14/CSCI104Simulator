@@ -1,12 +1,11 @@
 package view;
 
 import engine.GameState;
+import factories.ShindlerFactory;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -114,7 +113,7 @@ public class GameUI extends StackPane
 			mCurrentLives.getChildren().clear();
 			
 			/* Recalculates the amount of lives the player has */
-			for (int i = 0;  i < mLivesRemaining; ++i)
+			for (int i = 0;  i < mLivesRemaining - 1; ++i)
 			{
 				ImageView playerIcon = createPlayerIcon();
 				mCurrentLives.getChildren().add(playerIcon);
@@ -138,6 +137,9 @@ public class GameUI extends StackPane
 				break;
 			case kGameOver:
 				mPromptText.setText("Kernel panic!\nGame Over.");
+				break;
+			case kLevelEnd:
+				mPromptText.setText(ShindlerFactory.getJokeOfTheDay() + "\n\t- Michael Shindler");
 				break;
 			default:
 				mPromptText.setText("");

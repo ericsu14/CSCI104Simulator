@@ -55,6 +55,10 @@ public class Launcher extends Application
 	public void switchMainMenu ()
 	{
 		mStage.setScene(mMainMenu.getScene());
+		mMainMenu.playAnimations();
+		mStage.sizeToScene();
+		mStage.setHeight(mHeight);
+		mStage.setWidth(mWidth);
 	}
 	
 	/** Switches to the game scene */
