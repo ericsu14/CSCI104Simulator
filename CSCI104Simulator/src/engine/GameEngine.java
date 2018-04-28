@@ -427,6 +427,7 @@ public class GameEngine
 		}
 		mGameState = GameState.kGameStart;
 		mGameView.getGameUI().showPromptText(mGameState);
+		mGameView.getGameUI().update();
 		mPromptTimer.playFrom(Duration.seconds(0));
 		mPromptFlag = true;
 	}

@@ -107,8 +107,12 @@ public class GameView
 			mScene.setOnKeyPressed(e -> 
 			{
 				MoveDirection playerMove = mGameEngine.getPlayer().getMoveDirection();
-				/* Checks if the current game state is running */
-				if (getEngine().getGameState() == GameState.kGameRunning)
+				GameState currentState = getEngine().getGameState();
+				/* Checks if the current game state is either in running,
+				 * levelend, or newlevel */
+				if (currentState == GameState.kGameRunning 
+						|| currentState == GameState.kLevelEnd
+						|| currentState == GameState.kNewLevel)
 				{
 					if (e.getCode() == KeyCode.LEFT && playerMove != MoveDirection.kLeft)
 					{
@@ -135,8 +139,12 @@ public class GameView
 			/* Resets movement once key has been released */
 			mScene.setOnKeyReleased(e -> 
 			{
-				/* Checks if the current game state is running */
-				if (getEngine().getGameState() == GameState.kGameRunning)
+				/* Checks if the current game state is either in running,
+				 * levelend, or newlevel. */
+				GameState currentState = getEngine().getGameState();
+				if (currentState == GameState.kGameRunning 
+						|| currentState == GameState.kLevelEnd
+						|| currentState == GameState.kNewLevel)
 				{
 					if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
 					{
