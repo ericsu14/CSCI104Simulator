@@ -6,9 +6,9 @@ import javafx.geometry.Point2D;
 
 public class Mandelbug extends Enemy
 {
-	
 	/*  The amount of health this enemy has */
 	private int mHealth;
+	
 	public Mandelbug(EnemyPosition initPosition, Point2D origin, int group, GameEngine controller) 
 	{
 		super(initPosition, origin, group, controller);

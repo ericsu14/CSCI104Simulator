@@ -15,9 +15,9 @@ public class Bohrbug extends Enemy
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 20.0;
 		this.mPointsValue = 750;
-		this.mMaxAmmoPool = 10;
+		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
-		this.mShotsPerFrame = 60;
+		this.mShotsPerFrame = 70;
 		this.setSprite(controller.mBohrbugSprite);
 		setRotate (-90.0);
 	}

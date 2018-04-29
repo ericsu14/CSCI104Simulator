@@ -19,8 +19,6 @@ public class Command
 	private int mOffsetThreshold = 100;
 	/* A random generator that randomly computes the offset to make things more intresting */
 	private static Random mRand = new Random();
-	/* True if an attack move command is used */
-	private boolean mAttackMoveFlag = false;
 	
 	/** Constructs a new command that is either an attack or retreat command.
 	 *  In those situations, declaring a waypoint is not necessary.
@@ -50,10 +48,10 @@ public class Command
 			{
 				/*  Reloads the ship's cannons if an attack move has just been
 				 *  recently used */
-				if (mAttackMoveFlag)
+				if (mOwner.mAttackMoveFlag)
 				{
 					mOwner.reload();
-					mAttackMoveFlag = false;
+					mOwner.mAttackMoveFlag = false;
 				}
 				
 				/* For this, the enemy should travel directly towards a point near the
@@ -84,10 +82,10 @@ public class Command
 				
 				/*  Reloads the ship's cannons if an attack move has just been
 				 *  recently used */
-				if (mAttackMoveFlag)
+				if (mOwner.mAttackMoveFlag)
 				{
 					mOwner.reload();
-					mAttackMoveFlag = false;
+					mOwner.mAttackMoveFlag = false;
 				}
 				
 				if (mOwner.getEntryPosition() == EnemyPosition.kLeft)
@@ -115,7 +113,7 @@ public class Command
 			
 			case kAttackMove:
 			{
-				mAttackMoveFlag = true;
+				mOwner.mAttackMoveFlag = true;
 				break;
 			}
 			

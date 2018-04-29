@@ -44,6 +44,8 @@ public abstract class Enemy extends Entity
 	protected int mShotsPerFrame = 10;
 	/* Cooldown timer for the enemy's cannons */
 	protected int mCooldown;
+	/* Determines if this enemy has just used an attack move */
+	public boolean mAttackMoveFlag = false;
 	
 	
 	/** Declares a new instance of a game enemy.
@@ -111,9 +113,9 @@ public abstract class Enemy extends Entity
 				if (e.intersects(this.getBoundsInLocal()))
 				{
 					/* TODO: Kill the player and the enemy */
-					if (e.getType() == EntityType.kPlayer)
+					if (e.getType() == EntityType.kPlayer && e.getState() == EntityState.kActive)
 					{
-						
+						kill (e, true);
 					}
 				}
 			}
