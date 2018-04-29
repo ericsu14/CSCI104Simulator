@@ -224,7 +224,7 @@ public abstract class Enemy extends Entity
 	{
 		mCommandQueue.add(new Command (type, this));
 		
-		if (type == CommandType.kAttack || type == CommandType.kPrepareAttack)
+		if (type == CommandType.kAttack || type == CommandType.kAttackMove || type == CommandType.kPrepareAttack)
 		{
 			++mNumAttackWaypoints;
 			mCooldown = this.mShotsPerFrame;
@@ -277,6 +277,12 @@ public abstract class Enemy extends Entity
 	public void setCurrentCooldown (int cooldown)
 	{
 		mCooldown = cooldown;
+	}
+	
+	/** Reloads the enemy's cannons */
+	public void reload ()
+	{
+		this.mCurrentAmmo = this.mMaxAmmoPool;
 	}
 	
 	/** Spawns an enemy projectile */

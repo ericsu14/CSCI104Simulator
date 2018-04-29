@@ -16,6 +16,7 @@ public class EnemyProjectile extends Projectile
 	{
 		super(owner, controller);
 		mLeftField = false;
+		this.setRotate(-90.0);
 	}
 
 	@Override

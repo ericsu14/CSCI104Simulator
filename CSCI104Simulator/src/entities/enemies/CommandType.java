@@ -8,5 +8,5 @@ package entities.enemies;
 
 public enum CommandType 
 {
-	kMove, kPrepareAttack, kAttack, kRetreat
+	kMove, kPrepareAttack, kAttack, kAttackMove, kRetreat
 }

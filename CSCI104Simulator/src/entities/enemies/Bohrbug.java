@@ -1,6 +1,7 @@
 package entities.enemies;
 
 import engine.GameEngine;
+import entities.projectiles.UnguidedProjectile;
 import javafx.geometry.Point2D;
 
 public class Bohrbug extends Enemy 
@@ -10,9 +11,13 @@ public class Bohrbug extends Enemy
 	{
 		super(initPosition, origin, group, controller);
 		
-		this.mInitialMovementSpeed = 3.0;
+		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 20.0;
+		this.mPointsValue = 750;
+		this.mMaxAmmoPool = 10;
+		this.mCurrentAmmo = mMaxAmmoPool;
+		this.mShotsPerFrame = 60;
 		this.setSprite(controller.mBohrbugSprite);
 		setRotate (-90.0);
 	}
@@ -20,12 +25,23 @@ public class Bohrbug extends Enemy
 	@Override
 	public void createAttackVectors() 
 	{
+		this.mPhase = EnemyPhase.kAttack;
+		this.mCurrentAmmo = this.mMaxAmmoPool;
 		
+		/* Creates the attack vector based on the player's position */
+		this.addCommand(CommandType.kPrepareAttack);
+		this.addCommand(CommandType.kAttack);
+		/* Creates the retreat vector */
+		this.addCommand(CommandType.kRetreat);
 	}
 	
 	@Override
 	public void fire()
 	{
-		
+		if (mCurrentAmmo > 0)
+		{
+			mController.queueEntity(new UnguidedProjectile (this, mController));
+			mCurrentAmmo--;
+		}
 	}
 }

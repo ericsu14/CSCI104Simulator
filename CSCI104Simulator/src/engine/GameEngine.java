@@ -46,6 +46,10 @@ public class GameEngine
 	public ImageView mCote;
 	/* The book that the dark lord aCote loves more than life itself */
 	public ImageView mBook;
+	/* The enemy's unguided projectile */
+	public ImageView mEnemyLaser;
+	/* The sprite that represents a damaged variant of the mandel bug */
+	public ImageView mDamagedBugSprite;
 	
 	/* The current level the player is in */
 	private int mCurrentLevel;
@@ -110,6 +114,8 @@ public class GameEngine
 		mLinkedList = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/linkedList.png")));
 		mCote = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/cote.png")));
 		mBook = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/theBook.jpeg")));
+		mEnemyLaser = new ImageView  (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/enemyLaser.png")));
+		mDamagedBugSprite = new ImageView  (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/damagedBug.png")));
 		
 		/* Initializes member variables */
 		setCurrentLevel(1);
@@ -249,7 +255,9 @@ public class GameEngine
 					
 					catch (IllegalArgumentException e)
 					{
-						// Does nothing (for now)
+						/* Attempts to remove children again */
+						removeChildren (mDeadEntities);
+						mDeadEntities.clear();
 					}
 				}
 			}
@@ -460,7 +468,7 @@ public class GameEngine
 		ArrayList <Entity> enemyContainer = new ArrayList <Entity> ();
 		
 		/* Reads from a text file and uses that data to spawn enemies into the game */
-		String fileName = "src/assets/data/testEnemyLayout.txt";
+		String fileName = "src/assets/data/enemyLayout.txt";
 		String currentLine = null;
 		try
 		{

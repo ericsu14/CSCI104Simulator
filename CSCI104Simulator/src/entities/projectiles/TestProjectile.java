@@ -15,7 +15,6 @@ public class TestProjectile extends EnemyProjectile
 		
 		this.mMaxTurnRadius = -45.0;
 		this.mMinTurnRadius = -135.0;
-		this.setRotate(-90.0);
 		this.trackEntity(controller.getPlayer());
 	}
 
