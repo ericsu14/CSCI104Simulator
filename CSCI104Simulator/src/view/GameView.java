@@ -128,7 +128,7 @@ public class GameView
 					}
 					if (e.getCode() == KeyCode.SPACE)
 					{
-						mGameEngine.getPlayer().shoot();
+						mGameEngine.getPlayer().setFiringFlag(true);
 					}
 				}
 				else
@@ -155,6 +155,11 @@ public class GameView
 						{
 							mNumDirKeys = 0;
 						}
+					}
+					
+					if (e.getCode() == KeyCode.SPACE)
+					{
+						mGameEngine.getPlayer().setFiringFlag(false);
 					}
 					
 					if (mNumDirKeys <= 0)

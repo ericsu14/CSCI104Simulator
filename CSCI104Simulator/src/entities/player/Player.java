@@ -16,6 +16,12 @@ public class Player extends Entity
 	private int mCurrentAmmo;
 	/* The player's max ammo pool */
 	private int mMaxAmmoPool;
+	/* Flag used to determine if this ship is firing a projectile */
+	private boolean mFiringFlag;
+	/* Rate of fire of the ship's cannons */
+	private int mFramesPerShot = 8;
+	/* The current time before the ship could fire its next shot */
+	private int mCurrentFramesPerShot;
 	
 	/** Constructs a new playership
 	 * 		@param x - x Position where the player would spawn
@@ -32,6 +38,8 @@ public class Player extends Entity
 		mPlayerRotation = this.getRotate();
 		mMaxAmmoPool = 2;
 		mCurrentAmmo = mMaxAmmoPool;
+		mFiringFlag = false;
+		mCurrentFramesPerShot = mFramesPerShot;
 		setSprite (controller.mPlayerShipSprite);
 	}
 
@@ -69,6 +77,22 @@ public class Player extends Entity
 			mPlayerRotation = 90.0;
 		}
 		
+		/* Fires the ship's cannons if the firing flag is true */
+		if (mFiringFlag)
+		{
+			/* Checks if the current frames per shot has reached zero.
+			 * If so, fire ze cannons */
+			if (mCurrentFramesPerShot <= 0 && mCurrentAmmo > 0)
+			{
+				mController.queueEntity(new PlayerProjectile (this, mController, false));
+				--mCurrentAmmo;
+				mCurrentFramesPerShot = mFramesPerShot;
+			}
+			else
+			{
+				--mCurrentFramesPerShot;
+			}
+		}
 	}
 	
 	/** Because the player's sprite never rotates, the player would have to use a slightly altered forward vector calculation algorithm
@@ -95,14 +119,11 @@ public class Player extends Entity
 		return mCurrentDirection;
 	}
 	
-	/** Fires a projectile at the player's current position */
-	public void shoot()
+	/** Sets the player's firing flag */
+	public void setFiringFlag (boolean newFlag)
 	{
-		if (mCurrentAmmo > 0)
-		{
-			mController.queueEntity(new PlayerProjectile (this, mController, false));
-			--mCurrentAmmo;
-		}
+		mFiringFlag = newFlag;
+		mCurrentFramesPerShot = 0;
 	}
 	
 	/** Overridden die method */
@@ -112,6 +133,7 @@ public class Player extends Entity
 		
 		/* Sets this player's opacity to 0 */
 		this.setOpacity(0);
+		setFiringFlag (false);
 	}
 	
 	/** Respawns the player */
