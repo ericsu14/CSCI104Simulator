@@ -36,7 +36,7 @@ public abstract class Entity extends ImageView
 	protected EntityType mType;
 	/* Used to approximate the destination point by constructing a box around that point with the
 	 * given offset. Once the entity reaches that area, it would then stop. */
-	protected int mOffset = 2;
+	protected int mWaypointOffset = 2;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -210,7 +210,7 @@ public abstract class Entity extends ImageView
 					
 					/* If the entity has reached somewhere close to the destination based on the offset,
 					 * stop moving. */
-					if (inRange ((int)getX(), (int)destination.getX() - mOffset, (int)destination.getX() + mOffset) && inRange((int)getY(), (int)destination.getY() - mOffset, (int)destination.getY() + mOffset))
+					if (inRange ((int)getX(), (int)destination.getX() - mWaypointOffset, (int)destination.getX() + mWaypointOffset) && inRange((int)getY(), (int)destination.getY() - mWaypointOffset, (int)destination.getY() + mWaypointOffset))
 					{
 						stopWaypointAnimation();
 					}
@@ -234,6 +234,7 @@ public abstract class Entity extends ImageView
 		setImage (sprite.getImage());
 		setFitHeight(mSpriteScale);
 		setFitWidth(mSpriteScale);
+		this.mWaypointOffset = (int)(mSpriteScale / 10);
 	}
 	
 	/** @return the entity's current state */
@@ -251,7 +252,7 @@ public abstract class Entity extends ImageView
 	/** Sets this entity's movement offset to a new value */
 	public void setOffset (int newOffset)
 	{
-		mOffset = newOffset;
+		mWaypointOffset = newOffset;
 	}
 	
 	/** @return the entity's type */

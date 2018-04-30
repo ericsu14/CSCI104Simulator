@@ -16,7 +16,6 @@ public class TestEnemy extends Enemy
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
-		this.mOffset = (int)(mSpriteScale / 10);
 		this.setSprite(controller.mTestEnemySprite);
 		setRotate (-90.0);
 	}

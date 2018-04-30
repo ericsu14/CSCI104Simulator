@@ -20,7 +20,7 @@ public class Mandelbug extends Enemy
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
-		this.mOffset = (int)(mSpriteScale / 10);
+		this.mWaypointOffset = (int)(mSpriteScale / 10);
 		this.setSprite(mController.mMandelBugSprite);
 		mHealth = 2;
 		setRotate (-90.0);
@@ -71,7 +71,6 @@ public class Mandelbug extends Enemy
 			this.mInitialMovementSpeed = 5.5;
 			this.mMaxAmmoPool = 6;
 			this.mSpriteScale = 22.0;
-			this.mOffset = (int)(mSpriteScale / 10);
 			this.setSprite(mController.mDamagedBugSprite);
 		}
 	}
