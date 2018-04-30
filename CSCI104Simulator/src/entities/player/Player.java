@@ -19,7 +19,7 @@ public class Player extends Entity
 	/* Flag used to determine if this ship is firing a projectile */
 	private boolean mFiringFlag;
 	/* Rate of fire of the ship's cannons */
-	private int mFramesPerShot = 8;
+	private int mFramesPerShot = 9;
 	/* The current time before the ship could fire its next shot */
 	private int mCurrentFramesPerShot;
 	
@@ -122,8 +122,11 @@ public class Player extends Entity
 	/** Sets the player's firing flag */
 	public void setFiringFlag (boolean newFlag)
 	{
-		mFiringFlag = newFlag;
-		mCurrentFramesPerShot = 0;
+		if (mFiringFlag != newFlag)
+		{
+			mFiringFlag = newFlag;
+			mCurrentFramesPerShot = 0;
+		}
 	}
 	
 	/** Overridden die method */
