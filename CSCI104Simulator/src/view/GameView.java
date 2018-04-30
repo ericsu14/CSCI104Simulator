@@ -31,6 +31,8 @@ public class GameView
 	private Launcher mLauncher;
 	/* Keeps track of the amount of left / right keys pressed */
 	private int mNumDirKeys = 0;
+	/* The initial amount of lives the player has */
+	private int mInitLives = 3;
 	
 	public GameView (Launcher launcher)
 	{
@@ -169,7 +171,7 @@ public class GameView
 		}
 		
 		playAnimations();
-		mGameEngine.setCurrentLives(3);
+		mGameEngine.setCurrentLives(mInitLives);
 		mGameEngine.startLevel();
 	}
 	

@@ -28,7 +28,7 @@ public class PlayerProjectile extends Projectile
 		
 		else
 		{
-			this.mInitialMovementSpeed = 10.0;
+			this.mInitialMovementSpeed = 11.0;
 			this.mMovementSpeed = mInitialMovementSpeed;
 			this.setSprite(controller.mPlayerBulletSprite);
 			setRotate (90.0);

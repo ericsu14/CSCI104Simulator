@@ -160,7 +160,9 @@ public class StarField extends Pane
 					}
 					catch (IllegalArgumentException e)
 					{
-						// DO nothing
+						mSpawnedStars.removeAll(mDespawnedAssets);
+						getChildren().removeAll(FXCollections.observableArrayList(mDespawnedAssets));
+						mDespawnedAssets.clear();
 					}
 				}
 			}
