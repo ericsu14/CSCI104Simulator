@@ -100,6 +100,10 @@ public class GameEngine
 	private int mPromptTime = 4;
 	/* Flag that determines if the prompt is currently being displayed */
 	private boolean mPromptFlag = false;
+	/* Keeps track of the amount of extra lives given */
+	private int mExtraLivesGiven = 0;
+	/* The score required to gain an extra life bonus */
+	private long mExtraLifeScore = 200000;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -153,6 +157,14 @@ public class GameEngine
 				update (now);
 				checkDeadEntities();
 				checkGameStatus();
+				/* Extra life bonus code */
+				if (mPlayerScore / mExtraLifeScore > mExtraLivesGiven)
+				{
+					++mCurrentLives;
+					++mExtraLivesGiven;
+					// TODO: Play a sound when awarded an extra life
+				}
+				
 				/* Updates the UI component */
 				mGameView.refreshUI();
 				
@@ -399,7 +411,6 @@ public class GameEngine
 				}
 				case kGameOver:
 				{
-					// TODO: Switch back to main menu
 					mGameLoop.stop();
 					cleanup();
 					spawnedPlayerFlag = false;
@@ -468,7 +479,7 @@ public class GameEngine
 		ArrayList <Entity> enemyContainer = new ArrayList <Entity> ();
 		
 		/* Reads from a text file and uses that data to spawn enemies into the game */
-		String fileName = "src/assets/data/enemyLayout.txt";
+		String fileName = getSpawnLayout();
 		String currentLine = null;
 		try
 		{
@@ -478,7 +489,7 @@ public class GameEngine
 			/* First calculate the dimensions of the enemy army */
 			while ((currentLine = br.readLine()) != null)
 			{
-				currentLine = currentLine.trim();
+				// currentLine = currentLine.trim();
 				
 				for (int i = 0; i < currentLine.length(); ++i)
 				{
@@ -556,6 +567,42 @@ public class GameEngine
 		addChildren (enemyContainer);
 		mNumEnemies = enemyContainer.size();
 		mMaxGroups = currentGroup + 1;
+	}
+	
+	/** @return the directory of the enemy spawn layout depending on
+	 *  the player's current level.
+	 *  
+	 *  Each spawn layout level indicates the overall difficulity of this
+	 *  setup, from lowest to highest. */
+	public String getSpawnLayout ()
+	{
+		if (inRange (this.mCurrentLevel, 1, 2))
+		{
+			return "src/assets/data/layout1.txt";
+		}
+		
+		else if (inRange (this.mCurrentLevel, 3, 4))
+		{
+			return "src/assets/data/layout2.txt";
+		}
+		
+		else if (inRange  (this.mCurrentLevel, 5, 7))
+		{
+			return "src/assets/data/layout3.txt";
+		}
+		else if (inRange (this.mCurrentLevel, 8, 12))
+		{
+			return "src/assets/data/layout4.txt";
+		}
+		else if (inRange (this.mCurrentLevel, 13, 17))
+		{
+			return "src/assets/data/layout5.txt";
+		}
+		else
+		{
+			return "src/assets/data/layout6.txt";
+		}
+		
 	}
 	
 	/** Cleans up assets */
@@ -727,4 +774,12 @@ public class GameEngine
 		return new Point2D (Launcher.mWidth / 2, Launcher.mHeight - mPlayerYOffset);
 	}
 	
+	/** @return True if target is between min and max
+	 * 		@param target - Value being compared
+	 * 		@param min - Min. value of selected range
+	 * 		@param max - Max. value of selected range */
+	protected boolean inRange(int target, int min, int max)
+	{
+		return (min <= target && target <= max);
+	}
 }
