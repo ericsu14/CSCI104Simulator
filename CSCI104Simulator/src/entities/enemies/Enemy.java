@@ -322,6 +322,13 @@ public abstract class Enemy extends Entity
 		{
 			mMovementSpeed = movementThreshold;
 		}
+		
+		/* There is a weird bug when movement speed is 5.4 */
+		if (mMovementSpeed >= 5.4)
+		{
+			mMovementSpeed += 0.1;
+		}
+		
 		mInitialMovementSpeed = mMovementSpeed;
 	}
 	
