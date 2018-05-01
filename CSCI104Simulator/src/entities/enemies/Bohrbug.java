@@ -20,6 +20,7 @@ public class Bohrbug extends Enemy
 		this.mShotsPerFrame = 70;
 		this.setSprite(controller.mBohrbugSprite);
 		setRotate (-90.0);
+		adjustDifficulity ();
 	}
 
 	@Override

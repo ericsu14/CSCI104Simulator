@@ -216,7 +216,7 @@ public class Player extends Entity
 	}
 	
 	/** Revokes this player's invincible status */
-	private void makeMortal()
+	public void makeMortal()
 	{
 		this.mInvincible = false;
 		mInvincibilityTimer = this.mInvincibilityFrames;

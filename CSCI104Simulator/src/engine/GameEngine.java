@@ -103,7 +103,7 @@ public class GameEngine
 	/* Keeps track of the amount of extra lives given */
 	private int mExtraLivesGiven = 0;
 	/* The score required to gain an extra life bonus */
-	private long mExtraLifeScore = 250000;
+	private long mExtraLifeScore = 200000;
 	/* True if the game is about to end */
 	private boolean isGameOver = false;
 	
@@ -206,7 +206,10 @@ public class GameEngine
 						
 						for (Enemy e : currentEnemies)
 						{
-							e.createAttackVectors();
+							if (e.getPhase() != EnemyPhase.kAttack)
+							{
+								e.createAttackVectors();
+							}
 						}
 					}
 					
@@ -400,6 +403,16 @@ public class GameEngine
 			{
 				case kGameStart:
 				{
+					/* Adjusts the attack group timer to scale with current
+					 * difficulity level. This timer decreases by 1% each level passed, at
+					 * a maximum of 50%. */
+					double changeOfTime = this.mAttackWaveTime * (double)((mCurrentLevel - 1) / 100.0);
+					this.mAttackWaveTime -= (int)changeOfTime;
+					if (this.mAttackWaveTime < 350)
+					{
+						this.mAttackWaveTime = 350;
+					}
+					
 					mGameState = GameState.kGameRunning;
 					spawnEnemies();
 					mGameLoop.start();
@@ -422,6 +435,17 @@ public class GameEngine
 				case kLevelEnd:
 				{
 					++mCurrentLevel;
+					
+					/* Adjusts the attack group timer to scale with current
+					 * difficulity level. This timer decreases by 1% each level passed, at
+					 * a maximum of 50%. */
+					double changeOfTime = this.mAttackWaveTime * (double)((mCurrentLevel - 1) / 100.0);
+					this.mAttackWaveTime -= (int)changeOfTime;
+					if (this.mAttackWaveTime < 300)
+					{
+						this.mAttackWaveTime = 300;
+					}
+					
 					mGameState = GameState.kNewLevel;
 					mPromptTimer.playFrom(Duration.seconds(0));
 					break;
@@ -451,8 +475,8 @@ public class GameEngine
 		});
 	}
 	
-	/** Starts a new level */
-	public void startLevel()
+	/** Starts a new game */
+	public void startGame()
 	{
 		/* TODO: Ensure that the player is only spawned once throughout this game */
 		if (!spawnedPlayerFlag)

@@ -179,7 +179,7 @@ public class GameView
 		mGameEngine.setCurrentLives(mInitLives);
 		mGameEngine.setCurrentLevel(1);
 		mGameEngine.setCurrentScore(0);
-		mGameEngine.startLevel();
+		mGameEngine.startGame();
 	}
 	
 	/** Cleans up all assets in this view component */

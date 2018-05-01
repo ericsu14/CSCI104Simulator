@@ -24,6 +24,7 @@ public class Mandelbug extends Enemy
 		this.setSprite(mController.mMandelBugSprite);
 		mHealth = 2;
 		setRotate (-90.0);
+		adjustDifficulity ();
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class Mandelbug extends Enemy
 			/* Because this enemy is very anger,
 			 * its stats are upgraded */
 			this.mShotsPerFrame = 50;
-			this.mInitialMovementSpeed = 5.5;
+			this.mInitialMovementSpeed += 0.2;
 			this.mMaxAmmoPool = 5;
 			this.mSpriteScale = 22.0;
 			this.setSprite(mController.mDamagedBugSprite);

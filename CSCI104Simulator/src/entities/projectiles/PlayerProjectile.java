@@ -10,8 +10,10 @@ import javafx.geometry.Point2D;
 public class PlayerProjectile extends Projectile 
 {
 	/* True if the projectile is fired in the player's rapid fire mode */
-	
 	private boolean mRapidFire;
+	/* The threshold percentile of this projectile's movement speed increase */
+	private double mMovementBonunsThreshold = 0.35;
+	
 	public PlayerProjectile(Entity owner, GameEngine controller, boolean isRapidFire) 
 	{
 		super(owner, controller);
@@ -29,9 +31,18 @@ public class PlayerProjectile extends Projectile
 		else
 		{
 			this.mInitialMovementSpeed = 11.0;
-			this.mMovementSpeed = mInitialMovementSpeed;
 			this.setSprite(controller.mPlayerBulletSprite);
 			setRotate (90.0);
+			
+			/* Movement speed is increased based on the current level
+			 * (increase of 1% for each level, with a max. of 35%) */
+			this.mInitialMovementSpeed +=  this.mInitialMovementSpeed * ((mController.getCurrentLevel() - 1) / 100.0);
+			if (this.mInitialMovementSpeed > (11.0 + (11.0 * mMovementBonunsThreshold)))
+			{
+				this.mInitialMovementSpeed = 11.0 + (11.0 * mMovementBonunsThreshold);
+			}
+			
+			this.mMovementSpeed = mInitialMovementSpeed;
 		}
 		this.moveEntity(new Point2D (mOwner.getX(), -100));
 	}

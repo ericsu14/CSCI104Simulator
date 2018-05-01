@@ -255,10 +255,17 @@ public abstract class Enemy extends Entity
 	}
 	
 	
-	/** @return this enemy's score value */
+	/** @return this enemy's score value scaled with the current level.
+	 *  The enemy's score increases by 2% per level, with a cap of 100%. */
 	public long getScore()
 	{
-		return mPointsValue;
+		double threshold = mPointsValue * 1.00;
+		double levelBonus =  mPointsValue * ((mController.getCurrentLevel() - 1) / 50.0);
+		if (levelBonus > threshold)
+		{
+			levelBonus = threshold;
+		}
+		return (long) (mPointsValue + levelBonus);
 	}
 	
 	/** @return this enemy's phase */
@@ -301,6 +308,21 @@ public abstract class Enemy extends Entity
 	public void reload ()
 	{
 		this.mCurrentAmmo = this.mMaxAmmoPool;
+	}
+	
+	/** Adjusts this enemy's base stats depending on the difficulity level */
+	public void adjustDifficulity ()
+	{
+		/* The enemy's movement speed is increased by 1% each level,
+		 * with a max cap of 10%. */
+		double movementThreshold = mInitialMovementSpeed + mInitialMovementSpeed * 0.1;
+		double changeOfMovement =  mInitialMovementSpeed * ((mController.getCurrentLevel() - 1) / 100.0);
+		mMovementSpeed = mInitialMovementSpeed + changeOfMovement;
+		if (mMovementSpeed > movementThreshold)
+		{
+			mMovementSpeed = movementThreshold;
+		}
+		mInitialMovementSpeed = mMovementSpeed;
 	}
 	
 	/** Spawns an enemy projectile */

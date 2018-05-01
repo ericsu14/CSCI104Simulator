@@ -19,6 +19,7 @@ public class Heisenbug extends Enemy {
 		this.mShotsPerFrame = 60;
 		this.setSprite(controller.mHeisenbugSprite);
 		setRotate (-90.0);
+		adjustDifficulity ();
 	}
 
 	@Override
