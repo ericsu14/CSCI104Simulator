@@ -49,7 +49,7 @@ public abstract class Enemy extends Entity
 	/* If set to true, then the enemy would attack while moving to their spawn location */
 	protected boolean mSpawnAttackFlag = false;
 	/* The level required before the enemy is able to attack while spawining */
-	protected int mSpawnAttackLevel = 10;
+	protected int mSpawnAttackLevel = 8;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
