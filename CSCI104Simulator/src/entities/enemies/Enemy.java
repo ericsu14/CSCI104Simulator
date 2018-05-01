@@ -46,7 +46,10 @@ public abstract class Enemy extends Entity
 	protected int mCooldown;
 	/* Determines if this enemy has just used an attack move */
 	public boolean mAttackMoveFlag = false;
-	
+	/* If set to true, then the enemy would attack while moving to their spawn location */
+	protected boolean mSpawnAttackFlag = false;
+	/* The level required before the enemy is able to attack while spawining */
+	protected int mSpawnAttackLevel = 10;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -87,6 +90,17 @@ public abstract class Enemy extends Entity
 		mCommandQueue.add(new Command (CommandType.kMove, this, mOriginPoint));
 		mPhase = EnemyPhase.kSpawning;
 		mNumSpawnWaypoints = mCommandQueue.size();
+		
+		/* If the player's current level reaches a set level, then the enemy has a
+		 * 7% chance of attacking while moving to their spawn location */
+		if (mController.getCurrentLevel() >= mSpawnAttackLevel)
+		{
+			int attackProb = mRand.nextInt(100);
+			if (inRange (attackProb, 0, 9))
+			{
+				mSpawnAttackFlag = true;
+			}
+		}
 	}
 
 	/** A fairly basic update method that allows this entity to compute move instructions. */
@@ -123,7 +137,8 @@ public abstract class Enemy extends Entity
 		
 		/* Starts spawning projectiles when this enemy is attacking
 		 * and the game state is still running */
-		if (mPhase == EnemyPhase.kAttack && mController.getGameState() == GameState.kGameRunning)
+		if ((mPhase == EnemyPhase.kAttack && mController.getGameState() == GameState.kGameRunning)
+				|| mSpawnAttackFlag)
 		{
 			if (mCooldown <= 0)
 			{
@@ -172,6 +187,7 @@ public abstract class Enemy extends Entity
 					mPhase = EnemyPhase.kIdle;
 					mNumSpawnWaypoints = 0;
 					mCurrentAmmo = mMaxAmmoPool;
+					mSpawnAttackFlag = false;
 				}
 				break;
 			}

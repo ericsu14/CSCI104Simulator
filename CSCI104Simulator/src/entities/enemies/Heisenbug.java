@@ -1,7 +1,7 @@
 package entities.enemies;
 
 import engine.GameEngine;
-import entities.projectiles.TestProjectile;
+import entities.projectiles.GuidedProjectile;
 import javafx.geometry.Point2D;
 
 public class Heisenbug extends Enemy {
@@ -39,7 +39,7 @@ public class Heisenbug extends Enemy {
 	{
 		if (mCurrentAmmo > 0)
 		{
-			mController.queueEntity(new TestProjectile (this, mController));
+			mController.queueEntity(new GuidedProjectile (this, mController));
 			mCurrentAmmo--;
 		}
 	}

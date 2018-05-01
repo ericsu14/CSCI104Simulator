@@ -2,6 +2,7 @@
 
 package entities;
 
+import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -37,6 +38,8 @@ public abstract class Entity extends ImageView
 	/* Used to approximate the destination point by constructing a box around that point with the
 	 * given offset. Once the entity reaches that area, it would then stop. */
 	protected int mWaypointOffset = 2;
+	/* Random number generator shared across all entities */
+	protected static Random mRand = new Random();
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated

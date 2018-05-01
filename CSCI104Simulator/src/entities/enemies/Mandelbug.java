@@ -1,7 +1,7 @@
 package entities.enemies;
 
 import engine.GameEngine;
-import entities.projectiles.TestProjectile;
+import entities.projectiles.GuidedProjectile;
 import javafx.geometry.Point2D;
 
 public class Mandelbug extends Enemy
@@ -17,7 +17,7 @@ public class Mandelbug extends Enemy
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 20.0;
 		this.mPointsValue = 1500;
-		this.mMaxAmmoPool = 5;
+		this.mMaxAmmoPool = 4;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
 		this.mWaypointOffset = (int)(mSpriteScale / 10);
@@ -47,7 +47,7 @@ public class Mandelbug extends Enemy
 	{
 		if (mCurrentAmmo > 0)
 		{
-			mController.queueEntity(new TestProjectile (this, mController));
+			mController.queueEntity(new GuidedProjectile (this, mController));
 			mCurrentAmmo--;
 		}
 	}
@@ -69,7 +69,7 @@ public class Mandelbug extends Enemy
 			 * its stats are upgraded */
 			this.mShotsPerFrame = 50;
 			this.mInitialMovementSpeed = 5.5;
-			this.mMaxAmmoPool = 6;
+			this.mMaxAmmoPool = 5;
 			this.mSpriteScale = 22.0;
 			this.setSprite(mController.mDamagedBugSprite);
 		}

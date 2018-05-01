@@ -104,6 +104,8 @@ public class GameEngine
 	private int mExtraLivesGiven = 0;
 	/* The score required to gain an extra life bonus */
 	private long mExtraLifeScore = 250000;
+	/* True if the game is about to end */
+	private boolean isGameOver = false;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -154,9 +156,18 @@ public class GameEngine
 			@Override
 			public void handle(long now) 
 			{	
+				/* If the game is just restarting from a prev. ended
+				 * game, clean up its previous state. */
+				if (isGameOver)
+				{
+					cleanup();
+					isGameOver = false;
+				}
+				
 				update (now);
 				checkDeadEntities();
 				checkGameStatus();
+				
 				/* Extra life bonus code */
 				if (mPlayerScore / mExtraLifeScore > mExtraLivesGiven)
 				{
@@ -236,7 +247,6 @@ public class GameEngine
 					}
 				}
 			}
-			
 			
 			/** Removes all of the dead entities from the game */
 			public void checkDeadEntities ()
@@ -371,6 +381,13 @@ public class GameEngine
 					}
 				}
 			}
+			
+			/** Cleans up all internal variables */
+			private void cleanup ()
+			{
+				this.mFocusedEnemy = null;
+				this.mSpawnIntervals = 0;
+			}
 		};
 		
 		/* Sets up the prompt animation timer */
@@ -415,6 +432,7 @@ public class GameEngine
 					cleanup();
 					spawnedPlayerFlag = false;
 					mExtraLivesGiven = 0;
+					isGameOver = true;
 					mGameView.getLauncher().switchMainMenu();
 					break;
 				}
@@ -609,12 +627,7 @@ public class GameEngine
 	
 	/** Cleans up assets */
 	public void cleanup ()
-	{
-		/* Resets all player score / lives / level counters */
-		mPlayerScore = 0;
-		mCurrentLevel = 1;
-		mCurrentLives = 3;
-		
+	{		
 		/* Cleans up all containers */
 		mDeadEntities.clear();
 		mGameEntities.clear();
@@ -774,6 +787,12 @@ public class GameEngine
 	public Point2D getPlayerCenterCoordinates()
 	{
 		return new Point2D (Launcher.mWidth / 2, Launcher.mHeight - mPlayerYOffset);
+	}
+	
+	/** Sets the player's current score */
+	public void setCurrentScore (long score)
+	{
+		this.mPlayerScore = score;
 	}
 	
 	/** @return True if target is between min and max

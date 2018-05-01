@@ -11,7 +11,16 @@ public class UnguidedProjectile extends EnemyProjectile
 	{
 		super(owner, controller);
 		this.mSpriteScale = 15.0;
-		this.mMovementSpeed = 3.5;
+		this.mMovementSpeed = 3.5 + ((double)controller.getCurrentLevel() / 10.0);
+		/* Restricts the movement speed of this projectile
+		 * so the game does not get impossible */
+		if (this.mMovementSpeed > 5.0)
+		{
+			this.mMovementSpeed = 5.0;
+		}
+		
+		System.out.println(this.mMovementSpeed);
+		
 		this.setSprite(mController.mEnemyLaser);
 		
 		this.moveEntity(new Point2D (this.getX(), this.getY() + 1000));

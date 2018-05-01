@@ -177,6 +177,8 @@ public class GameView
 		
 		playAnimations();
 		mGameEngine.setCurrentLives(mInitLives);
+		mGameEngine.setCurrentLevel(1);
+		mGameEngine.setCurrentScore(0);
 		mGameEngine.startLevel();
 	}
 	

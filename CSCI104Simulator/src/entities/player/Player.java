@@ -22,6 +22,13 @@ public class Player extends Entity
 	private int mFramesPerShot = 9;
 	/* The current time before the ship could fire its next shot */
 	private int mCurrentFramesPerShot;
+	/* When the player respawns, the player would be invincible for 
+	 * a certain amount of frames */
+	private int mInvincibilityFrames = 240;
+	/* Timer for the player's invincibility */
+	private int mInvincibilityTimer;
+	/* Flag used to determine if this player is invincibile */
+	private boolean mInvincible;
 	
 	/** Constructs a new playership
 	 * 		@param x - x Position where the player would spawn
@@ -39,6 +46,7 @@ public class Player extends Entity
 		mMaxAmmoPool = 2;
 		mCurrentAmmo = mMaxAmmoPool;
 		mFiringFlag = false;
+		mInvincible = false;
 		mCurrentFramesPerShot = mFramesPerShot;
 		setSprite (controller.mPlayerShipSprite);
 	}
@@ -46,6 +54,18 @@ public class Player extends Entity
 	@Override
 	public void update() 
 	{
+		/* Updates the player's invincibility */
+		if (this.mInvincible)
+		{
+			if (this.mInvincibilityTimer <= 0)
+			{
+				makeMortal();
+			}
+			else
+			{
+				--this.mInvincibilityTimer;
+			}
+		}
 		/* Moves this character's position if the playe is set to move either left or right */
 		if (mCurrentDirection != MoveDirection.kNone)
 		{
@@ -132,11 +152,13 @@ public class Player extends Entity
 	/** Overridden die method */
 	public void die()
 	{
-		super.die();
-		
-		/* Sets this player's opacity to 0 */
-		this.setOpacity(0);
-		setFiringFlag (false);
+		if (!this.mInvincible)
+		{
+			super.die();
+			/* Sets this player's opacity to 0 */
+			this.setOpacity(0);
+			setFiringFlag (false);
+		}
 	}
 	
 	/** Respawns the player */
@@ -152,6 +174,9 @@ public class Player extends Entity
 		Point2D centerCoordinates = mController.getPlayerCenterCoordinates();
 		this.setX(centerCoordinates.getX());
 		this.setY(centerCoordinates.getY());
+		
+		/* Makes this player invincible for a short amount of time */
+		makeInvincible ();
 	}
 	
 	/** Increments the player's current ammo (capped at the player's max
@@ -180,6 +205,22 @@ public class Player extends Entity
 	public int getPlayerAmmo ()
 	{
 		return mCurrentAmmo;
+	}
+	
+	/** Makes this player invincible */
+	public void makeInvincible ()
+	{
+		this.mInvincible = true;
+		mInvincibilityTimer = this.mInvincibilityFrames;
+		this.setOpacity(0.3);
+	}
+	
+	/** Revokes this player's invincible status */
+	private void makeMortal()
+	{
+		this.mInvincible = false;
+		mInvincibilityTimer = this.mInvincibilityFrames;
+		this.setOpacity(1.0);
 	}
 
 	@Override
