@@ -311,13 +311,27 @@ public class GameEngine
 				
 				/* Enemies can attack once all of their phases are currently
 				 * in the idle phase */
+				int idleEnemiesCount = 0;
 				for (Entity e : mGameEntities)
 				{
 					if (e.getType() == EntityType.kEnemy)
 					{
 						Enemy enemy = (Enemy) e;
 						result &= (enemy.getPhase() != EnemyPhase.kSpawning);
+						if (enemy.getPhase() != EnemyPhase.kSpawning)
+						{
+							++idleEnemiesCount;
+						}
 					}
+				}
+				
+				/* If roughly 95% of all spawned entities are in place,
+				 * enemies can start attacking */
+				double canSpawnThreshold = (mNumEnemies * 0.95);
+				
+				if (idleEnemiesCount >= (int) canSpawnThreshold)
+				{
+					result = true;
 				}
 				
 				if (result)
