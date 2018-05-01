@@ -86,7 +86,7 @@ public class ConfettiText extends Text
 	 *  	@param isFireworks - Determines if this entity is part of a firework animation or an explosion */
 	public ConfettiText (int x, int y, int destX, int destY, String text, Color color, boolean isFirework)
 	{
-		super (x, y, text);
+		super (x, y + 500.0, text);
 		
 		mOriginX = x;
 		mOriginY = y;
