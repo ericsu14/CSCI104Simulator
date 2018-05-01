@@ -12,7 +12,7 @@ public class Heisenbug extends Enemy {
 		
 		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
-		this.mSpriteScale = 20.0;
+		this.mSpriteScale = 22.0;
 		this.mPointsValue = 1000;
 		this.mMaxAmmoPool = 3;
 		this.mCurrentAmmo = mMaxAmmoPool;

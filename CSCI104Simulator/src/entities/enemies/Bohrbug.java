@@ -13,7 +13,7 @@ public class Bohrbug extends Enemy
 		
 		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
-		this.mSpriteScale = 20.0;
+		this.mSpriteScale = 22.0;
 		this.mPointsValue = 750;
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;

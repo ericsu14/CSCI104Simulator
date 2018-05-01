@@ -15,7 +15,7 @@ public class Mandelbug extends Enemy
 		
 		this.mInitialMovementSpeed = 5;
 		this.mMovementSpeed = mInitialMovementSpeed;
-		this.mSpriteScale = 20.0;
+		this.mSpriteScale = 22.0;
 		this.mPointsValue = 1500;
 		this.mMaxAmmoPool = 4;
 		this.mCurrentAmmo = mMaxAmmoPool;
@@ -71,7 +71,7 @@ public class Mandelbug extends Enemy
 			this.mShotsPerFrame = 50;
 			this.mInitialMovementSpeed += 0.2;
 			this.mMaxAmmoPool = 5;
-			this.mSpriteScale = 22.0;
+			this.mSpriteScale = 25.0;
 			this.setSprite(mController.mDamagedBugSprite);
 		}
 	}

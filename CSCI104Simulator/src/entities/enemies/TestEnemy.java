@@ -11,7 +11,7 @@ public class TestEnemy extends Enemy
 		super (initPosition, origin, group, controller);
 		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
-		this.mSpriteScale = 20.0;
+		this.mSpriteScale = 22.0;
 		this.mPointsValue = 1000;
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;

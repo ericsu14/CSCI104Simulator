@@ -100,8 +100,8 @@ public class ConfettiText extends Text
 		if (mIsFireworks)
 		{
 			mStartingCoordinates = new MoveTo (x, y + 500.0);
-			mExpandDuration = 3;
-			mFadeRate = 0.01;
+			mExpandDuration = 2;
+			mFadeRate = 0.02;
 		}
 		/* Otherwise, explode in place */
 		else

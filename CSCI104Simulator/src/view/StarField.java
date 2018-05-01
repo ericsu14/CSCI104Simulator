@@ -30,6 +30,12 @@ public class StarField extends Pane
 	private float mSpawnTimer = 0.0f; 
 	/* Total time befor the next star could spawn */
 	private static final float mSpawnTime = 7.0f;
+	/* Flag used to indicate if a fireworks show is going to happen */
+	private boolean mFireworksFlag;
+	/* The time it takes for each firework to spawn */
+	private int mFireworksTime = 15;
+	/* Timer for fireworks show */
+	private int mFireworksTimer;
 	
 	/** Nested fireworks command class */
 	private class FireworksCommand
@@ -62,6 +68,7 @@ public class StarField extends Pane
 		mSpawnedStars = new ArrayList <ConfettiText>();
 		mDespawnedAssets = new ArrayList <ConfettiText>();
 		mQueuedFireworks = new LinkedList <FireworksCommand> ();
+		mFireworksFlag = false;
 		
 		InitializeAnimations();
 	}
@@ -86,7 +93,13 @@ public class StarField extends Pane
 		mSpawnedStars.clear();
 	}
 	
-	/** Spawns a fireworks animation */
+	/** Enables the fireworks show flag, which randomly spawns fireworks
+	 *  until the flag is turned off */
+	public void setFireworksFlag (boolean flag)
+	{
+		mFireworksFlag = flag;
+		mFireworksTimer = 0;
+	}
 	
 	/** Spawns a fireworks explosion at a point */
 	public void spawnExplosion (int x, int y)
@@ -115,6 +128,20 @@ public class StarField extends Pane
 					mSpawnedStars.add(new ConfettiText ((int)(mRand.nextInt((int)Launcher.mWidth))));
 					getChildren().addAll(mSpawnedStars.get(mSpawnedStars.size() - 1));
 					mSpawnTimer = mSpawnTime;
+				}
+				
+				/* Starts spawning fireworks, if the flag is true */
+				if (mFireworksFlag)
+				{
+					if (mFireworksTimer <= 0)
+					{
+						mQueuedFireworks.add(new FireworksCommand ());
+						mFireworksTimer = mFireworksTime;
+					}
+					else
+					{
+						--mFireworksTimer;
+					}
 				}
 				
 				/* Adds in queued assets */

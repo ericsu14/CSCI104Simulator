@@ -31,7 +31,7 @@ public class FireworksFactory
 	public static enum FireworkStyles 
 	{
 		shindler, party, donutshop, apple, fireworks, disney, fireworks2,
-		fighton, fightonsymbol, USC, fireworks3, bulb, cote
+		fighton, fightonsymbol, USC, fireworks3
 	};
 	
 	/** Note: ASCII art provided by
@@ -520,12 +520,6 @@ public class FireworksFactory
 			case fireworks3:
 				asciiArt = mFireworks3;
 				break;
-			case bulb:
-				asciiArt = mBulb;
-				break;
-			case cote:
-				asciiArt = mFireworks2;
-				break;
 			default:
 				asciiArt = "NULL";
 				break;
@@ -650,12 +644,6 @@ public class FireworksFactory
 				break;
 			case fireworks3:
 				asciiArt = mFireworks3;
-				break;
-			case bulb:
-				asciiArt = mBulb;
-				break;
-			case cote:
-				asciiArt = mFireworks2;
 				break;
 			default:
 				asciiArt = "NULL";

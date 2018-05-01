@@ -85,6 +85,8 @@ public class GameEngine
 	private boolean spawnedPlayerFlag = false;
 	/* Time it takes (in frames) before the next attack wave could start */
 	private int mAttackWaveTime;
+	/* The value that the attack wave timer is initially set to */
+	private int mInitAttackWaveTime;
 	/* Timer for attack waves */
 	private int mAttackWaveTimer;
 	/* The number of enemies on the game world */
@@ -134,6 +136,7 @@ public class GameEngine
 		
 		/* Attack wave timer */
 		mAttackWaveTime = 650;
+		mInitAttackWaveTime = mAttackWaveTime;
 		mAttackWaveTimer = 0;
 		
 		/* Sets up the game's borders */
@@ -376,6 +379,8 @@ public class GameEngine
 						mGameState = GameState.kLevelEnd;
 						mPromptTimer.playFrom(Duration.seconds(0));
 						mPromptFlag = true;
+						/* Starts small fireworks show */
+						mGameView.getStarField().setFireworksFlag(true);
 					}
 					
 					if (mPromptFlag)
@@ -403,15 +408,7 @@ public class GameEngine
 			{
 				case kGameStart:
 				{
-					/* Adjusts the attack group timer to scale with current
-					 * difficulity level. This timer decreases by 1% each level passed, at
-					 * a maximum of 50%. */
-					double changeOfTime = this.mAttackWaveTime * (double)((mCurrentLevel - 1) / 100.0);
-					this.mAttackWaveTime -= (int)changeOfTime;
-					if (this.mAttackWaveTime < 350)
-					{
-						this.mAttackWaveTime = 350;
-					}
+					adjustGlobalDifficulty();
 					
 					mGameState = GameState.kGameRunning;
 					spawnEnemies();
@@ -436,18 +433,12 @@ public class GameEngine
 				{
 					++mCurrentLevel;
 					
-					/* Adjusts the attack group timer to scale with current
-					 * difficulity level. This timer decreases by 1% each level passed, at
-					 * a maximum of 50%. */
-					double changeOfTime = this.mAttackWaveTime * (double)((mCurrentLevel - 1) / 100.0);
-					this.mAttackWaveTime -= (int)changeOfTime;
-					if (this.mAttackWaveTime < 300)
-					{
-						this.mAttackWaveTime = 300;
-					}
+					adjustGlobalDifficulty();
 					
 					mGameState = GameState.kNewLevel;
 					mPromptTimer.playFrom(Duration.seconds(0));
+					/* Disable small fireworks show */
+					mGameView.getStarField().setFireworksFlag(false);
 					break;
 				}
 				case kGameOver:
@@ -647,6 +638,22 @@ public class GameEngine
 			return "src/assets/data/layout6.txt";
 		}
 		
+	}
+	
+	/** Adjusts variables of the game's global settings based on the
+	 *  level the player is currently in */
+	public void adjustGlobalDifficulty()
+	{
+		double attackWaveThreshold = this.mInitAttackWaveTime - (this.mInitAttackWaveTime * 0.40);
+		/* Adjusts the attack group timer to scale with current
+		 * difficulity level. This timer decreases by 1% each level passed, at
+		 * a maximum of 40%. */
+		double changeOfTime = this.mInitAttackWaveTime * (double)((mCurrentLevel - 1) / 100.0);
+		this.mAttackWaveTime = (int)(this.mInitAttackWaveTime - (int)changeOfTime);
+		if (this.mAttackWaveTime < (int)attackWaveThreshold)
+		{
+			this.mAttackWaveTime = (int)attackWaveThreshold;
+		}
 	}
 	
 	/** Cleans up assets */
