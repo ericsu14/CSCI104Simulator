@@ -103,7 +103,7 @@ public class GameEngine
 	/* Keeps track of the amount of extra lives given */
 	private int mExtraLivesGiven = 0;
 	/* The score required to gain an extra life bonus */
-	private long mExtraLifeScore = 200000;
+	private long mExtraLifeScore = 250000;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -414,6 +414,7 @@ public class GameEngine
 					mGameLoop.stop();
 					cleanup();
 					spawnedPlayerFlag = false;
+					mExtraLivesGiven = 0;
 					mGameView.getLauncher().switchMainMenu();
 					break;
 				}
@@ -448,6 +449,7 @@ public class GameEngine
 		mGameView.getGameUI().showPromptText(mGameState);
 		mGameView.getGameUI().update();
 		mPromptTimer.playFrom(Duration.seconds(0));
+		mExtraLivesGiven = 0;
 		mPromptFlag = true;
 	}
 	
