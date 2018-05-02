@@ -28,6 +28,8 @@ public class GameUI extends StackPane
 	private VBox mPromptContainer;
 	/* The text that goes into the prompt */
 	private Label mPromptText;
+	/* A second layer of text that goes into the prompt, if needed */
+	private Label mPromptText2;
 	/* Keeps track of the current lives remaining */
 	private int mLivesRemaining;
 	
@@ -73,8 +75,11 @@ public class GameUI extends StackPane
 		mPromptContainer = new VBox();
 		mPromptText = new Label ("");
 		mPromptText.setStyle(CSSConstants.GAME_FONT);
-		mPromptContainer.getChildren().addAll(mPromptText);
+		mPromptText2 = new Label ("");
+		mPromptText2.setStyle (CSSConstants.GAME_FONT);
+		mPromptContainer.getChildren().addAll(mPromptText, mPromptText2);
 		mPromptContainer.setAlignment(Pos.CENTER);
+		mPromptContainer.setSpacing(4);
 		topLeft.setCenter(mPromptContainer);
 		
 		/* TODO: setup lives counter */
@@ -127,21 +132,31 @@ public class GameUI extends StackPane
 		{
 			case kGameStart:
 				mPromptText.setText("GET READY");
+				mPromptText2.setText("");
 				break;
 			case kNewLevel:
 				mPromptText.setText("LEVEL " + mGameView.getEngine().getCurrentLevel());
+				mPromptText2.setText("");
 				break;
 			case kRespawning:
 				mPromptText.setText("segmentation fault (core dumped)");
+				mPromptText2.setText("");
 				break;
 			case kGameOver:
-				mPromptText.setText("Kernel panic!\nGame Over");
+				mPromptText.setText("Kernel panic!");
+				mPromptText2.setText("Game Over");
 				break;
 			case kLevelEnd:
 				mPromptText.setText(ShindlerFactory.getJokeOfTheDay() + "\n\t- Michael Shindler");
+				mPromptText2.setText("");
+				break;
+			case kGameBriefing:
+				mPromptText.setText("Use the left/right arrow keys to move,");
+				mPromptText2.setText("space bar to shoot.");
 				break;
 			default:
 				mPromptText.setText("");
+				mPromptText2.setText("");
 				break;
 		}
 	}

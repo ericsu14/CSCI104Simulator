@@ -430,6 +430,12 @@ public class GameEngine
 					mPlayer.respawn();
 					break;
 				}
+				case kGameBriefing:
+				{
+					mGameState = GameState.kGameStart;
+					mPromptTimer.playFrom(Duration.seconds(0));
+					break;
+				}
 				case kNewLevel:
 				{
 					mGameState = GameState.kGameRunning;
@@ -492,7 +498,7 @@ public class GameEngine
 			mPlayer.setState(EntityState.kPlayerDead);
 			mPlayer.setOpacity(0.0);
 		}
-		mGameState = GameState.kGameStart;
+		mGameState = GameState.kGameBriefing;
 		mGameView.getGameUI().showPromptText(mGameState);
 		mGameView.getGameUI().update();
 		mPromptTimer.playFrom(Duration.seconds(0));
@@ -630,26 +636,30 @@ public class GameEngine
 			return "src/assets/data/layout1.txt";
 		}
 		
-		else if (inRange (this.mCurrentLevel, 3, 4))
+		else if (inRange (this.mCurrentLevel, 3, 7))
 		{
 			return "src/assets/data/layout2.txt";
 		}
 		
-		else if (inRange  (this.mCurrentLevel, 5, 7))
+		else if (inRange  (this.mCurrentLevel, 8, 9))
 		{
 			return "src/assets/data/layout3.txt";
 		}
-		else if (inRange (this.mCurrentLevel, 8, 12))
+		else if (inRange (this.mCurrentLevel, 10, 20))
 		{
 			return "src/assets/data/layout4.txt";
 		}
-		else if (inRange (this.mCurrentLevel, 13, 17))
+		else if (inRange (this.mCurrentLevel, 21, 30))
 		{
 			return "src/assets/data/layout5.txt";
 		}
-		else
+		else if (inRange (this.mCurrentLevel, 31, 40))
 		{
 			return "src/assets/data/layout6.txt";
+		}
+		else
+		{
+			return "src/assets/data/layout7.txt";
 		}
 		
 	}
