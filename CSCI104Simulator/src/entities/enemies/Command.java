@@ -2,23 +2,28 @@
 package entities.enemies;
 
 import javafx.geometry.Point2D;
+import view.Launcher;
+
 import java.util.Random;
 
+import entities.EntityType;
+import entities.boss.Boss;
+import entities.boss.BossAmmoType;
 import entities.player.Player;
 
 public class Command 
 {
 	/* The owner of this command */
-	private Enemy mOwner;
+	protected Enemy mOwner;
 	/* The type of command the enemy is instructed to do */
-	private CommandType mType;
+	protected CommandType mType;
 	/* If it is the case where this command is a move instruction, store the coordinates
 	 * where the enemy would move to */
-	private Point2D mWaypoint;
+	protected Point2D mWaypoint;
 	/* Defines the offset threshold. */
-	private int mOffsetThreshold = 100;
+	protected int mOffsetThreshold = 100;
 	/* A random generator that randomly computes the offset to make things more intresting */
-	private static Random mRand = new Random();
+	protected static Random mRand = new Random();
 	
 	/** Constructs a new command that is either an attack or retreat command.
 	 *  In those situations, declaring a waypoint is not necessary.
@@ -114,6 +119,38 @@ public class Command
 			case kAttackMove:
 			{
 				mOwner.mAttackMoveFlag = true;
+				break;
+			}
+			
+			case kBossPrepareRangedAttack:
+			{
+				/* First determine which side the player is currently in
+				 * so this boss character could determine which side to attack */
+				
+				/* If player is on the left side, attack on the right side */
+				if (mOwner.getController().getPlayer().getX() <= (Launcher.mWidth / 2.0))
+				{
+					mWaypoint = new Point2D (mOwner.getController().getRightBorder(), 100.0);
+				}
+				/* Otherwise, attack on the left */
+				else
+				{
+					mWaypoint = new Point2D (mOwner.getController().getLeftBorder(), 100.0);
+				}
+				
+				break;
+			}
+			
+			case kBossRangedAttack:
+			{
+				/* Only execute this command if the owner is a boss character */
+				if (mOwner.getType() == EntityType.kBoss)
+				{
+					Boss boss = (Boss) mOwner;
+					boss.setAmmoType(BossAmmoType.kRanged);
+					/* TODO: Fire the ranged attack */
+					boss.fire();
+				}
 				break;
 			}
 			

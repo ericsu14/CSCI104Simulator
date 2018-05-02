@@ -218,6 +218,20 @@ public abstract class Enemy extends Entity
 				}
 				break;
 			}
+			
+			case kRangedAttack:
+			{
+				if (mNumAttackWaypoints > 1)
+				{
+					--mNumAttackWaypoints;
+				}
+				else
+				{
+					mPhase = EnemyPhase.kRetreat;
+					mNumAttackWaypoints = 0;
+				}
+				break;
+			}
 			default:
 			{
 				break;
@@ -242,7 +256,8 @@ public abstract class Enemy extends Entity
 	{
 		mCommandQueue.add(new Command (type, this));
 		
-		if (type == CommandType.kAttack || type == CommandType.kAttackMove || type == CommandType.kPrepareAttack)
+		if (type == CommandType.kAttack || type == CommandType.kAttackMove || type == CommandType.kPrepareAttack
+				|| type == CommandType.kBossPrepareRangedAttack || type == CommandType.kBossPrepareRangedAttack)
 		{
 			++mNumAttackWaypoints;
 			mCooldown = this.mShotsPerFrame;

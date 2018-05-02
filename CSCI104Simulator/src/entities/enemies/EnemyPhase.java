@@ -10,5 +10,5 @@ package entities.enemies;
 
 public enum EnemyPhase 
 {
-	kSpawning, kIdle, kAttack, kRetreat
+	kSpawning, kIdle, kAttack, kRetreat, kRangedAttack
 }
