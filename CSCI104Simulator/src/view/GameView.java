@@ -22,6 +22,8 @@ public class GameView
 	private GameEngine mGameEngine;
 	/* Contains the starfield background layer */
 	private StarField mStarField;
+	/* Particle layer, which is a second starfield */
+	private StarField mParticleLayer;
 	/* Contains the playing field layer, where all of the gameplay assets
 	 * are going to be contained */
 	private Pane mGameWorld;
@@ -46,12 +48,16 @@ public class GameView
 		mRoot = new StackPane();
 		
 		/* Star field layer */
-		mStarField = new StarField ();
+		mStarField = new StarField (true);
 		mRoot.getChildren().add(mStarField);
 		
 		/* Playing field */
 		mGameWorld = new Pane();
 		mRoot.getChildren().add(mGameWorld);
+		
+		/* Particle layer */
+		mParticleLayer = new StarField(false);
+		mRoot.getChildren().add(mParticleLayer);
 		
 		mScene = new Scene (mRoot);
 		mRoot.setStyle("-fx-background-color: black");
@@ -87,10 +93,17 @@ public class GameView
 		return mStarField;
 	}
 	
+	/** @return the particle layer scene */
+	public StarField getParticleLayer()
+	{
+		return mParticleLayer;
+	}
+	
 	/** Plays the background animations */
 	public void playAnimations()
 	{
 		mStarField.playAnimation();
+		mParticleLayer.playAnimation();
 	}
 	
 	/** Sets up the scene to start a new game */

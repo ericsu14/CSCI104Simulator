@@ -64,7 +64,7 @@ public class MainMenu
 		mRoot = new StackPane ();
 		
 		/* Sets the first background layer to a starfield animation  */
-		mStarField = new StarField();
+		mStarField = new StarField(true);
 		mRoot.getChildren().add(mStarField);
 		
 		/* Main menu borderpane */

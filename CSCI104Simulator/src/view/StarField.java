@@ -37,6 +37,8 @@ public class StarField extends Pane
 	private int mFireworksTime = 15;
 	/* Timer for fireworks show */
 	private int mFireworksTimer;
+	/* Flag that determines if stars shoudl be spawned */
+	private boolean mSpawnStars;
 	
 	/** Nested fireworks command class */
 	private class FireworksCommand
@@ -71,10 +73,10 @@ public class StarField extends Pane
 	}
 	
 	/** Constructs a new starfield object */
-	public StarField ()
+	public StarField (boolean spawnStars)
 	{
 		super ();
-		
+		mSpawnStars = spawnStars;
 		mRand = new Random();
 		mSpawnedStars = new ArrayList <ConfettiText>();
 		mDespawnedAssets = new ArrayList <ConfettiText>();
@@ -142,8 +144,11 @@ public class StarField extends Pane
 				/* Spawns a confetti piece */
 				if (mSpawnTimer <= 0.0f)
 				{
-					mSpawnedStars.add(new ConfettiText ((int)(mRand.nextInt((int)Launcher.mWidth))));
-					getChildren().addAll(mSpawnedStars.get(mSpawnedStars.size() - 1));
+					if (mSpawnStars)
+					{
+						mSpawnedStars.add(new ConfettiText ((int)(mRand.nextInt((int)Launcher.mWidth))));
+						getChildren().addAll(mSpawnedStars.get(mSpawnedStars.size() - 1));
+					}
 					mSpawnTimer = mSpawnTime;
 				}
 				
