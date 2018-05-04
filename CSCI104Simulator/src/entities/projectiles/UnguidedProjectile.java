@@ -3,6 +3,7 @@ package entities.projectiles;
 import engine.GameEngine;
 import entities.Entity;
 import javafx.geometry.Point2D;
+import media.SoundType;
 
 public class UnguidedProjectile extends EnemyProjectile
 {
@@ -22,6 +23,7 @@ public class UnguidedProjectile extends EnemyProjectile
 		this.setSprite(mController.mEnemyLaser);
 		
 		this.moveEntity(new Point2D (this.getX(), this.getY() + 1000));
+		mController.getGameView().getSoundEngine().playSound(SoundType.kUnguidedProjectile);
 	}
 
 }

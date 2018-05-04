@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import media.SoundController;
 
 public class GameView 
 {
@@ -31,6 +32,8 @@ public class GameView
 	private GameUI mGameUI = null;
 	/* A ref. to the main launcher */
 	private Launcher mLauncher;
+	/* Sound controller */
+	private SoundController mSoundEngine;
 	/* Keeps track of the amount of left / right keys pressed */
 	private int mNumDirKeys = 0;
 	/* The initial amount of lives the player has */
@@ -40,6 +43,7 @@ public class GameView
 	{
 		mLauncher = launcher;
 		setupScene();
+		mSoundEngine = new SoundController();
 	}
 	
 	/** Sets up the scene for this game view */
@@ -104,6 +108,12 @@ public class GameView
 	{
 		mStarField.playAnimation();
 		mParticleLayer.playAnimation();
+	}
+	
+	/** Returns the sound engine */
+	public SoundController getSoundEngine ()
+	{
+		return mSoundEngine;
 	}
 	
 	/** Sets up the scene to start a new game */

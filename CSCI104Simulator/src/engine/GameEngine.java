@@ -24,6 +24,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import media.SoundType;
 import view.GameView;
 import view.Launcher;
 public class GameEngine 
@@ -188,6 +189,7 @@ public class GameEngine
 					++mCurrentLives;
 					++mExtraLivesGiven;
 					// TODO: Play a sound when awarded an extra life
+					getGameView().getSoundEngine().playSound(SoundType.kExtraLife);
 				}
 				
 				/* Updates the UI component */

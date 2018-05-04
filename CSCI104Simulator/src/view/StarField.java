@@ -1,8 +1,12 @@
 package view;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+import media.SoundController;
+import media.SoundType;
 import entities.visuals.ConfettiText;
 import factories.FireworkStyles;
 import factories.FireworksFactory;
@@ -39,6 +43,8 @@ public class StarField extends Pane
 	private int mFireworksTimer;
 	/* Flag that determines if stars shoudl be spawned */
 	private boolean mSpawnStars;
+	/* Sound engined for playing sound assets */
+	SoundController mSoundEngine;
 	
 	/** Nested fireworks command class */
 	private class FireworksCommand
@@ -82,6 +88,7 @@ public class StarField extends Pane
 		mDespawnedAssets = new ArrayList <ConfettiText>();
 		mQueuedFireworks = new LinkedList <FireworksCommand> ();
 		mFireworksFlag = false;
+		mSoundEngine = new SoundController();
 		
 		InitializeAnimations();
 	}
@@ -185,6 +192,11 @@ public class StarField extends Pane
 					else
 					{
 						explosion = FireworksFactory.spawnFireworks((int)Launcher.mWidth, (int)Launcher.mHeight, FireworksFactory.getRandomStyle());
+						PauseTransition soundDelay = new PauseTransition (Duration.seconds(2));
+						soundDelay.setOnFinished(e -> {
+							mSoundEngine.playSound(SoundType.kFireworkBlast);
+						});
+						soundDelay.play();
 					}
 					mSpawnedStars.addAll(explosion);
 					getChildren().addAll(FXCollections.observableArrayList(explosion));

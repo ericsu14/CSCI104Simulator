@@ -3,6 +3,7 @@ package entities.enemies;
 import engine.GameEngine;
 import entities.projectiles.GuidedProjectile;
 import javafx.geometry.Point2D;
+import media.SoundType;
 
 public class Mandelbug extends Enemy
 {
@@ -62,6 +63,7 @@ public class Mandelbug extends Enemy
 		if (mHealth <= 0)
 		{
 			super.die();
+			mController.getGameView().getSoundEngine().playSound(SoundType.kShieldDie);
 		}
 		/* Otherwise, it becomes very anger */
 		else
@@ -73,6 +75,7 @@ public class Mandelbug extends Enemy
 			this.mMaxAmmoPool = 5;
 			this.mSpriteScale = 25.0;
 			this.setSprite(mController.mDamagedBugSprite);
+			mController.getGameView().getSoundEngine().playSound(SoundType.kShieldHit);
 		}
 	}
 	

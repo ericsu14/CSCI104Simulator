@@ -3,6 +3,7 @@ package entities.enemies;
 import engine.GameEngine;
 import entities.projectiles.GuidedProjectile;
 import javafx.geometry.Point2D;
+import media.SoundType;
 
 public class Heisenbug extends Enemy {
 
@@ -43,5 +44,13 @@ public class Heisenbug extends Enemy {
 			mController.queueEntity(new GuidedProjectile (this, mController));
 			mCurrentAmmo--;
 		}
+	}
+	
+	/** Overrideen to play custom sounds */
+	@Override
+	public void die()
+	{
+		super.die();
+		mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyDie2);
 	}
 }

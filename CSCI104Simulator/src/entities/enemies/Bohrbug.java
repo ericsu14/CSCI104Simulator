@@ -3,6 +3,7 @@ package entities.enemies;
 import engine.GameEngine;
 import entities.projectiles.UnguidedProjectile;
 import javafx.geometry.Point2D;
+import media.SoundType;
 
 public class Bohrbug extends Enemy 
 {
@@ -44,5 +45,13 @@ public class Bohrbug extends Enemy
 			mController.queueEntity(new UnguidedProjectile (this, mController));
 			mCurrentAmmo--;
 		}
+	}
+	
+	/** Overrideen to play custom sounds */
+	@Override
+	public void die()
+	{
+		super.die();
+		mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyDie);
 	}
 }

@@ -13,6 +13,7 @@ import entities.EntityState;
 import entities.EntityType;
 import factories.FireworkStyles;
 import javafx.geometry.Point2D;
+import media.SoundType;
 import view.Launcher;
 
 public abstract class Enemy extends Entity
@@ -169,11 +170,13 @@ public abstract class Enemy extends Entity
 		if (this.mType != EntityType.kBoss)
 		{
 			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY());
+			mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyExplode);
 		}
 		else
 		{
 			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY(), FireworkStyles.aCote);
 		}
+		
 	}
 	
 	/** Overridden stopWaypointAnimation method for the enemy */

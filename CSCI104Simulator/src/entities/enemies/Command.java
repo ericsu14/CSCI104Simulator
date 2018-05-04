@@ -2,6 +2,7 @@
 package entities.enemies;
 
 import javafx.geometry.Point2D;
+import media.SoundType;
 import view.Launcher;
 
 import java.util.Random;
@@ -107,6 +108,7 @@ public class Command
 				
 				mOwner.setOffset((int)(mOwner.getSpriteScale()));
 				mWaypoint = new Point2D (mOwner.getX() + xOffset, mOwner.getY() + yOffset);
+				mOwner.getController().getGameView().getSoundEngine().playSound(SoundType.kEnemyPrepare);
 				break;
 			}
 			case kRetreat:

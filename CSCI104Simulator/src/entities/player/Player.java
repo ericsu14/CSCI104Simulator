@@ -5,6 +5,7 @@ import entities.EntityState;
 import entities.EntityType;
 import entities.projectiles.PlayerProjectile;
 import javafx.geometry.Point2D;
+import media.SoundType;
 
 public class Player extends Entity
 {
@@ -107,6 +108,7 @@ public class Player extends Entity
 				mController.queueEntity(new PlayerProjectile (this, mController, false));
 				--mCurrentAmmo;
 				mCurrentFramesPerShot = mFramesPerShot;
+				mController.getGameView().getSoundEngine().playSound(SoundType.kPlayerShoot);
 			}
 			else
 			{
@@ -158,6 +160,7 @@ public class Player extends Entity
 			/* Sets this player's opacity to 0 */
 			this.setOpacity(0);
 			setFiringFlag (false);
+			mController.getGameView().getSoundEngine().playSound(SoundType.kPlayerExplode);
 		}
 	}
 	
