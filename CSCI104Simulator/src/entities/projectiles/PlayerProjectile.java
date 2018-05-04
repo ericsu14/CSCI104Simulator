@@ -54,12 +54,17 @@ public class PlayerProjectile extends Projectile
 		 * in the game */
 		for (Entity e : mController.getEntities())
 		{
-			if (e.getType() == EntityType.kEnemy
+			if ((e.getType() == EntityType.kEnemy || e.getType() == EntityType.kBoss)
 					&& e.getState() == EntityState.kActive
 					&& e.intersects(this.getBoundsInLocal()))
 			{
 				kill(e, true);
-				/* TODO: Update the player's score */
+				/* Spawns an explosion if this projectile hits a boss */
+				if (e.getType() == EntityType.kBoss)
+				{
+					/* Spawns an explosion every time the boss is hit */
+					mController.getGameView().getStarField().spawnExplosion((int)this.getX(), (int)this.getY());
+				}
 				break;
 			}
 		}

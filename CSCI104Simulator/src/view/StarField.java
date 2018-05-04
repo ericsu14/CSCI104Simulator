@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.scene.layout.Pane;
 import entities.visuals.ConfettiText;
+import factories.FireworkStyles;
 import factories.FireworksFactory;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class StarField extends Pane
 		public FireworkCommandType mType;
 		public int mXCoord;
 		public int mYCoord;
+		public FireworkStyles mStyle;
+		public boolean mCustom = false;
 		
 		public FireworksCommand ()
 		{
@@ -56,6 +59,14 @@ public class StarField extends Pane
 			mYCoord = y;
 		}
 		
+		public FireworksCommand (int x, int y, FireworkStyles style)
+		{
+			mType = FireworkCommandType.kExplosion;
+			mXCoord = x;
+			mYCoord = y;
+			mStyle = style;
+			mCustom = true;
+		}
 		
 	}
 	
@@ -107,6 +118,12 @@ public class StarField extends Pane
 		mQueuedFireworks.add(new FireworksCommand (x, y));
 	}
 	
+	/** Spawns an explosion of a specific type */
+	public void spawnExplosion (int x, int y, FireworkStyles style)
+	{
+		mQueuedFireworks.add(new FireworksCommand (x, y, style));
+	}
+	
 	/** Initializes the animation timers */
 	private void InitializeAnimations ()
 	{
@@ -151,7 +168,14 @@ public class StarField extends Pane
 					FireworksCommand command = mQueuedFireworks.remove();
 					if (command.mType == FireworkCommandType.kExplosion)
 					{
-						explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, FireworksFactory.getRandomExplosion());
+						if (!command.mCustom)
+						{
+							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, FireworksFactory.getRandomExplosion());
+						}
+						else
+						{
+							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, command.mStyle);
+						}
 					}
 					else
 					{

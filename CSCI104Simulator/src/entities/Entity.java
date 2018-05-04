@@ -237,7 +237,14 @@ public abstract class Entity extends ImageView
 		setImage (sprite.getImage());
 		setFitHeight(mSpriteScale);
 		setFitWidth(mSpriteScale);
-		this.mWaypointOffset = (int)(mSpriteScale / 10);
+		if (this.getType() != EntityType.kBoss)
+		{
+			this.mWaypointOffset = (int)(mSpriteScale / 10);
+		}
+		else
+		{
+			this.mWaypointOffset = (int)(mSpriteScale / 20);
+		}
 	}
 	
 	/** @return the entity's current state */

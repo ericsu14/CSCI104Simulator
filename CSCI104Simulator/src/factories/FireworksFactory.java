@@ -27,13 +27,6 @@ public class FireworksFactory
 {
 	private static Random rand = new Random();
 	
-	/** Defines a list of styles each firework could use */
-	public static enum FireworkStyles 
-	{
-		shindler, party, donutshop, apple, fireworks, disney, fireworks2,
-		fighton, fightonsymbol, USC, fireworks3
-	};
-	
 	/** Note: ASCII art provided by
 	 * 		- http://www.chris.com/ascii/joan/www.geocities.com/SoHo/7373/food.html */
 	
@@ -520,6 +513,9 @@ public class FireworksFactory
 			case fireworks3:
 				asciiArt = mFireworks3;
 				break;
+			case aCote:
+				asciiArt = mFireworks;
+				break;
 			default:
 				asciiArt = "NULL";
 				break;
@@ -602,7 +598,6 @@ public class FireworksFactory
 		int originX, originY;
 		int centerX, centerY;
 		int spacing = 4;
-		// int margin = (int)(paneWidth * 0.2);
 		
 		Random rand = new Random();
 		
@@ -644,6 +639,9 @@ public class FireworksFactory
 				break;
 			case fireworks3:
 				asciiArt = mFireworks3;
+				break;
+			case aCote:
+				asciiArt = aCote;
 				break;
 			default:
 				asciiArt = "NULL";

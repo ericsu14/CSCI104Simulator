@@ -2,6 +2,7 @@ package entities.boss;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.EntityState;
 import entities.EntityType;
 import entities.enemies.Command;
 import entities.enemies.CommandType;
@@ -9,17 +10,18 @@ import entities.enemies.Enemy;
 import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
 import entities.projectiles.BossProjectile;
+import entities.projectiles.BossRangedProjectile;
 import javafx.geometry.Point2D;
 import view.Launcher;
 
-public class Boss extends Enemy 
+public abstract class Boss extends Enemy 
 {
 	/* The amount of health this boss character has */
 	protected int mHealth;
 	/* The ammo type this boss character is using at the moment */
 	protected BossAmmoType mAmmoType;
 	/* The time it takes (in frames) before the boss makes its next move */
-	protected int mMoveTime = 300;
+	protected int mMoveTime;
 	/* Timer that keeps track of the boss's move time */
 	protected int mMoveTimer;
 	/* The ammo pool for the boss's projectile attack */
@@ -30,6 +32,8 @@ public class Boss extends Enemy
 	protected BossProjectile mBossProjectile;
 	/* The projectile used for the boss's ranged attack */
 	protected BossProjectile mRangedProjectile;
+	/* Flag used to indicate that the boss's difficulity has been adjsuted */
+	protected boolean mAdjustedBossDifficulity;
 	
 	public Boss(EnemyPosition initPosition, Point2D origin, GameEngine controller) 
 	{
@@ -38,7 +42,7 @@ public class Boss extends Enemy
 		/* Overrides the enemy's setup code in the constructor */
 		this.mCommandQueue.clear();
 		this.mSpawnAttackFlag = false;
-		this.mSpawnPoint = new Point2D (Launcher.mWidth / 2.0, -100);
+		this.mSpawnPoint = new Point2D (Launcher.mWidth / 2.0, -500);
 		this.setX(mSpawnPoint.getX());
 		this.setY(mSpawnPoint.getY());
 		mCommandQueue.add(new Command (CommandType.kMove, this, mOriginPoint));
@@ -47,6 +51,7 @@ public class Boss extends Enemy
 		/* Setup member variables */
 		this.mType = EntityType.kBoss;
 		this.mMoveTimer = this.mMoveTime;
+		mAdjustedBossDifficulity = false;
 	}
 	
 	@Override
@@ -55,30 +60,25 @@ public class Boss extends Enemy
 		super.update();
 		
 		/* If the boss's move time expired, randomly select the boss's move */
-		if (this.mPhase == EnemyPhase.kIdle)
+		if (this.mPhase == EnemyPhase.kIdle && mController.getPlayer().getState() != EntityState.kPlayerDead)
 		{
 			if (mMoveTimer <= 0)
 			{
-				int nextMove = Entity.mRand.nextInt(2);
-				
+				int nextMove = Entity.mRand.nextInt(4);
 				switch (nextMove)
 				{
-					/* In this case, do a projectile attack */
-					case 0:
-					{
-						this.mPhase = EnemyPhase.kAttack;
-						break;
-					}
 					/* In this case, do a ranged attack */
 					case 1:
 					{
 						this.mPhase = EnemyPhase.kRangedAttack;
+						this.mAmmoType = BossAmmoType.kRanged;
 						break;
 					}
-					/* If random fails for some reason, do a projectile attack */
+					/* Otherwise, do a projectile attack */
 					default:
 					{
 						this.mPhase = EnemyPhase.kAttack;
+						this.mAmmoType = BossAmmoType.kProjectile;
 						break;
 					}
 				}
@@ -91,29 +91,33 @@ public class Boss extends Enemy
 				--mMoveTimer;
 			}
 		}
+		else
+		{
+			mMoveTimer = mMoveTime;
+		}
+		
+		/* Decreases the boss move time by 60% once all enemies are dead */
+		if (mController.getNumEnemies() <= 0 && !mAdjustedBossDifficulity)
+		{
+			mMoveTime -= (int) ((double)(mMoveTime * 0.6));
+			mAdjustedBossDifficulity = true;
+		}
 	}
 
 	@Override
 	public void fire() 
 	{
-	}
-
-	@Override
-	public void createAttackVectors() 
-	{
 		if (this.mPhase == EnemyPhase.kAttack)
 		{
-			this.mCurrentAmmo = this.mMaxAmmoPool;
-			addCommand(CommandType.kPrepareAttack);
-			addCommand(CommandType.kAttack);
-			addCommand(CommandType.kRetreat);
+			if (mCurrentAmmo > 0)
+			{
+				mController.queueEntity(new BossProjectile (this, mController));
+				mCurrentAmmo--;
+			}
 		}
-		
-		else if (this.mPhase == EnemyPhase.kRangedAttack)
+		else
 		{
-			addCommand (CommandType.kBossPrepareRangedAttack);
-			addCommand (CommandType.kBossRangedAttack);
-			addCommand(CommandType.kRetreat);
+			mController.queueEntity(new BossRangedProjectile (this, mController));
 		}
 	}
 	

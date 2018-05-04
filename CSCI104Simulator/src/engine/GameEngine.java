@@ -9,6 +9,7 @@ import java.util.Random;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
+import entities.boss.CoteBoss;
 import entities.enemies.Bohrbug;
 import entities.enemies.Enemy;
 import entities.enemies.EnemyPhase;
@@ -50,6 +51,8 @@ public class GameEngine
 	public ImageView mEnemyLaser;
 	/* The sprite that represents a damaged variant of the mandel bug */
 	public ImageView mDamagedBugSprite;
+	/* Binary trees */
+	public ImageView mBinaryTree;
 	
 	/* The current level the player is in */
 	private int mCurrentLevel;
@@ -91,6 +94,8 @@ public class GameEngine
 	private int mAttackWaveTimer;
 	/* The number of enemies on the game world */
 	private int mNumEnemies;
+	/* Number of bosses in this game world */
+	private int mNumBosses;
 	/* Y offset that dictates where the player would be fixed to */
 	private int mPlayerYOffset = 100;
 	/* The current state of the game */
@@ -120,6 +125,7 @@ public class GameEngine
 		mMandelBugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/mandelBug.png")));
 		mPlayerBulletSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerBullet.png")));
 		mLinkedList = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/linkedList.png")));
+		mBinaryTree = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/binaryTree.png")));
 		mCote = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/cote.png")));
 		mBook = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/theBook.jpeg")));
 		mEnemyLaser = new ImageView  (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/enemyLaser.png")));
@@ -268,6 +274,10 @@ public class GameEngine
 						{
 							--mNumEnemies;
 						}
+						if (e.getType() == EntityType.kBoss)
+						{
+							--mNumBosses;
+						}
 					}
 				}
 				
@@ -388,7 +398,7 @@ public class GameEngine
 					
 					/* Checks if there are no more enemies on the game.
 					 * Thus, we can advance to the next level */
-					else if (mNumEnemies <= 0)
+					else if (mNumEnemies <= 0 && mNumBosses <= 0)
 					{
 						mGameState = GameState.kLevelEnd;
 						mPromptTimer.playFrom(Duration.seconds(0));
@@ -452,7 +462,7 @@ public class GameEngine
 				case kLevelEnd:
 				{
 					++mCurrentLevel;
-					
+					mNumBosses = 0;
 					adjustGlobalDifficulty();
 					
 					mGameState = GameState.kNewLevel;
@@ -602,6 +612,11 @@ public class GameEngine
 					case 'M':
 						enemyContainer.add(new Mandelbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
 						break;	
+					/* Spawns the test boss */
+					case 'Z':
+						enemyContainer.add(new CoteBoss (currentPosition, new Point2D (currentX, currentY), this));
+						++mNumBosses;
+						break;
 					default:
 						break;
 				}
@@ -620,7 +635,7 @@ public class GameEngine
 		}
 		
 		addChildren (enemyContainer);
-		mNumEnemies = enemyContainer.size();
+		mNumEnemies = enemyContainer.size() - mNumBosses;
 		mMaxGroups = currentGroup + 1;
 	}
 	
@@ -631,11 +646,18 @@ public class GameEngine
 	 *  setup, from lowest to highest. */
 	public String getSpawnLayout ()
 	{
+		/* Checks if the level is a multiple of ten. If
+		 * so, do the boss battle */
+		if (this.mCurrentLevel % 10 == 0)
+		{
+			// TODO: Tell the view that a boss battle is going to occur
+			// and do the things such as prompt / music change
+			return "src/assets/data/bossLayout.txt";
+		}
 		if (inRange (this.mCurrentLevel, 1, 2))
 		{
 			return "src/assets/data/layout1.txt";
 		}
-		
 		else if (inRange (this.mCurrentLevel, 3, 7))
 		{
 			return "src/assets/data/layout2.txt";

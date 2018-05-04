@@ -11,6 +11,7 @@ import engine.GameState;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
+import factories.FireworkStyles;
 import javafx.geometry.Point2D;
 import view.Launcher;
 
@@ -163,7 +164,16 @@ public abstract class Enemy extends Entity
 		
 		/* Adds this enemy's score to the player's total score */
 		mController.setPlayerScore(mController.getPlayerScore() + this.getScore());
-		mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY());
+		
+		/* Spawns a bigger explosion if this enemy is a boss */
+		if (this.mType != EntityType.kBoss)
+		{
+			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY());
+		}
+		else
+		{
+			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY(), FireworkStyles.aCote);
+		}
 	}
 	
 	/** Overridden stopWaypointAnimation method for the enemy */
