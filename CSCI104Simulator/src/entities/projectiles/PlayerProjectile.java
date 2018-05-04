@@ -21,6 +21,12 @@ public class PlayerProjectile extends Projectile
 		this.mSpriteScale = 20.0;
 		this.setX(getX() + 5.0);
 		
+		/* Reduces the movement bonus threshold to 15% on hard mode */
+		if (mController.isHardMode())
+		{
+			mMovementBonunsThreshold = 0.15;
+		}
+		
 		/* TODO: Set the bullet's traits depending if it is fired in rapid fire
 		 * mode or not */
 		if (mRapidFire)

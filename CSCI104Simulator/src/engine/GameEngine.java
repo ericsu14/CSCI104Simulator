@@ -54,6 +54,7 @@ public class GameEngine
 	/* Binary trees */
 	public ImageView mBinaryTree;
 	
+	/* MEMBER VARIABLES */
 	/* The current level the player is in */
 	private int mCurrentLevel;
 	/* A vector of game enemies */
@@ -113,6 +114,9 @@ public class GameEngine
 	private long mExtraLifeScore = 200000;
 	/* True if the game is about to end */
 	private boolean isGameOver = false;
+	/* True if this game is set to hard mode. Thus,
+	 * the world's progressional difficulity would be set to the maximum */
+	private boolean mHardModeFlag = false;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -152,6 +156,7 @@ public class GameEngine
 		
 		mPlayer = new Player (Launcher.mWidth / 2, Launcher.mHeight - mPlayerYOffset, this);
 		
+		/* Sets up the game loop animation timer */
 		mGameLoop = new AnimationTimer ()
 		{
 			/* Variables used for calculating the initial spawn animation for game enemies */
@@ -696,7 +701,7 @@ public class GameEngine
 		 * a maximum of 40%. */
 		double changeOfTime = this.mInitAttackWaveTime * (double)((mCurrentLevel - 1) / 100.0);
 		this.mAttackWaveTime = (int)(this.mInitAttackWaveTime - (int)changeOfTime);
-		if (this.mAttackWaveTime < (int)attackWaveThreshold)
+		if (this.mAttackWaveTime < (int)attackWaveThreshold || this.isHardMode())
 		{
 			this.mAttackWaveTime = (int)attackWaveThreshold;
 		}
@@ -870,6 +875,18 @@ public class GameEngine
 	public void setCurrentScore (long score)
 	{
 		this.mPlayerScore = score;
+	}
+	
+	/** Sets the difficulty to the game to either normal or hard */
+	public void setHardMode (boolean mode)
+	{
+		this.mHardModeFlag = mode;
+	}
+	
+	/** @return true if the game's difficulty is set to hard mode */
+	public boolean isHardMode ()
+	{
+		return this.mHardModeFlag;
 	}
 	
 	/** @return True if target is between min and max

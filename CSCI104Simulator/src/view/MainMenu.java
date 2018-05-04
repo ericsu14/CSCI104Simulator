@@ -15,21 +15,21 @@ import util.CSSConstants;
 
 public class MainMenu 
 {
-	/** Stackpane used to represent the main menu */
+	/* Stackpane used to represent the main menu */
 	private StackPane mRoot;
-	
-	/** Scene used to store all components tied to the main menu */
+	/* Scene used to store all components tied to the main menu */
 	private Scene mScene;
-	
-	/** Starfield scene */
+	/* Starfield scene */
 	private StarField mStarField;
-	
-	/** Reference to the launcher object */
+	/* Reference to the launcher object */
 	private Launcher mLauncher;
+	/* Stores the current difficluty of the game as a string */
+	private String mDifficultyString;
 	
 	public MainMenu (Launcher launcher)
 	{
 		mLauncher = launcher;
+		mDifficultyString = "Normal";
 		initializeMainMenu();
 		playAnimations();
 	}
@@ -84,9 +84,59 @@ public class MainMenu
 		/* Main menu options */
 		VBox menuOptions = new VBox ();
 		
+		/* Difficulty button */
+		Button diffButton = new Button ("     Difficulty: " + mDifficultyString);
+		diffButton.setFont(new Font ("Comic Sans MS", 18));
+		diffButton.setBackground(Background.EMPTY);
+		diffButton.setStyle(CSSConstants.WHITE_TEXT);
+		
+		diffButton.setOnMouseEntered(e -> 
+		{
+			diffButton.setText("--> Difficulty: " + mDifficultyString);
+			if (mLauncher.getGameEngine().isHardMode())
+			{
+				diffButton.setStyle(CSSConstants.RED_TEXT + CSSConstants.UNDERLINE_TEXT);
+			}
+			else
+			{
+				diffButton.setStyle(CSSConstants.WHITE_TEXT + CSSConstants.UNDERLINE_TEXT);
+			}
+		});
+		
+		diffButton.setOnMouseExited(e -> 
+		{
+			diffButton.setText("     Difficulty: " + mDifficultyString);
+			if (mLauncher.getGameEngine().isHardMode())
+			{
+				diffButton.setStyle(CSSConstants.RED_TEXT);
+			}
+			else
+			{
+				diffButton.setStyle(CSSConstants.WHITE_TEXT);
+			}
+		});
+		
+		diffButton.setOnAction(e -> 
+		{
+			mLauncher.getGameEngine().setHardMode(!mLauncher.getGameEngine().isHardMode());
+			
+			if (mLauncher.getGameEngine().isHardMode())
+			{
+				mDifficultyString = "Impossibru";
+				diffButton.setStyle(CSSConstants.RED_TEXT + CSSConstants.UNDERLINE_TEXT);
+			}
+			else
+			{
+				mDifficultyString = "Normal";
+				diffButton.setStyle(CSSConstants.WHITE_TEXT + CSSConstants.UNDERLINE_TEXT);
+			}
+			diffButton.setText("--> Difficulty: " + mDifficultyString);
+		});
+		
+		
 		/* Play game button */
 		Button playGame = new Button("     Play Game");
-		playGame.setFont(new Font ("Comic Sans MS", 24));
+		playGame.setFont(new Font ("Comic Sans MS", 18));
 		playGame.setBackground(Background.EMPTY);
 		playGame.setStyle(CSSConstants.WHITE_TEXT);
 		
@@ -103,15 +153,15 @@ public class MainMenu
 		});
 		playGame.setOnAction(e -> 
 		{
-			/* TODO: Switch to the game scene here */
 			cleanUp();
 			mLauncher.switchGameScene();
 		});
 		
-		menuOptions.getChildren().add(playGame);
+		menuOptions.getChildren().addAll(diffButton, playGame);
 		
 		
 		menuOptions.setAlignment(Pos.CENTER);
+		menuOptions.setSpacing(6);
 		mainMenu.setCenter(menuOptions);
 		
 		/* TODO: Create selectors for the rest of the gameplay components */
@@ -120,7 +170,7 @@ public class MainMenu
 		VBox footer = new VBox();
 		Label author = new Label ("Created by Eric Su");
 		author.setStyle(CSSConstants.AUTHOR_FONT);
-		Label version = new Label ("V. 0.53a");
+		Label version = new Label ("V. 0.72a");
 		version.setStyle(CSSConstants.AUTHOR_FONT);
 		
 		footer.getChildren().addAll(version, author);
