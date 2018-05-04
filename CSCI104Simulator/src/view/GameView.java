@@ -200,7 +200,7 @@ public class GameView
 		
 		playAnimations();
 		mGameEngine.setCurrentLives(mInitLives);
-		mGameEngine.setCurrentLevel(1);
+		mGameEngine.setCurrentLevel(10);
 		mGameEngine.setCurrentScore(0);
 		mGameEngine.startGame();
 	}

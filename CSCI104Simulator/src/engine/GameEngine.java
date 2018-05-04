@@ -283,7 +283,7 @@ public class GameEngine
 						}
 						if (e.getType() == EntityType.kBoss)
 						{
-							--mNumBosses;
+							mNumBosses = 0;
 						}
 					}
 				}

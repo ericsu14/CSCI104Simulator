@@ -20,7 +20,7 @@ public class CoteBoss extends Boss {
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 42;
 		this.mAmmoType = BossAmmoType.kProjectile;
-		this.mHealth = 50;
+		this.mHealth = 35;
 		this.mMoveTime = 200;
 		this.setSprite(this.mController.mCote);
 		this.setRotate(-90.0);

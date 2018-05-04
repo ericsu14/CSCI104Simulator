@@ -12,6 +12,7 @@ import entities.enemies.EnemyPosition;
 import entities.projectiles.BossProjectile;
 import entities.projectiles.BossRangedProjectile;
 import javafx.geometry.Point2D;
+import media.SoundType;
 import view.Launcher;
 
 public abstract class Boss extends Enemy 
@@ -130,6 +131,11 @@ public abstract class Boss extends Enemy
 		if (mHealth <= 0)
 		{
 			super.die();
+			mController.getGameView().getSoundEngine().playSound(SoundType.kBossDie);
+		}
+		else
+		{
+			mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyHit);
 		}
 	}
 	

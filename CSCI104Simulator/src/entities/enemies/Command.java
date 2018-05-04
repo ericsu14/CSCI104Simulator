@@ -139,7 +139,6 @@ public class Command
 				{
 					mWaypoint = new Point2D (mOwner.getController().getLeftBorder(), 100.0);
 				}
-				
 				break;
 			}
 			
