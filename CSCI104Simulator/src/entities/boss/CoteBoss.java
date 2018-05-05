@@ -20,10 +20,17 @@ public class CoteBoss extends Boss {
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 42;
 		this.mAmmoType = BossAmmoType.kProjectile;
-		this.mHealth = 35;
+		this.mHealth = 30;
 		this.mMoveTime = 200;
 		this.setSprite(this.mController.mCote);
 		this.setRotate(-90.0);
+		
+		/* The boss attacks faster when hard mode is enabled */
+		if (mController.isHardMode())
+		{
+			mMoveTime -= (int) ((double)(mMoveTime * 0.6));
+			mAdjustedBossDifficulity = true;
+		}
 	}
 	
 	@Override

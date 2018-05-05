@@ -8,7 +8,7 @@ public enum SoundType
 	kEnemyExplode ("src/assets/sounds/enemyExplosion.wav"),
 	kEnemyHit ("src/assets/sounds/enemyHit.wav"),
 	kPlayerExplode ("src/assets/sounds/playerExplosion.wav"),
-	kEnemyPrepare ("src/assets/sounds/enemyPrepare.mp3"),
+	kEnemyPrepare ("src/assets/sounds/enemyPrepare.wav"),
 	kShieldHit ("src/assets/sounds/shieldHit.wav"),
 	kShieldDie ("src/assets/sounds/shieldDie.wav"),
 	kEnemyDie ("src/assets/sounds/enemyDie.wav"),
