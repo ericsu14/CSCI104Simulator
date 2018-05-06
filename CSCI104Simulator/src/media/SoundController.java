@@ -20,6 +20,15 @@ public class SoundController
 	{
 		mCurrentType = SoundType.kNull;
 		mMediaCache = new Hashtable <SoundType, Media> ();
+		
+		/* Preloads the sound assets */
+		for (SoundType t : SoundType.values())
+		{
+			if (t != SoundType.kNull)
+			{
+				mMediaCache.put(t, new Media (new File (t.getDirectory()).toURI().toString()));
+			}
+		}
 	}
 	
 	/** Plays a sound of a certain sound type */
