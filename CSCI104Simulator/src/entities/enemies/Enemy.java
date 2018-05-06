@@ -142,7 +142,7 @@ public abstract class Enemy extends Entity
 		if ((mPhase == EnemyPhase.kAttack && mController.getGameState() == GameState.kGameRunning)
 				|| mSpawnAttackFlag)
 		{
-			if (mCooldown <= 0)
+			if (mCooldown <= 0 && mController.getGameState() == GameState.kGameRunning)
 			{
 				fire();
 				mCooldown = mShotsPerFrame;
@@ -358,6 +358,12 @@ public abstract class Enemy extends Entity
 		}
 		
 		mInitialMovementSpeed = mMovementSpeed;
+		
+		/* Adjusts rotation speed if hard mode */
+		if (mController.isHardMode())
+		{
+			this.mRotationSpeed = 2;
+		}
 	}
 	
 	/** Spawns an enemy projectile */
