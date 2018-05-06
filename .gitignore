@@ -8,11 +8,6 @@
 *.index
 .metadata
 
-# Eclipse
-.project
-.classpath
-.settings
-
 # Idea
 .idea
 *.iml
