@@ -35,8 +35,6 @@ public class GameUI extends StackPane
 	private int mLivesRemaining;
 	/* Text that displays game notifications */
 	private Label mNotificationText;
-	/* The amount of time a notification is displayed */
-	private int mNotificationTime = 60;
 	/* Animation timer for displaying notifications */
 	private AnimationTimer mNotifications = null;
 	/* True if a prev. notification timer is playing. If so, then the new notification
@@ -188,6 +186,8 @@ public class GameUI extends StackPane
 		mDisplayingNotification = true;
 		mNotifications = new AnimationTimer ()
 		{
+			/* The amount of time per half cycle */
+			private int mNotificationTime = 60;
 			/* Current lifetime of notification */
 			private int mNotificationTimer = mNotificationTime;
 			/* The amount of cycles the notification is active, where each cycle happens once the
