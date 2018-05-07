@@ -131,11 +131,11 @@ public abstract class Boss extends Enemy
 		if (mHealth <= 0)
 		{
 			super.die();
-			mController.getGameView().getSoundEngine().playSound(SoundType.kBossDie);
+			mController.playSound(SoundType.kBossDie);
 		}
 		else
 		{
-			mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyHit);
+			mController.playSound(SoundType.kBossHit);
 		}
 	}
 	

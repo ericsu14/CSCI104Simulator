@@ -160,7 +160,7 @@ public class Player extends Entity
 			/* Sets this player's opacity to 0 */
 			this.setOpacity(0);
 			setFiringFlag (false);
-			mController.getGameView().getSoundEngine().playSound(SoundType.kPlayerExplode);
+			mController.playSound(SoundType.kPlayerExplode);
 		}
 	}
 	

@@ -63,7 +63,7 @@ public class Mandelbug extends Enemy
 		if (mHealth <= 0)
 		{
 			super.die();
-			mController.getGameView().getSoundEngine().playSound(SoundType.kShieldDie);
+			mController.playSound(SoundType.kShieldDie);
 		}
 		/* Otherwise, it becomes very anger */
 		else

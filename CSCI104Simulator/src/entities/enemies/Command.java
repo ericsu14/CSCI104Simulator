@@ -108,7 +108,7 @@ public class Command
 				
 				mOwner.setOffset((int)(mOwner.getSpriteScale()));
 				mWaypoint = new Point2D (mOwner.getX() + xOffset, mOwner.getY() + yOffset);
-				mOwner.getController().getGameView().getSoundEngine().playSound(SoundType.kEnemyPrepare);
+				mOwner.getController().playSound(SoundType.kEnemyPrepare);
 				break;
 			}
 			case kRetreat:

@@ -891,6 +891,13 @@ public class GameEngine
 		return this.mHardModeFlag;
 	}
 	
+	/** Plays a sound file
+	 * 		@param type - The type of sound that is going to be played */
+	public void playSound (SoundType type)
+	{
+		this.mGameView.getSoundEngine().playSound(type);
+	}
+	
 	/** @return True if target is between min and max
 	 * 		@param target - Value being compared
 	 * 		@param min - Min. value of selected range

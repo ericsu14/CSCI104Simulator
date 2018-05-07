@@ -52,6 +52,6 @@ public class Bohrbug extends Enemy
 	public void die()
 	{
 		super.die();
-		mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyDie);
+		mController.playSound(SoundType.kEnemyDie);
 	}
 }

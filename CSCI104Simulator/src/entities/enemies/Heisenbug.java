@@ -51,6 +51,6 @@ public class Heisenbug extends Enemy {
 	public void die()
 	{
 		super.die();
-		mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyDie2);
+		mController.playSound(SoundType.kEnemyDie2);
 	}
 }
