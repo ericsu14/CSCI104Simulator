@@ -1,4 +1,4 @@
 M               M
-MH     Z       HM
-MH             HM
+HH     Z       HH
+BH             HB
 BBB           BBB

@@ -25,11 +25,10 @@ public class CoteBoss extends Boss {
 		this.setSprite(this.mController.mCote);
 		this.setRotate(-90.0);
 		
-		/* The boss attacks faster when hard mode is enabled */
+		/* The boss attacks 10% faster when hard mode is enabled */
 		if (mController.isHardMode())
 		{
-			mMoveTime -= (int) ((double)(mMoveTime * 0.6));
-			mAdjustedBossDifficulity = true;
+			mMoveTime -= (int) ((double)(mMoveTime * 0.1));
 		}
 	}
 	

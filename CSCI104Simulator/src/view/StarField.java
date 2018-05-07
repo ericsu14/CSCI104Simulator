@@ -193,7 +193,8 @@ public class StarField extends Pane
 					{
 						explosion = FireworksFactory.spawnFireworks((int)Launcher.mWidth, (int)Launcher.mHeight, FireworksFactory.getRandomStyle());
 						PauseTransition soundDelay = new PauseTransition (Duration.seconds(2));
-						soundDelay.setOnFinished(e -> {
+						soundDelay.setOnFinished(e -> 
+						{
 							mSoundEngine.playSound(SoundType.kFireworkBlast);
 						});
 						soundDelay.play();

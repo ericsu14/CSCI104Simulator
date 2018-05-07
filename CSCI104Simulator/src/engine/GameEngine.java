@@ -116,7 +116,7 @@ public class GameEngine
 	/* True if the game is about to end */
 	private boolean isGameOver = false;
 	/* True if this game is set to hard mode. Thus,
-	 * the world's progressional difficulity would be set to the maximum */
+	 * the world's progressional difficulty would be set to the maximum */
 	private boolean mHardModeFlag = false;
 	
 	public GameEngine (GameView gameView)
@@ -655,7 +655,7 @@ public class GameEngine
 	{
 		/* Checks if the level is a multiple of ten. If
 		 * so, do the boss battle */
-		if (this.mCurrentLevel % 10 == 0)
+		if (this.mCurrentLevel % 10 == 0 || (this.isHardMode() && this.mCurrentLevel == 1))
 		{
 			// TODO: Tell the view that a boss battle is going to occur
 			// and do the things such as prompt / music change

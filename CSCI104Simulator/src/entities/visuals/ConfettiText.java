@@ -108,7 +108,7 @@ public class ConfettiText extends Text
 		{
 			mStartingCoordinates = new MoveTo (x, y);
 			mExpandDuration = 1;
-			mFadeRate = 0.02;
+			mFadeRate = 0.1;
 		}
 		mCompletedExpandAnim = false;
 		
