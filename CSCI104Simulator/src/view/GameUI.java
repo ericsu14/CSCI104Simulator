@@ -2,6 +2,7 @@ package view;
 
 import engine.GameState;
 import factories.ShindlerFactory;
+import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -32,6 +33,15 @@ public class GameUI extends StackPane
 	private Label mPromptText2;
 	/* Keeps track of the current lives remaining */
 	private int mLivesRemaining;
+	/* Text that displays game notifications */
+	private Label mNotificationText;
+	/* The amount of time a notification is displayed */
+	private int mNotificationTime = 60;
+	/* Animation timer for displaying notifications */
+	private AnimationTimer mNotifications = null;
+	/* True if a prev. notification timer is playing. If so, then the new notification
+	 * would overwrite it. */
+	private boolean mDisplayingNotification = false;
 	
 	public GameUI (GameView gameView)
 	{
@@ -52,8 +62,11 @@ public class GameUI extends StackPane
 		mScoreLabel.setStyle(CSSConstants.GAME_FONT);
 		mCurrentScore = new Label ("" + mGameView.getEngine().getPlayerScore());
 		mCurrentScore.setStyle(CSSConstants.GAME_FONT);
+		mNotificationText = new Label ("");
+		mNotificationText.setStyle(CSSConstants.GAME_FONT_UNCOLORED + CSSConstants.YELLOW_TEXT);
 		
-		topCenterHeader.getChildren().addAll(mScoreLabel, mCurrentScore);
+		
+		topCenterHeader.getChildren().addAll(mScoreLabel, mCurrentScore, mNotificationText);
 		topCenterHeader.setSpacing(4);
 		topCenterHeader.setAlignment(Pos.TOP_CENTER);
 		
@@ -159,6 +172,72 @@ public class GameUI extends StackPane
 				mPromptText2.setText("");
 				break;
 		}
+	}
+	
+	/** Briefly displays a notification on the screen
+	 * 		@param text - The type of notification to be displayed */
+	public void showNotification (String text)
+	{
+	
+		if (mNotifications != null && mDisplayingNotification)
+		{
+			mNotifications.stop();
+			mNotificationText.setText("");
+		}
+		
+		mDisplayingNotification = true;
+		mNotifications = new AnimationTimer ()
+		{
+			/* Current lifetime of notification */
+			private int mNotificationTimer = mNotificationTime;
+			/* The amount of cycles the notification is active, where each cycle happens once the
+			 * text flashes from on to off and off to on. */
+			private int mMaxCycles = 3;
+			/* Current amount of cycles */
+			private int mCurrentCycles = 0;
+			/* Current state */
+			private boolean mState = true;
+			
+			/* Displays text first */
+			{
+				mNotificationText.setText(text);
+			}
+			
+			@Override
+			public void handle(long arg0) 
+			{
+				/* If the timer expired, switch states and update cycles */
+				if (mNotificationTimer <= 0)
+				{
+					mNotificationTimer = mNotificationTime;
+					
+					if (mState)
+					{
+						mNotificationText.setText("");
+					}
+					else
+					{
+						mNotificationText.setText(text);
+						++mCurrentCycles;
+					}
+					mState= !mState;
+					
+					if (mCurrentCycles >= mMaxCycles)
+					{
+						this.stop();
+						mDisplayingNotification = false;
+						mNotificationText.setText("");
+					}
+				}
+				else
+				{
+					--mNotificationTimer;
+				}
+			}
+			
+		};
+		
+		mNotifications.start();
 	}
 	
 	/** Constructs a new playership icon used for rendering the amount of

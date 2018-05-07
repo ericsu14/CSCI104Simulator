@@ -189,6 +189,7 @@ public class GameEngine
 					++mCurrentLives;
 					++mExtraLivesGiven;
 					// TODO: Play a sound when awarded an extra life
+					getGameView().getGameUI().showNotification("EXTRA LIFE");
 					getGameView().getSoundEngine().playSound(SoundType.kExtraLife);
 				}
 				
