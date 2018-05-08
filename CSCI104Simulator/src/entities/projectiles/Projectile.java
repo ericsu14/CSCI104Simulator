@@ -73,6 +73,7 @@ public abstract class Projectile extends Entity
 					{
 						setRotate (mTheta);
 					}
+					
 					Point2D velocity = getForward();
 					velocity = velocity.multiply(mMovementSpeed);
 					

@@ -15,11 +15,20 @@ public class SoundController
 	/* Stores the sound files being used by this player */
 	private Hashtable<SoundType, Media> mMediaCache;
 	
+	/* Controls the current background music being played */
+	private MediaPlayer mBGMPlayer;
+	/* Stores the current MusicType being played for the background music */
+	private MusicType mCurrentBackgroundType;
+	/* Stores the music files being used by this player */
+	private Hashtable <MusicType, Media> mBGMCache;
 	
 	public SoundController ()
 	{
 		mCurrentType = SoundType.kNull;
 		mMediaCache = new Hashtable <SoundType, Media> ();
+		mBGMCache = new Hashtable <MusicType, Media> ();
+		
+		mCurrentBackgroundType = MusicType.kNull;
 		
 		/* Preloads the sound assets */
 		for (SoundType t : SoundType.values())
@@ -27,6 +36,15 @@ public class SoundController
 			if (t != SoundType.kNull)
 			{
 				mMediaCache.put(t, new Media (new File (t.getDirectory()).toURI().toString()));
+			}
+		}
+		
+		/* Preloads the BGM assets */
+		for (MusicType t : MusicType.values())
+		{
+			if (t != MusicType.kNull)
+			{
+				mBGMCache.put(t, new Media (new File (t.getDirectory()).toURI().toString()));
 			}
 		}
 	}
@@ -53,4 +71,11 @@ public class SoundController
 			e.printStackTrace();
 		}
 	}
+	
+	/** Switches the background music to a new set */
+	public void playBGM (MusicType type)
+	{
+		
+	}
+	
 }

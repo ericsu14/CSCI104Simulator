@@ -15,7 +15,7 @@ public class BossProjectile extends EnemyProjectile
 	{
 		super(owner, controller);
 		this.mSpriteScale = 40.0;
-		this.mMovementSpeed = 7.5;
+		this.mMovementSpeed = 7.4;
 		this.setSprite(mController.mBinaryTree);
 		mProjectileRotate = this.getRotate();
 		
