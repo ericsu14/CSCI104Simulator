@@ -519,6 +519,7 @@ public class GameEngine
 		mExtraLivesGiven = 0;
 		mNumEnemies = 0;
 		mNumBosses = 0;
+		mGameView.refreshUI();
 		mPromptFlag = true;
 	}
 	
@@ -722,6 +723,9 @@ public class GameEngine
 		mQueuedEntities.clear();
 		
 		mGameView.cleanup();
+		
+		/* Deletes the current boss pointer */
+		mCurrentBoss = null;
 	}
 	
 	/** Adds a new entity into the game.

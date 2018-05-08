@@ -340,7 +340,7 @@ public abstract class Enemy extends Entity
 		this.mCurrentAmmo = this.mMaxAmmoPool;
 	}
 	
-	/** Adjusts this enemy's base stats depending on the difficulity level */
+	/** Adjusts this enemy's base stats depending on the difficulty level */
 	public void adjustDifficulity ()
 	{
 		/* The enemy's movement speed is increased by 1% each level,
