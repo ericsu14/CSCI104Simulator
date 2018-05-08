@@ -401,7 +401,7 @@ public class GameEngine
 					
 					/* Checks if there are no more enemies on the game.
 					 * Thus, we can advance to the next level */
-					else if (mNumEnemies <= 0 && mNumBosses <= 0)
+					else if (canEndGame ())
 					{
 						mGameState = GameState.kLevelEnd;
 						mPromptTimer.playFrom(Duration.seconds(0));
@@ -701,7 +701,7 @@ public class GameEngine
 	{
 		double attackWaveThreshold = this.mInitAttackWaveTime - (this.mInitAttackWaveTime * 0.40);
 		/* Adjusts the attack group timer to scale with current
-		 * difficulity level. This timer decreases by 1% each level passed, at
+		 * difficulty level. This timer decreases by 1% each level passed, at
 		 * a maximum of 40%. */
 		double changeOfTime = this.mInitAttackWaveTime * (double)((mCurrentLevel - 1) / 100.0);
 		this.mAttackWaveTime = (int)(this.mInitAttackWaveTime - (int)changeOfTime);
@@ -971,6 +971,19 @@ public class GameEngine
 			}
 		}
 		this.mCurrentBoss = null;
+	}
+	
+	/** Scans the current list of game entities and returns true if there no enemies and bosses left */
+	public boolean canEndGame ()
+	{
+		for (Entity e : mGameEntities)
+		{
+			if (e.getType() == EntityType.kEnemy || e.getType() == EntityType.kBoss)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/** @return True if target is between min and max
