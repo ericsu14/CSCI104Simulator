@@ -65,7 +65,7 @@ public abstract class Boss extends Enemy
 		{
 			if (mMoveTimer <= 0)
 			{
-				int nextMove = Entity.mRand.nextInt(6);
+				int nextMove = Entity.mRand.nextInt(5);
 				switch (nextMove)
 				{
 					/* In this case, do a ranged attack */

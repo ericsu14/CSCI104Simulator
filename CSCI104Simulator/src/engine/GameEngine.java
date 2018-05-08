@@ -517,6 +517,8 @@ public class GameEngine
 		mGameView.getGameUI().update();
 		mPromptTimer.playFrom(Duration.seconds(0));
 		mExtraLivesGiven = 0;
+		mNumEnemies = 0;
+		mNumBosses = 0;
 		mPromptFlag = true;
 	}
 	
@@ -973,7 +975,8 @@ public class GameEngine
 		this.mCurrentBoss = null;
 	}
 	
-	/** Scans the current list of game entities and returns true if there no enemies and bosses left */
+	/** Scans the current list of game entities and returns true if there 
+	 *  are no enemies and bosses left */
 	public boolean canEndGame ()
 	{
 		for (Entity e : mGameEntities)
