@@ -1,6 +1,7 @@
 package view;
 
 import engine.GameState;
+import entities.boss.Boss;
 import factories.ShindlerFactory;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -11,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import util.CSSConstants;
 
 public class GameUI extends StackPane
@@ -35,11 +37,17 @@ public class GameUI extends StackPane
 	private int mLivesRemaining;
 	/* Text that displays game notifications */
 	private Label mNotificationText;
+	/* Prompt label for the boss's health */
+	private Label mBossHealthPrompt;
+	/* Label representing the boss's health */
+	private Label mBossHealth;
 	/* Animation timer for displaying notifications */
 	private AnimationTimer mNotifications = null;
 	/* True if a prev. notification timer is playing. If so, then the new notification
 	 * would overwrite it. */
 	private boolean mDisplayingNotification = false;
+	/* Boss health prompt string */
+	private final String mBossHealthText = "BOSS HEALTH";
 	
 	public GameUI (GameView gameView)
 	{
@@ -70,6 +78,21 @@ public class GameUI extends StackPane
 		
 		topCenter.setTop(topCenterHeader);
 		
+		/* Sets up a container displaying the boss's current health, if it exists */
+		BorderPane bottomCenterPane = new BorderPane();
+		VBox bottomCenter = new VBox();
+		mBossHealthPrompt = new Label ("");
+		mBossHealthPrompt.setStyle(CSSConstants.BOSS_FONT + CSSConstants.WHITE_TEXT);
+		mBossHealthPrompt.setTextAlignment(TextAlignment.LEFT);
+		mBossHealth = new Label ("");
+		mBossHealth.setStyle(CSSConstants.BOSS_FONT + CSSConstants.RED_TEXT);
+		mBossHealthPrompt.setTextAlignment(TextAlignment.LEFT);
+		bottomCenter.getChildren().addAll(mBossHealthPrompt, mBossHealth);
+		bottomCenter.setAlignment(Pos.TOP_CENTER);
+		bottomCenter.setPadding(new Insets (0, 0, 5, 5));
+		bottomCenter.setSpacing(2);
+		bottomCenterPane.setTop(bottomCenter);
+		
 		/* Top left header */
 		BorderPane topLeft = new BorderPane();
 		VBox topLeftHeader = new VBox();
@@ -93,7 +116,7 @@ public class GameUI extends StackPane
 		mPromptContainer.setSpacing(4);
 		topLeft.setCenter(mPromptContainer);
 		
-		/* TODO: setup lives counter */
+		/* Sets up the player's lives counter in the bottom left corner of the screen */
 		VBox bottomLeftFooter = new VBox();
 		mCurrentLives = new HBox();
 		renderLives ();
@@ -104,15 +127,20 @@ public class GameUI extends StackPane
 		bottomLeftFooter.setAlignment(Pos.BOTTOM_LEFT);
 		topLeft.setBottom(bottomLeftFooter);
 		
-		this.getChildren().addAll(topCenter, mPromptContainer, topLeft);
+		this.getChildren().addAll(topCenter, bottomCenterPane, mPromptContainer, topLeft);
 	}
 	
 	/** Updates the UI based on the current state of the game */
 	public void update()
 	{
-		mCurrentScore.setText("" + mGameView.getEngine().getPlayerScore());
+		if (this.mGameView.getEngine().getCurrentBoss() == null)
+		{
+			mScoreLabel.setText("CURRENT SCORE");
+			mCurrentScore.setText("" + mGameView.getEngine().getPlayerScore());
+		}
 		mCurrentLevel.setText("" + mGameView.getEngine().getCurrentLevel());
 		renderLives();
+		renderBossHealth();
 	}
 	
 	/** Renders the lives container */
@@ -133,6 +161,39 @@ public class GameUI extends StackPane
 				ImageView playerIcon = createPlayerIcon();
 				mCurrentLives.getChildren().add(playerIcon);
 			}
+		}
+	}
+	
+	/** Renders the boss health container */
+	public void renderBossHealth()
+	{
+		if (this.mGameView.getEngine().getCurrentBoss() != null)
+		{
+			
+			/* Fills in the boss health container and alligns the prompt's
+			 * text */
+			Boss currentBoss = this.mGameView.getEngine().getCurrentBoss();
+			if (currentBoss != null)
+			{
+				String currentHealth = "";
+				String currentHealthPrompt = this.mBossHealthText;
+				for (int i = 0; i < currentBoss.getHealth(); ++i)
+				{
+					currentHealth += "|";
+				}
+				
+				mBossHealth.setText(currentHealth);
+				mBossHealthPrompt.setText(currentHealthPrompt);
+				mCurrentScore.setText ("");
+				mScoreLabel.setText("");
+			}
+			
+		}
+		/* Otherwise, leave them empty */
+		else
+		{
+			mBossHealth.setText("");
+			mBossHealthPrompt.setText("");
 		}
 	}
 	

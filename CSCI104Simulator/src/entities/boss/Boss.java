@@ -65,7 +65,7 @@ public abstract class Boss extends Enemy
 		{
 			if (mMoveTimer <= 0)
 			{
-				int nextMove = Entity.mRand.nextInt(4);
+				int nextMove = Entity.mRand.nextInt(6);
 				switch (nextMove)
 				{
 					/* In this case, do a ranged attack */
@@ -73,6 +73,7 @@ public abstract class Boss extends Enemy
 					{
 						this.mPhase = EnemyPhase.kRangedAttack;
 						this.mAmmoType = BossAmmoType.kRanged;
+						mController.playSound(SoundType.kBossTaunt);
 						break;
 					}
 					/* Otherwise, do a projectile attack */
@@ -132,6 +133,7 @@ public abstract class Boss extends Enemy
 		{
 			super.die();
 			mController.playSound(SoundType.kBossDie);
+			mController.findCurrentBoss();
 		}
 		else
 		{

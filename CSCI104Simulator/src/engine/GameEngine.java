@@ -9,6 +9,7 @@ import java.util.Random;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
+import entities.boss.Boss;
 import entities.boss.CoteBoss;
 import entities.enemies.Bohrbug;
 import entities.enemies.Enemy;
@@ -118,6 +119,8 @@ public class GameEngine
 	/* True if this game is set to hard mode. Thus,
 	 * the world's progressional difficulty would be set to the maximum */
 	private boolean mHardModeFlag = false;
+	/* Stores a reference to the game's current boss mob */
+	private Boss mCurrentBoss;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -144,6 +147,7 @@ public class GameEngine
 		mQueuedEntities = new LinkedList <Entity> ();
 		mGameState = GameState.kGameStart;
 		mRand = new Random ();
+		mCurrentBoss = null;
 		
 		/* Attack wave timer */
 		mAttackWaveTime = 650;
@@ -181,6 +185,7 @@ public class GameEngine
 				
 				update (now);
 				checkDeadEntities();
+				findCurrentBoss();
 				checkGameStatus();
 				
 				/* Extra life bonus code */
@@ -418,6 +423,7 @@ public class GameEngine
 				this.mFocusedEnemy = null;
 				this.mSpawnIntervals = 0;
 			}
+			
 		};
 		
 		/* Sets up the prompt animation timer */
@@ -597,22 +603,28 @@ public class GameEngine
 					/* Spawn test enemy */
 					case 'T':
 						enemyContainer.add(new TestEnemy (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						mNumEnemies++;
 						break;
 					/* Spawn Bohrbug */
 					case 'B':
 						enemyContainer.add(new Bohrbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						mNumEnemies++;
 						break;
 					/* Spawns heisenbug */
 					case 'H':
 						enemyContainer.add(new Heisenbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						mNumEnemies++;
 						break;
 					/* Spawns mandelbug */
 					case 'M':
 						enemyContainer.add(new Mandelbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						mNumEnemies++;
 						break;	
 					/* Spawns the test boss */
 					case 'Z':
-						enemyContainer.add(new CoteBoss (currentPosition, new Point2D (currentX, currentY), this));
+						Boss currentBoss = new CoteBoss (currentPosition, new Point2D (currentX, currentY), this);
+						enemyContainer.add(currentBoss);
+						this.mCurrentBoss = currentBoss;
 						++mNumBosses;
 						break;
 					default:
@@ -633,7 +645,6 @@ public class GameEngine
 		}
 		
 		addChildren (enemyContainer);
-		mNumEnemies = enemyContainer.size() - mNumBosses;
 		mMaxGroups = currentGroup + 1;
 	}
 	
@@ -931,6 +942,35 @@ public class GameEngine
 	public void setBossCount (int count)
 	{
 		this.mNumBosses = count;
+	}
+	
+	/** Sets the game's current boss pointer
+	 * 		@param boss - A pointer to the new boss mob */
+	public void setCurrentBoss (Boss boss)
+	{
+		this.mCurrentBoss = boss;
+	}
+	
+	/** Returns the game's current boss pointer */
+	public Boss getCurrentBoss ()
+	{
+		return this.mCurrentBoss;
+	}
+	
+	/** Scans the current list of game entities and sets the game's current boss pointer
+	 *  to point to the first instance of Boss character in the game's entity list.
+	 *  If not found, the it would become null. */
+	public void findCurrentBoss ()
+	{
+		for (Entity e : mGameEntities)
+		{
+			if (e.getType() == EntityType.kBoss)
+			{
+				this.mCurrentBoss = (Boss)e;
+				return;
+			}
+		}
+		this.mCurrentBoss = null;
 	}
 	
 	/** @return True if target is between min and max
