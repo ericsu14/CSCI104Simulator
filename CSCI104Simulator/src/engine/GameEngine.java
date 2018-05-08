@@ -276,16 +276,6 @@ public class GameEngine
 					if (e.getState() == EntityState.kDead)
 					{
 						mDeadEntities.add(e);
-						
-						/* Dec. number of enemies if an enemy just died */
-						if (e.getType() == EntityType.kEnemy)
-						{
-							--mNumEnemies;
-						}
-						if (e.getType() == EntityType.kBoss)
-						{
-							mNumBosses = 0;
-						}
 					}
 				}
 				
@@ -897,6 +887,50 @@ public class GameEngine
 	public void playSound (SoundType type)
 	{
 		this.mGameView.getSoundEngine().playSound(type);
+	}
+	
+	/** Decrements the game's enemy count */
+	public void decrementEnemyCount ()
+	{
+		if (this.mNumEnemies > 0)
+		{
+			--this.mNumEnemies;
+		}
+	}
+	
+	/** @return the game's current number of enemies */
+	public int getEnemyCount ()
+	{
+		return this.mNumEnemies;
+	}
+	
+	/** Sets the game's enemy count to a new value
+	 * 	 @param count - The new enemy count */
+	public void setEnemyCount (int count)
+	{
+		this.mNumEnemies = count;
+	}
+	
+	/** Decrements the game's boss count */
+	public void decrementBossCount ()
+	{
+		if (this.mNumBosses > 0)
+		{
+			--this.mNumBosses;
+		}
+	}
+	
+	/** @return the game's current number of bosses */
+	public int getBossCount ()
+	{
+		return this.mNumBosses;
+	}
+	
+	/** Sets the game's boss count to a new value
+	 * 		@param count - The new boss count */
+	public void setBossCount (int count)
+	{
+		this.mNumBosses = count;
 	}
 	
 	/** @return True if target is between min and max

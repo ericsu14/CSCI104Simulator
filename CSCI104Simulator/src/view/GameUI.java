@@ -222,6 +222,7 @@ public class GameUI extends StackPane
 					}
 					mState= !mState;
 					
+					/* Stops the animation once it has completed its cycles */
 					if (mCurrentCycles >= mMaxCycles)
 					{
 						this.stop();

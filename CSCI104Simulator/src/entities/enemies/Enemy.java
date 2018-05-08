@@ -171,10 +171,12 @@ public abstract class Enemy extends Entity
 		{
 			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY());
 			mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyExplode);
+			mController.decrementEnemyCount();
 		}
 		else
 		{
 			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY(), FireworkStyles.aCote);
+			mController.decrementBossCount();
 		}
 		
 	}
