@@ -170,7 +170,7 @@ public class Player extends Entity
 		/* Sets the player's state to active */
 		mState = EntityState.kActive;
 		
-		/* Makes this player visable to the game again */
+		/* Makes this player visible to the game again */
 		this.setOpacity(1.0);
 		
 		/* Recenters this player's coordinates to the center of the screen */
