@@ -171,7 +171,7 @@ public class MainMenu
 		VBox footer = new VBox();
 		Label author = new Label ("Created by Eric Su");
 		author.setStyle(CSSConstants.AUTHOR_FONT);
-		Label version = new Label ("V. 0.72a");
+		Label version = new Label ("V. 0.95a");
 		version.setStyle(CSSConstants.AUTHOR_FONT);
 		
 		footer.getChildren().addAll(version, author);

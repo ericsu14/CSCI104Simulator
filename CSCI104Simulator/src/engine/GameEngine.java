@@ -405,6 +405,7 @@ public class GameEngine
 						{
 							mGameState = GameState.kGameOver;
 							mGameView.getSoundEngine().setPlaylist(MusicStyle.kGameOver);
+							mGameView.getGameUI().showNotification("GAME OVER", CSSColor.kRed);
 						}
 						
 						mPromptTimer.playFrom(Duration.seconds(0));
@@ -420,6 +421,7 @@ public class GameEngine
 						mPromptFlag = true;
 						/* Starts small fireworks show */
 						mGameView.getStarField().setFireworksFlag(true);
+						mGameView.getGameUI().showNotification("!!! CONGRATS !!!", CSSColor.kLime);
 					}
 					
 					if (mPromptFlag)
@@ -685,24 +687,24 @@ public class GameEngine
 		{
 			return "src/assets/data/layout1.txt";
 		}
-		else if (inRange (this.mCurrentLevel, 3, 7))
+		else if (inRange (this.mCurrentLevel, 3, 10))
 		{
 			return "src/assets/data/layout2.txt";
 		}
 		
-		else if (inRange  (this.mCurrentLevel, 8, 9))
+		else if (inRange  (this.mCurrentLevel, 11, 20))
 		{
 			return "src/assets/data/layout3.txt";
 		}
-		else if (inRange (this.mCurrentLevel, 10, 20))
+		else if (inRange (this.mCurrentLevel, 21, 30))
 		{
 			return "src/assets/data/layout4.txt";
 		}
-		else if (inRange (this.mCurrentLevel, 21, 30))
+		else if (inRange (this.mCurrentLevel, 31, 40))
 		{
 			return "src/assets/data/layout5.txt";
 		}
-		else if (inRange (this.mCurrentLevel, 31, 40))
+		else if (inRange (this.mCurrentLevel, 41, 50))
 		{
 			return "src/assets/data/layout6.txt";
 		}
