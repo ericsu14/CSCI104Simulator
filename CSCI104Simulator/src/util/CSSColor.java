@@ -4,10 +4,10 @@ public enum CSSColor
 {
 	kWhite("-fx-text-fill: white;"), 
 	kRed("-fx-text-fill: red;"), 
-	kYellow("-fx-text-fill: yellow"),
-	kBlue("-fx-text-fill: blue"),
-	kGreen("-fx-text-fill: green"),
-	kLime ("-fx-text-fill: lime");
+	kYellow("-fx-text-fill: yellow;"),
+	kBlue("-fx-text-fill: blue;"),
+	kGreen("-fx-text-fill: green;"),
+	kLime ("-fx-text-fill: lime;");
 	
 	private String mColor;
 	
