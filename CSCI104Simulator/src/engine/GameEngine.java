@@ -25,6 +25,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import media.MusicStyle;
 import media.SoundType;
 import util.CSSColor;
 import view.GameView;
@@ -393,10 +394,17 @@ public class GameEngine
 						if (mCurrentLives > 0)
 						{
 							mGameState = GameState.kRespawning;
+							/* Warns the player if he/she has reached the last life */
+							if (mCurrentLives == 1)
+							{
+								mGameView.getGameUI().showNotification("LAST LIFE", CSSColor.kRed);
+							}
 						}
+						/* Otherwise, GAME OVER SON */
 						else
 						{
 							mGameState = GameState.kGameOver;
+							mGameView.getSoundEngine().setPlaylist(MusicStyle.kGameOver);
 						}
 						
 						mPromptTimer.playFrom(Duration.seconds(0));
@@ -453,6 +461,10 @@ public class GameEngine
 					checkBossBattle();
 					mGameState = GameState.kGameStart;
 					mPromptTimer.playFrom(Duration.seconds(0));
+					if (!this.mBossBattleFlag)
+					{
+						mGameView.getSoundEngine().setPlaylist(MusicStyle.kGame);
+					}
 					break;
 				}
 				case kNewLevel:
@@ -1032,12 +1044,14 @@ public class GameEngine
 	{
 		this.mGameView.getGameUI().showNotification("BOSS BATTLE INCOMING", CSSColor.kRed);
 		// TODO: Play music
+		this.mGameView.getSoundEngine().setPlaylist(MusicStyle.kBoss);
 	}
 	
 	/** Code that cleans up the assets used for the boss battle */
 	public void cleanupBossBattle ()
 	{
 		// TODO: Switch music back to normal
+		mGameView.getSoundEngine().setPlaylist(MusicStyle.kGame);
 	}
 	
 	/** @return True if target is between min and max

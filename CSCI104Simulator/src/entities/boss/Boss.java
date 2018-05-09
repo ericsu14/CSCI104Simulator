@@ -53,6 +53,7 @@ public abstract class Boss extends Enemy
 		this.mType = EntityType.kBoss;
 		this.mMoveTimer = this.mMoveTime;
 		mAdjustedBossDifficulity = false;
+		
 	}
 	
 	@Override
@@ -98,10 +99,13 @@ public abstract class Boss extends Enemy
 			mMoveTimer = mMoveTime;
 		}
 		
-		/* Decreases the boss move time by 60% once all enemies are dead */
+		/* Decreases the boss move time by 60% once all of its minions are dead
+		 * and moves faster */
 		if (mController.getNumEnemies() <= 0 && !mAdjustedBossDifficulity)
 		{
 			mMoveTime -= (int) ((double)(mMoveTime * 0.6));
+			mMovementSpeed += 0.3;
+			this.mMaxAmmoPool = 6;
 			mAdjustedBossDifficulity = true;
 		}
 	}

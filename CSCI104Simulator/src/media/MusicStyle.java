@@ -7,5 +7,5 @@ package media;
 
 public enum MusicStyle 
 {
-	kNone, kGame, kBoss, kMenu
+	kNone, kGame, kBoss, kMenu, kGameOver
 }

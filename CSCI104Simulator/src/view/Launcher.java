@@ -76,4 +76,10 @@ public class Launcher extends Application
 	{
 		return mGameEngine;
 	}
+	
+	/** @return the game view */
+	public GameView getGameView ()
+	{
+		return mGameView;
+	}
 }

@@ -12,7 +12,7 @@ public class CoteBoss extends Boss {
 	{
 		super(initPosition, origin, controller);
 
-		this.mInitialMovementSpeed = 7.0;
+		this.mInitialMovementSpeed = 6.5;
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 100.0;
 		this.mPointsValue = 200000;
@@ -21,14 +21,18 @@ public class CoteBoss extends Boss {
 		this.mShotsPerFrame = 42;
 		this.mAmmoType = BossAmmoType.kProjectile;
 		this.mHealth = 30;
-		this.mMoveTime = 200;
+		this.mMoveTime = 300;
 		this.setSprite(this.mController.mCote);
 		this.setRotate(-90.0);
 		
-		/* The boss attacks 20% faster when hard mode is enabled */
+		/* The boss attacks 20% faster,
+		 * and has 20% more health,
+		 * and moves 20% faster when hard mode is enabled */
 		if (mController.isHardMode())
 		{
 			mMoveTime -= (int) ((double)(mMoveTime * 0.2));
+			mHealth += (mHealth * 0.2);
+			mMovementSpeed += 0.2;
 		}
 	}
 	

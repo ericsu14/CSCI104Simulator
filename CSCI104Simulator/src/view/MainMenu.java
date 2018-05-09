@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-
+import media.MusicStyle;
 import util.CSSConstants;
 
 public class MainMenu 
@@ -44,6 +44,7 @@ public class MainMenu
 	public void playAnimations ()
 	{
 		mStarField.playAnimation();
+		mLauncher.getGameView().getSoundEngine().setPlaylist(MusicStyle.kMenu);
 	}
 	
 	/** Cleans up all dynamically allocated assets from this scene */
