@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import media.SoundType;
+import util.CSSColor;
 import view.GameView;
 import view.Launcher;
 public class GameEngine 
@@ -121,6 +122,8 @@ public class GameEngine
 	private boolean mHardModeFlag = false;
 	/* Stores a reference to the game's current boss mob */
 	private Boss mCurrentBoss;
+	/* Flag used to determine if a boss battle is about to happen */
+	private boolean mBossBattleFlag;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -148,6 +151,7 @@ public class GameEngine
 		mGameState = GameState.kGameStart;
 		mRand = new Random ();
 		mCurrentBoss = null;
+		mBossBattleFlag = false;
 		
 		/* Attack wave timer */
 		mAttackWaveTime = 650;
@@ -194,7 +198,7 @@ public class GameEngine
 					++mCurrentLives;
 					++mExtraLivesGiven;
 					// TODO: Play a sound when awarded an extra life
-					getGameView().getGameUI().showNotification("EXTRA LIFE");
+					getGameView().getGameUI().showNotification("EXTRA LIFE", CSSColor.kYellow);
 					getGameView().getSoundEngine().playSound(SoundType.kExtraLife);
 				}
 				
@@ -446,6 +450,7 @@ public class GameEngine
 				}
 				case kGameBriefing:
 				{
+					checkBossBattle();
 					mGameState = GameState.kGameStart;
 					mPromptTimer.playFrom(Duration.seconds(0));
 					break;
@@ -466,7 +471,7 @@ public class GameEngine
 				case kLevelEnd:
 				{
 					++mCurrentLevel;
-					mNumBosses = 0;
+					checkBossBattle();
 					adjustGlobalDifficulty();
 					
 					mGameState = GameState.kNewLevel;
@@ -660,10 +665,8 @@ public class GameEngine
 	{
 		/* Checks if the level is a multiple of ten. If
 		 * so, do the boss battle */
-		if (this.mCurrentLevel % 10 == 0 || (this.isHardMode() && this.mCurrentLevel == 1))
+		if (this.mBossBattleFlag)
 		{
-			// TODO: Tell the view that a boss battle is going to occur
-			// and do the things such as prompt / music change
 			return "src/assets/data/bossLayout.txt";
 		}
 		if (inRange (this.mCurrentLevel, 1, 2))
@@ -726,6 +729,11 @@ public class GameEngine
 		
 		/* Deletes the current boss pointer */
 		mCurrentBoss = null;
+		if (this.mBossBattleFlag)
+		{
+			this.cleanupBossBattle();
+		}
+		this.mBossBattleFlag = false;
 	}
 	
 	/** Adds a new entity into the game.
@@ -991,6 +999,45 @@ public class GameEngine
 			}
 		}
 		return true;
+	}
+	
+	/** Checks if the player is about to encounter a boss battle.
+	 *  If so, then the boss battle flag becomes true, and its necessary components
+	 *  would be setup.
+	 *  
+	 *   A boss battle occurs once every 10 levels. It would also occur on the first level
+	 *   as well, if the player is playing on hard mode. */
+	public void checkBossBattle ()
+	{
+		boolean oldFlag = mBossBattleFlag;
+		mBossBattleFlag = (this.mCurrentLevel % 10 == 0 || (this.isHardMode() && this.mCurrentLevel == 1));
+		if (!oldFlag && mBossBattleFlag)
+		{
+			setupBossBattle();
+		}
+		else if (oldFlag && !mBossBattleFlag)
+		{
+			cleanupBossBattle();
+		}
+	}
+	
+	/** Returns true if the game is currently in a boss battle phase */
+	public boolean isBossBattle ()
+	{
+		return this.mBossBattleFlag;
+	}
+	
+	/** Code that sets up the assets for the boss battle */
+	public void setupBossBattle ()
+	{
+		this.mGameView.getGameUI().showNotification("BOSS BATTLE INCOMING", CSSColor.kRed);
+		// TODO: Play music
+	}
+	
+	/** Code that cleans up the assets used for the boss battle */
+	public void cleanupBossBattle ()
+	{
+		// TODO: Switch music back to normal
 	}
 	
 	/** @return True if target is between min and max

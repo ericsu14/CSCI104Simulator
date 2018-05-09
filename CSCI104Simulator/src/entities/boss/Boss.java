@@ -73,7 +73,7 @@ public abstract class Boss extends Enemy
 					{
 						this.mPhase = EnemyPhase.kRangedAttack;
 						this.mAmmoType = BossAmmoType.kRanged;
-						mController.playSound(SoundType.kBossTaunt);
+						mController.playSound(SoundType.kEnemyPrepare);
 						break;
 					}
 					/* Otherwise, do a projectile attack */

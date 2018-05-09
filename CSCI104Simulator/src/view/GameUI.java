@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import util.CSSColor;
 import util.CSSConstants;
 
 public class GameUI extends StackPane
@@ -234,8 +235,9 @@ public class GameUI extends StackPane
 	}
 	
 	/** Briefly displays a notification on the screen
-	 * 		@param text - The type of notification to be displayed */
-	public void showNotification (String text)
+	 * 		@param text - The type of notification to be displayed
+	 * 		@param color - The color of the notification */
+	public void showNotification (String text, CSSColor color)
 	{
 	
 		if (mNotifications != null && mDisplayingNotification)
@@ -262,6 +264,7 @@ public class GameUI extends StackPane
 			/* Displays text first */
 			{
 				mNotificationText.setText(text);
+				mNotificationText.setStyle(CSSConstants.GAME_FONT_UNCOLORED + color.getColor());
 			}
 			
 			@Override
