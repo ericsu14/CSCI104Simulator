@@ -65,7 +65,8 @@ public class SoundController
 					// Plays the next media in the playlist
 					if (!mPlaylist.isEmpty())
 					{	
-						mPlaylist.remove().play();
+						mBGMPlayer = mPlaylist.remove();
+						mBGMPlayer.play();
 					}
 				}); 
 				mBGMCache.put(t, media);
@@ -100,14 +101,16 @@ public class SoundController
 	
 	/** Reinitializes the BGM playlist to a new styleset of music */
 	public void setPlaylist (MusicStyle style)
-	{
+	{	
 		mPlaylist.clear();
+		
 		/* Stops the current music being played */
 		if (mBGMPlayer != null)
 		{
 			mBGMPlayer.stop();
 		}
 		
+		/* Gathers the new music playlist based on the passed music style */
 		if (style != MusicStyle.kNone)
 		{
 			for (MusicType type : MusicType.values())
