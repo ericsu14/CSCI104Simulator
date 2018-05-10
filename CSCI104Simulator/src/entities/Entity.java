@@ -5,7 +5,6 @@ package entities;
 import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
-import javafx.scene.CacheHint;
 import javafx.scene.image.ImageView;
 import engine.GameEngine;
 
@@ -292,7 +291,6 @@ public abstract class Entity extends ImageView
 		{
 			mWaypointAnimation.stop();
 		}
-		this.setCacheHint(CacheHint.SPEED);
 	}
 	
 	/** Allows this entity to kill off another entity */
