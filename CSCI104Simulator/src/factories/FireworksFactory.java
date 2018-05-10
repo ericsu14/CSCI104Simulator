@@ -453,8 +453,6 @@ public class FireworksFactory
 		
 		switch (type)
 		{
-			case 0:
-				return FireworkStyles.fighton;
 			case 7:
 				return FireworkStyles.USC;
 			case 15:
@@ -728,7 +726,7 @@ public class FireworksFactory
 				 * generated during gameplay. */
 				if (!compressFlag)
 				{
-					/* Compresses the ASCII firework string if the next character happens to be a valid character */
+					// Compresses the ASCII firework string if the next character happens to be a valid character 
 					if (i < asciiArt.length() - 1 && (asciiArt.charAt(i + 1) != ' ' || asciiArt.charAt(i + 1) != '\r' || asciiArt.charAt(i + 1) != '\n'))
 					{
 						buffer = (char)it + "" + (char)asciiArt.charAt(i + 1) + "";
@@ -749,7 +747,6 @@ public class FireworksFactory
 			}
 			
 		}
-		
 		return confettiObjects;
 	}
 	
