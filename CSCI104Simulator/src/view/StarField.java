@@ -45,6 +45,12 @@ public class StarField extends Pane
 	private boolean mSpawnStars;
 	/* Sound engined for playing sound assets */
 	SoundController mSoundEngine;
+	/* Keeps track of the amount of text entities despawned so we can invoke the GC
+	 * at certain points of time */
+	private long mNumDespawnedEntities;
+	/* The threshold of the amount of despawned entities this field can contain before the GC
+	 * is invoked */
+	private long mDespawnThreshold = 4000;
 	
 	/** Nested fireworks command class */
 	private class FireworksCommand
@@ -89,6 +95,7 @@ public class StarField extends Pane
 		mQueuedFireworks = new LinkedList <FireworksCommand> ();
 		mFireworksFlag = false;
 		mSoundEngine = new SoundController();
+		mNumDespawnedEntities = 0;
 		
 		InitializeAnimations();
 	}
@@ -211,10 +218,14 @@ public class StarField extends Pane
 				/* Updates all stars */
 				for (ConfettiText t : mSpawnedStars)
 				{
-					t.update();
 					if (t.canDespawn())
 					{
 						mDespawnedAssets.add(t);
+						++mNumDespawnedEntities;
+					}
+					else
+					{
+						t.update();
 					}
 				}
 				
@@ -229,10 +240,16 @@ public class StarField extends Pane
 					}
 					catch (IllegalArgumentException e)
 					{
-						mSpawnedStars.removeAll(mDespawnedAssets);
-						getChildren().removeAll(FXCollections.observableArrayList(mDespawnedAssets));
-						mDespawnedAssets.clear();
+						System.out.println("eek");
 					}
+				}
+				
+				/* Calls the GC once the number of despawned assets has reached the
+				 * pre-defined threshold */
+				if (mNumDespawnedEntities >= mDespawnThreshold)
+				{
+					System.gc();
+					mNumDespawnedEntities = 0;
 				}
 			}
 			

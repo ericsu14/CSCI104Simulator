@@ -241,8 +241,6 @@ public class GameEngine
 							}
 						}
 					}
-					/* Calls the garbage collector upon every attack */
-					System.gc();
 				}
 				
 				/* Updates each individual entity */
@@ -305,18 +303,9 @@ public class GameEngine
 					catch (IllegalArgumentException e)
 					{
 						/* Attempts to remove children again */
-						removeChildren (mDeadEntities);
-						mDeadEntities.clear();
+						e.printStackTrace();
 					}
 					
-					finally 
-					{
-						/* Calls the GC once every ten enemies killed */
-						if (mNumEnemies % 10 == 0)
-						{
-							System.gc();
-						}
-					}
 				}
 			}
 			
@@ -434,7 +423,7 @@ public class GameEngine
 						/* Starts small fireworks show */
 						mGameView.getStarField().setFireworksFlag(true);
 						mGameView.getGameUI().showNotification("!!! CONGRATS !!!", CSSColor.kLime);
-						System.gc();
+						// System.gc();
 					}
 					
 					if (mPromptFlag)
@@ -464,7 +453,7 @@ public class GameEngine
 				case kGameStart:
 				{
 					adjustGlobalDifficulty();
-					
+					System.gc();
 					mGameState = GameState.kGameRunning;
 					spawnEnemies();
 					mGameLoop.start();
@@ -763,7 +752,7 @@ public class GameEngine
 			this.cleanupBossBattle();
 		}
 		this.mBossBattleFlag = false;
-		System.gc();
+		// System.gc();
 	}
 	
 	/** Adds a new entity into the game.

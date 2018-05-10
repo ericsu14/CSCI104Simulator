@@ -103,48 +103,5 @@ public abstract class Projectile extends Entity
 			mTrackAnimation.stop();
 		}
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + (mIsTracking ? 1231 : 1237);
-		long temp;
-		temp = Double.doubleToLongBits(mMaxTurnRadius);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(mMinTurnRadius);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((mOwner == null) ? 0 : mOwner.hashCode());
-		result = prime * result + ((mTrackAnimation == null) ? 0 : mTrackAnimation.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Projectile other = (Projectile) obj;
-		if (mIsTracking != other.mIsTracking)
-			return false;
-		if (Double.doubleToLongBits(mMaxTurnRadius) != Double.doubleToLongBits(other.mMaxTurnRadius))
-			return false;
-		if (Double.doubleToLongBits(mMinTurnRadius) != Double.doubleToLongBits(other.mMinTurnRadius))
-			return false;
-		if (mOwner == null) {
-			if (other.mOwner != null)
-				return false;
-		} else if (!mOwner.equals(other.mOwner))
-			return false;
-		if (mTrackAnimation == null) {
-			if (other.mTrackAnimation != null)
-				return false;
-		} else if (!mTrackAnimation.equals(other.mTrackAnimation))
-			return false;
-		return true;
-	}
 	
 }

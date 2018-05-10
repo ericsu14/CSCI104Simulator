@@ -226,30 +226,4 @@ public class Player extends Entity
 		this.setOpacity(1.0);
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((mCurrentDirection == null) ? 0 : mCurrentDirection.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(mPlayerRotation);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Player other = (Player) obj;
-		if (mCurrentDirection != other.mCurrentDirection)
-			return false;
-		if (Double.doubleToLongBits(mPlayerRotation) != Double.doubleToLongBits(other.mPlayerRotation))
-			return false;
-		return true;
-	}
 }
