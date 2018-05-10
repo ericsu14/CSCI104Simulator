@@ -650,7 +650,7 @@ public class FireworksFactory
 		
 		/* Secondly, iterate through the ASCII art and map each valid character to a color */
 		int artWidth = 0, artHeight = 0, tmpWidth = 0;
-		Hashtable <Character, Color> colorMapping = new Hashtable <Character, Color>();
+		Hashtable <String, Color> colorMapping = new Hashtable <String, Color>();
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
 			char it = asciiArt.charAt(i);
@@ -660,8 +660,23 @@ public class FireworksFactory
 				/* If the mapping does not have the current character, assign that character a color */
 				if (!colorMapping.contains(it))
 				{
-					colorMapping.put(it, new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
+					colorMapping.put(it + "", new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
 				}
+				
+				if (i < asciiArt.length() - 1)
+				{
+					char nextIt = asciiArt.charAt(i + 1);
+					if (nextIt != '\n' || nextIt != '\r' || nextIt != ' ')
+					{
+						String combined = it + "" + nextIt + "";
+						if (!colorMapping.contains(combined))
+						{
+							colorMapping.put(combined, new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
+						}
+					}
+				}
+				
+				
 			}
 			
 			/* Used for calculating the center of the art */
@@ -689,6 +704,8 @@ public class FireworksFactory
 		originY = centerY - ((artHeight * (spacing * 2)) / 2);
 		
 		/* Thirdly, read through the asciiArt again and construct the fireworks based on its origin point */
+		String buffer = "";
+		boolean compressFlag = false;
 		int currX = originX, currY = originY;
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
@@ -707,8 +724,28 @@ public class FireworksFactory
 			/* Otherwise, construct a new "firework" */
 			else
 			{
-				confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, it + "" ,colorMapping.get(it), false));
+				/* Determines if we should compress the firework size in order to reduce the amount of nodes
+				 * generated during gameplay. */
+				if (!compressFlag)
+				{
+					/* Compresses the ASCII firework string if the next character happens to be a valid character */
+					if (i < asciiArt.length() - 1 && (asciiArt.charAt(i + 1) != ' ' || asciiArt.charAt(i + 1) != '\r' || asciiArt.charAt(i + 1) != '\n'))
+					{
+						buffer = (char)it + "" + (char)asciiArt.charAt(i + 1) + "";
+						compressFlag = true;
+					}
+					else
+					{
+						buffer = (char)it + "";
+					}
+					confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, buffer ,colorMapping.get(buffer), false));
+				}
+				else
+				{
+					compressFlag = false;
+				}
 				currX += spacing;
+				
 			}
 			
 		}
