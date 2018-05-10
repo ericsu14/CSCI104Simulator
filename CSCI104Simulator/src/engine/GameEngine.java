@@ -193,6 +193,7 @@ public class GameEngine
 				findCurrentBoss();
 				checkGameStatus();
 				
+				
 				/* Extra life bonus code */
 				if (mPlayerScore / mExtraLifeScore > mExtraLivesGiven)
 				{
@@ -211,6 +212,7 @@ public class GameEngine
 				{
 					addChild (mQueuedEntities.remove());
 				}
+				
 			}
 			
 			/** The main game loop */
@@ -239,7 +241,8 @@ public class GameEngine
 							}
 						}
 					}
-					
+					/* Calls the garbage collector upon every attack */
+					System.gc();
 				}
 				
 				/* Updates each individual entity */
@@ -304,6 +307,15 @@ public class GameEngine
 						/* Attempts to remove children again */
 						removeChildren (mDeadEntities);
 						mDeadEntities.clear();
+					}
+					
+					finally 
+					{
+						/* Calls the GC once every ten enemies killed */
+						if (mNumEnemies % 10 == 0)
+						{
+							System.gc();
+						}
 					}
 				}
 			}
@@ -422,6 +434,7 @@ public class GameEngine
 						/* Starts small fireworks show */
 						mGameView.getStarField().setFireworksFlag(true);
 						mGameView.getGameUI().showNotification("!!! CONGRATS !!!", CSSColor.kLime);
+						System.gc();
 					}
 					
 					if (mPromptFlag)
@@ -472,12 +485,14 @@ public class GameEngine
 				case kNewLevel:
 				{
 					mGameState = GameState.kGameRunning;
+					System.gc();
 					spawnEnemies();
 					break;
 				}
 				case kRespawning:
 				{
 					mGameState = GameState.kGameRunning;
+					System.gc();
 					mAttackWaveTimer = mAttackWaveTime / 3;
 					mPlayer.respawn();
 					break;
@@ -748,6 +763,7 @@ public class GameEngine
 			this.cleanupBossBattle();
 		}
 		this.mBossBattleFlag = false;
+		System.gc();
 	}
 	
 	/** Adds a new entity into the game.
