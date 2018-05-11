@@ -469,6 +469,7 @@ public class FireworksFactory
 		int centerX, centerY;
 		int spacing = 4;
 		int margin = (int)(paneWidth * 0.2);
+		char it;
 		
 		Random rand = new Random();
 		
@@ -529,7 +530,7 @@ public class FireworksFactory
 		Hashtable <Character, Color> colorMapping = new Hashtable <Character, Color>();
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
-			char it = asciiArt.charAt(i);
+			it = asciiArt.charAt(i);
 			
 			if (it != '\n' || it != '\r' || it != ' ')
 			{
@@ -566,7 +567,7 @@ public class FireworksFactory
 		int currX = originX, currY = originY;
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
-			char it = asciiArt.charAt(i);
+			it = asciiArt.charAt(i);
 			/* If empty space, skip */
 			if (it == ' ')
 			{
@@ -647,11 +648,13 @@ public class FireworksFactory
 		}
 		
 		/* Secondly, iterate through the ASCII art and map each valid character to a color */
+		char it, nextIt;
+		String combined;
 		int artWidth = 0, artHeight = 0, tmpWidth = 0;
 		Hashtable <String, Color> colorMapping = new Hashtable <String, Color>();
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
-			char it = asciiArt.charAt(i);
+			it = asciiArt.charAt(i);
 			
 			if (it != '\n' || it != '\r' || it != ' ')
 			{
@@ -663,10 +666,10 @@ public class FireworksFactory
 				
 				if (i < asciiArt.length() - 1)
 				{
-					char nextIt = asciiArt.charAt(i + 1);
+					nextIt = asciiArt.charAt(i + 1);
 					if (nextIt != '\n' || nextIt != '\r' || nextIt != ' ')
 					{
-						String combined = it + "" + nextIt + "";
+						combined = it + "" + nextIt + "";
 						if (!colorMapping.contains(combined))
 						{
 							colorMapping.put(combined, new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
@@ -707,7 +710,7 @@ public class FireworksFactory
 		int currX = originX, currY = originY;
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
-			char it = asciiArt.charAt(i);
+			it = asciiArt.charAt(i);
 			/* If empty space, skip */
 			if (it == ' ')
 			{

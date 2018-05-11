@@ -12,12 +12,13 @@ public class TestEnemy extends Enemy
 		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 22.0;
-		this.mPointsValue = 1000;
+		this.mPointsValue = 1700;
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
 		this.setSprite(controller.mTestEnemySprite);
 		setRotate (-90.0);
+		adjustDifficulity ();
 	}
 
 	public void update ()
