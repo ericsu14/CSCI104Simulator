@@ -1,6 +1,8 @@
 package media;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -110,6 +112,7 @@ public class SoundController
 			mBGMPlayer.stop();
 		}
 		
+		ArrayList <MediaPlayer> playlist = new ArrayList <MediaPlayer>();
 		/* Gathers the new music playlist based on the passed music style */
 		if (style != MusicStyle.kNone)
 		{
@@ -117,9 +120,18 @@ public class SoundController
 			{
 				if (type.getStyle() == style)
 				{
-					mPlaylist.add(mBGMCache.get(type));
+					playlist.add(mBGMCache.get(type));
 				}
 			}
+			
+			/* Randomly shuffles the music playlist */
+			Collections.shuffle(playlist);
+			/* Inserts the elements back into the queue */
+			for (MediaPlayer media : playlist)
+			{
+				mPlaylist.add(media);
+			}
+			
 			mBGMPlayer = mPlaylist.remove();
 			mBGMPlayer.play();
 		}
