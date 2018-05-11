@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -91,7 +92,8 @@ public class SoundController
 				mCurrentMedia = mMediaCache.get(type);
 				mCurrentType = type;
 			}
-			MediaPlayer player = new MediaPlayer (mCurrentMedia);
+			
+			AudioClip player = new AudioClip (mCurrentMedia.getSource());
 			player.setVolume(mSoundVolume);
 			player.play();
 		}
