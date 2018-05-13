@@ -32,6 +32,8 @@ public class MainMenu
 	private OptimizationFlag mGraphics = OptimizationFlag.kDefault;
 	/* Flag used to determine if a test firework animation is playing */
 	private boolean mIsTestingFireworks = false;
+	/* Keeps track of the amount of active test animations playing */
+	private int mActiveTestAnimations = 0;
 	
 	public MainMenu (Launcher launcher)
 	{
@@ -200,14 +202,19 @@ public class MainMenu
 			{
 				mStarField.spawnExplosion();
 				mStarField.spawnFireworks();
-				if (mIsTestingFireworks)
+				if (mActiveTestAnimations > 0)
 				{
-					fireworksSpawner.play();
+					mActiveTestAnimations--;
 				}
-				mIsTestingFireworks = false;
-				graphicsButton.setDisable(mIsTestingFireworks);
+				
+				if (mActiveTestAnimations <= 0)
+				{
+					mIsTestingFireworks = false;
+					graphicsButton.setDisable(mIsTestingFireworks);
+				}
 			});
 			fireworksSpawner.play();
+			mActiveTestAnimations++;
 		});
 		
 		/* Play game button */
