@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Random;
 
+import engine.OptimizationFlag;
 import entities.visuals.ConfettiText;
 import javafx.scene.paint.Color;
 
@@ -463,7 +464,7 @@ public class FireworksFactory
 	}
 	/** Returns an arraylist of ConfettiText entities ready to display the selected ASCII
 	 *  art in a firework-like manner. */
-	public static ArrayList <ConfettiText> spawnFireworks (int paneWidth, int paneHeight, FireworkStyles style)
+	public static ArrayList <ConfettiText> spawnFireworks (int paneWidth, int paneHeight, FireworkStyles style, OptimizationFlag optFlag)
 	{
 		int originX, originY;
 		int centerX, centerY;
@@ -526,8 +527,10 @@ public class FireworksFactory
 		originY = rand.nextInt(paneHeight / 2);
 		
 		/* Secondly, iterate through the ASCII art and map each valid character to a color */
+		char nextIt;
+		String combined;
 		int artWidth = 0, artHeight = 0, tmpWidth = 0;
-		Hashtable <Character, Color> colorMapping = new Hashtable <Character, Color>();
+		Hashtable <String, Color> colorMapping = new Hashtable <String, Color>();
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
 			it = asciiArt.charAt(i);
@@ -537,8 +540,23 @@ public class FireworksFactory
 				/* If the mapping does not have the current character, assign that character a color */
 				if (!colorMapping.contains(it))
 				{
-					colorMapping.put(it, new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
+					colorMapping.put(it + "", new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
 				}
+				
+				if (optFlag == OptimizationFlag.kPerformance && i < asciiArt.length() - 1)
+				{
+					nextIt = asciiArt.charAt(i + 1);
+					if (nextIt != '\n' || nextIt != '\r' || nextIt != ' ')
+					{
+						combined = it + "" + nextIt + "";
+						if (!colorMapping.contains(combined))
+						{
+							colorMapping.put(combined, new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
+						}
+					}
+				}
+				
+				
 			}
 			
 			/* Used for calculating the center of the art */
@@ -564,6 +582,8 @@ public class FireworksFactory
 		
 		
 		/* Thirdly, read through the asciiArt again and construct the fireworks based on its origin point */
+		String buffer = "";
+		boolean compressFlag = false;
 		int currX = originX, currY = originY;
 		for (int i = 0; i < asciiArt.length(); ++i)
 		{
@@ -582,8 +602,35 @@ public class FireworksFactory
 			/* Otherwise, construct a new "firework" */
 			else
 			{
-				confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, it + "" ,colorMapping.get(it), true));
-				currX += spacing;
+				/* Determines if we should compress the firework size in order to reduce the amount of nodes
+				 * generated during gameplay. */
+				if (optFlag == OptimizationFlag.kPerformance)
+				{
+					if (!compressFlag)
+					{
+						// Compresses the ASCII firework string if the next character happens to be a valid character 
+						if (i < asciiArt.length() - 1 && (asciiArt.charAt(i + 1) != ' ' || asciiArt.charAt(i + 1) != '\r' || asciiArt.charAt(i + 1) != '\n'))
+						{
+							buffer = (char)it + "" + (char)asciiArt.charAt(i + 1) + "";
+							compressFlag = true;
+						}
+						else
+						{
+							buffer = (char)it + "";
+						}
+						confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, buffer ,colorMapping.get(buffer), true));
+					}
+					else
+					{
+						compressFlag = false;
+					}
+					currX += spacing;
+				}
+				else
+				{
+					confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, it + "" ,colorMapping.get(it + ""), true));
+					currX += spacing;
+				}
 			}
 			
 		}
@@ -592,7 +639,7 @@ public class FireworksFactory
 	}
 	
 	/** Spawns a fireworks explosion at the point (x, y) */
-	public static ArrayList <ConfettiText> spawnExplosion (int x, int y, FireworkStyles style)
+	public static ArrayList <ConfettiText> spawnExplosion (int x, int y, FireworkStyles style, OptimizationFlag optFlag)
 	{
 		int originX, originY;
 		int centerX, centerY;
@@ -664,7 +711,7 @@ public class FireworksFactory
 					colorMapping.put(it + "", new Color (rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
 				}
 				
-				if (i < asciiArt.length() - 1)
+				if (optFlag != OptimizationFlag.kQuality && i < asciiArt.length() - 1)
 				{
 					nextIt = asciiArt.charAt(i + 1);
 					if (nextIt != '\n' || nextIt != '\r' || nextIt != ' ')
@@ -727,26 +774,33 @@ public class FireworksFactory
 			{
 				/* Determines if we should compress the firework size in order to reduce the amount of nodes
 				 * generated during gameplay. */
-				if (!compressFlag)
+				if (optFlag != OptimizationFlag.kQuality)
 				{
-					// Compresses the ASCII firework string if the next character happens to be a valid character 
-					if (i < asciiArt.length() - 1 && (asciiArt.charAt(i + 1) != ' ' || asciiArt.charAt(i + 1) != '\r' || asciiArt.charAt(i + 1) != '\n'))
+					if (!compressFlag)
 					{
-						buffer = (char)it + "" + (char)asciiArt.charAt(i + 1) + "";
-						compressFlag = true;
+						// Compresses the ASCII firework string if the next character happens to be a valid character 
+						if (i < asciiArt.length() - 1 && (asciiArt.charAt(i + 1) != ' ' || asciiArt.charAt(i + 1) != '\r' || asciiArt.charAt(i + 1) != '\n'))
+						{
+							buffer = (char)it + "" + (char)asciiArt.charAt(i + 1) + "";
+							compressFlag = true;
+						}
+						else
+						{
+							buffer = (char)it + "";
+						}
+						confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, buffer ,colorMapping.get(buffer), false));
 					}
 					else
 					{
-						buffer = (char)it + "";
+						compressFlag = false;
 					}
-					confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, buffer ,colorMapping.get(buffer), false));
+					currX += spacing;
 				}
 				else
 				{
-					compressFlag = false;
+					confettiObjects.add(new ConfettiText (centerX, centerY, currX, currY, it + "" ,colorMapping.get(it + ""), false));
+					currX += spacing;
 				}
-				currX += spacing;
-				
 			}
 			
 		}

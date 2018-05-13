@@ -62,6 +62,8 @@ public abstract class Enemy extends Entity
 	public Enemy (EnemyPosition initPosition, Point2D origin, int group, GameEngine controller)
 	{
 		super(origin.getX(), origin.getY(), controller);
+		this.setCache(true);
+		
 		mState = EntityState.kJustSpawned;
 		mType = EntityType.kEnemy;
 		mEntryPosition = initPosition;

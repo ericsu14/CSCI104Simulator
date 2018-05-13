@@ -39,6 +39,7 @@ public abstract class Boss extends Enemy
 	public Boss(EnemyPosition initPosition, Point2D origin, GameEngine controller) 
 	{
 		super(initPosition, origin, -1, controller);
+		this.setCache(true);
 		
 		/* Overrides the enemy's setup code in the constructor */
 		this.mCommandQueue.clear();

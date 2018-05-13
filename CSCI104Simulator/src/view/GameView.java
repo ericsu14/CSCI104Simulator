@@ -106,6 +106,8 @@ public class GameView
 	/** Plays the background animations */
 	public void playAnimations()
 	{
+		mStarField.setOptimizationFlag(mGameEngine.getOptimizationFlag());
+		mParticleLayer.setOptimizationFlag(mGameEngine.getOptimizationFlag());
 		mStarField.playAnimation();
 		mParticleLayer.playAnimation();
 	}

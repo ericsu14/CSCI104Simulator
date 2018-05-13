@@ -1,6 +1,8 @@
 /** Represents the main menu of the game */
 package view;
 
+import engine.OptimizationFlag;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import media.MusicStyle;
 import util.CSSConstants;
 
@@ -23,8 +26,12 @@ public class MainMenu
 	private StarField mStarField;
 	/* Reference to the launcher object */
 	private Launcher mLauncher;
-	/* Stores the current difficluty of the game as a string */
+	/* Stores the current difficulty of the game as a string */
 	private String mDifficultyString;
+	/* Stores the current graphical quality of the game */
+	private OptimizationFlag mGraphics = OptimizationFlag.kDefault;
+	/* Flag used to determine if a test firework animation is playing */
+	private boolean mIsTestingFireworks = false;
 	
 	public MainMenu (Launcher launcher)
 	{
@@ -134,6 +141,74 @@ public class MainMenu
 			diffButton.setText("--> Difficulty: " + mDifficultyString);
 		});
 		
+		/* Graphics quality button */
+		Button graphicsButton = new Button ("     Animation Quality: " + mGraphics.getName());
+		graphicsButton.setBackground (Background.EMPTY);
+		graphicsButton.setStyle(CSSConstants.WHITE_TEXT);
+		graphicsButton.setFont(new Font ("Comic Sans MS", 18));
+		
+		graphicsButton.setOnMouseEntered(e -> 
+		{
+			graphicsButton.setText("-->  Animation Quality: " + mGraphics.getName());
+			graphicsButton.setStyle(CSSConstants.WHITE_TEXT + CSSConstants.UNDERLINE_TEXT);
+		});
+		
+		graphicsButton.setOnMouseExited(e -> 
+		{
+			graphicsButton.setText("     Animation Quality: " + mGraphics.getName());
+			graphicsButton.setStyle(CSSConstants.WHITE_TEXT);
+		});
+		
+		graphicsButton.setOnMouseClicked(e -> 
+		{
+			/* Only switch quality when we are not testing the fireworks */
+			if (mIsTestingFireworks)
+			{
+				return;
+			}
+			
+			switch (mGraphics)
+			{
+				case kPerformance:
+				{
+					mGraphics = OptimizationFlag.kDefault;
+					break;
+				}
+				case kQuality:
+				{
+					mGraphics = OptimizationFlag.kPerformance;
+					break;
+				}
+				case kDefault:
+				{
+					mGraphics = OptimizationFlag.kQuality;
+					break;
+				}
+			}
+			
+			mLauncher.getGameEngine().setOptimizationFlag(mGraphics);
+			graphicsButton.setText("-->  Animation Quality: " + mGraphics.getName());
+			graphicsButton.setStyle(CSSConstants.GRAY_TEXT + CSSConstants.UNDERLINE_TEXT);
+			mIsTestingFireworks = true;
+			
+			graphicsButton.setDisable(mIsTestingFireworks);
+			
+			/* Spawns test fireworks */
+			mStarField.setOptimizationFlag(mGraphics);
+			PauseTransition fireworksSpawner = new PauseTransition (Duration.millis(500));
+			fireworksSpawner.setOnFinished(a -> 
+			{
+				mStarField.spawnExplosion();
+				mStarField.spawnFireworks();
+				if (mIsTestingFireworks)
+				{
+					fireworksSpawner.play();
+				}
+				mIsTestingFireworks = false;
+				graphicsButton.setDisable(mIsTestingFireworks);
+			});
+			fireworksSpawner.play();
+		});
 		
 		/* Play game button */
 		Button playGame = new Button("     Play Game");
@@ -141,7 +216,7 @@ public class MainMenu
 		playGame.setBackground(Background.EMPTY);
 		playGame.setStyle(CSSConstants.WHITE_TEXT);
 		
-		/* Button action propetries */
+		/* Button action properties */
 		playGame.setOnMouseEntered(e -> 
 		{
 			playGame.setText("--> Play Game");
@@ -158,14 +233,13 @@ public class MainMenu
 			mLauncher.switchGameScene();
 		});
 		
-		menuOptions.getChildren().addAll(diffButton, playGame);
+		menuOptions.getChildren().addAll(diffButton, graphicsButton, playGame);
 		
 		
 		menuOptions.setAlignment(Pos.CENTER);
 		menuOptions.setSpacing(6);
 		mainMenu.setCenter(menuOptions);
 		
-		/* TODO: Create selectors for the rest of the gameplay components */
 		
 		/* Footer */
 		VBox footer = new VBox();

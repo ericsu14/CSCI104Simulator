@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
+import engine.OptimizationFlag;
+
 public class StarField extends Pane 
 {
 	/* Random generator used to randomly generate the coordinates of 
@@ -38,7 +40,7 @@ public class StarField extends Pane
 	/* Flag used to indicate if a fireworks show is going to happen */
 	private boolean mFireworksFlag;
 	/* The time it takes for each firework to spawn */
-	private int mFireworksTime = 15;
+	private int mFireworksTime = 20;
 	/* Timer for fireworks show */
 	private int mFireworksTimer;
 	/* Flag that determines if stars shoudl be spawned */
@@ -51,6 +53,8 @@ public class StarField extends Pane
 	/* The threshold of the amount of despawned entities this field can contain before the GC
 	 * is invoked */
 	private long mDespawnThreshold = 4000;
+	/* Stores a ref. to the game view */
+	private OptimizationFlag mOptFlag = OptimizationFlag.kDefault;
 	
 	/** Nested fireworks command class */
 	private class FireworksCommand
@@ -128,16 +132,28 @@ public class StarField extends Pane
 		mFireworksTimer = 0;
 	}
 	
-	/** Spawns a fireworks explosion at a point */
+	/** Spawns an explosion at a random point */
+	public void spawnExplosion ()
+	{
+		mQueuedFireworks.add(new FireworksCommand ((int)(mRand.nextInt((int)Launcher.mWidth)), (int)(mRand.nextInt((int)Launcher.mHeight))));
+	}
+	
+	/** Spawns an explosion at a point */
 	public void spawnExplosion (int x, int y)
 	{
 		mQueuedFireworks.add(new FireworksCommand (x, y));
 	}
 	
-	/** Spawns an explosion of a specific type */
+	/** Spawns an explosion of a specific type at a point */
 	public void spawnExplosion (int x, int y, FireworkStyles style)
 	{
 		mQueuedFireworks.add(new FireworksCommand (x, y, style));
+	}
+	
+	/** Spawns a single instance of a fireworks animation  */
+	public void spawnFireworks ()
+	{
+		mQueuedFireworks.add (new FireworksCommand ());
 	}
 	
 	/** Initializes the animation timers */
@@ -189,16 +205,16 @@ public class StarField extends Pane
 					{
 						if (!command.mCustom)
 						{
-							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, FireworksFactory.getRandomExplosion());
+							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, FireworksFactory.getRandomExplosion(), mOptFlag);
 						}
 						else
 						{
-							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, command.mStyle);
+							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, command.mStyle, mOptFlag);
 						}
 					}
 					else
 					{
-						explosion = FireworksFactory.spawnFireworks((int)Launcher.mWidth, (int)Launcher.mHeight, FireworksFactory.getRandomStyle());
+						explosion = FireworksFactory.spawnFireworks((int)Launcher.mWidth, (int)Launcher.mHeight, FireworksFactory.getRandomStyle(), mOptFlag);
 						PauseTransition soundDelay = new PauseTransition (Duration.seconds(2));
 						soundDelay.setOnFinished(e -> 
 						{
@@ -254,5 +270,12 @@ public class StarField extends Pane
 			}
 			
 		};
+	}
+	
+	/** Sets the optimization flag of the starfield
+	 * 		@param flag - The new flag to be set */
+	public void setOptimizationFlag (OptimizationFlag flag)
+	{
+		this.mOptFlag = flag;
 	}
 }

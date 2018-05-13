@@ -38,6 +38,8 @@ public class Player extends Entity
 	public Player (double x, double y, GameEngine controller)
 	{
 		super (x, y, controller);
+		this.setCache(true);
+		
 		mMovementSpeed = 6.0;
 		mSpriteScale = 30.0;
 		mPlayerRotation = 90.0;

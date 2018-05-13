@@ -49,7 +49,6 @@ public abstract class Entity extends ImageView
 	public Entity (double x, double y, GameEngine controller)
 	{
 		super();
-		this.setCache(true);
 		mState = EntityState.kActive;
 		mController = controller;
 		

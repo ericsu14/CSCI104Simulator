@@ -125,6 +125,9 @@ public class GameEngine
 	private Boss mCurrentBoss;
 	/* Flag used to determine if a boss battle is about to happen */
 	private boolean mBossBattleFlag;
+	/* Flag used to determine which optimization level the game is currently in.
+	 * Switching this flag determines on how the in-game fireworks should be rendered. */
+	private OptimizationFlag mOptimizationFlag = OptimizationFlag.kDefault;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -988,6 +991,19 @@ public class GameEngine
 	public Boss getCurrentBoss ()
 	{
 		return this.mCurrentBoss;
+	}
+	
+	/** @return the game's current optimization flag */
+	public OptimizationFlag getOptimizationFlag()
+	{
+		return this.mOptimizationFlag;
+	}
+	
+	/** Sets this game's optimization flag to a new value
+	 * 		@param flag - the new value to be set */
+	public void setOptimizationFlag (OptimizationFlag flag)
+	{
+		this.mOptimizationFlag = flag;
 	}
 	
 	/** Scans the current list of game entities and sets the game's current boss pointer
