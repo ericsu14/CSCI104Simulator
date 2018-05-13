@@ -6,7 +6,9 @@ import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -149,6 +151,11 @@ public class MainMenu
 		graphicsButton.setStyle(CSSConstants.WHITE_TEXT);
 		graphicsButton.setFont(new Font ("Comic Sans MS", 18));
 		
+		Tooltip graphicsDescription = new Tooltip (mGraphics.getDescription());
+		graphicsDescription.setStyle(CSSConstants.GAME_FONT);
+		graphicsDescription.setContentDisplay(ContentDisplay.RIGHT);
+		graphicsButton.setTooltip(graphicsDescription);
+		
 		graphicsButton.setOnMouseEntered(e -> 
 		{
 			graphicsButton.setText("-->  Animation Quality: " + mGraphics.getName());
@@ -197,6 +204,7 @@ public class MainMenu
 			
 			/* Spawns test fireworks */
 			mStarField.setOptimizationFlag(mGraphics);
+			graphicsDescription.setText(mGraphics.getDescription());
 			PauseTransition fireworksSpawner = new PauseTransition (Duration.millis(500));
 			fireworksSpawner.setOnFinished(a -> 
 			{
@@ -241,7 +249,6 @@ public class MainMenu
 		});
 		
 		menuOptions.getChildren().addAll(diffButton, graphicsButton, playGame);
-		
 		
 		menuOptions.setAlignment(Pos.CENTER);
 		menuOptions.setSpacing(6);
