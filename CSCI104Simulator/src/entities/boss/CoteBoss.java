@@ -40,7 +40,7 @@ public class CoteBoss extends Boss {
 		{
 			mMoveTime -= (int) ((double)(mMoveTime * 0.2));
 			mHealth += (mHealth * 0.2);
-			mMovementSpeed += 0.2;
+			mMovementSpeed += mMovementSpeed * 0.2;
 		}
 	}
 	
