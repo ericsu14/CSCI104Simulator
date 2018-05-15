@@ -39,7 +39,7 @@ public abstract class Entity extends ImageView
 	 * given offset. Once the entity reaches that area, it would then stop. */
 	protected int mWaypointOffset = 2;
 	/* Random number generator shared across all entities */
-	protected static Random mRand = new Random();
+	protected Random mRand = new Random();
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated

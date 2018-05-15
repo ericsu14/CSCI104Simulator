@@ -81,26 +81,25 @@ public class SoundController
 	/** Plays a sound of a certain sound type */
 	public void playSound (SoundType type)
 	{
-		try
+		// NULL check
+		if (type == SoundType.kNull)
 		{
-			if (type != mCurrentType)
+			return;
+		}
+		
+		if (type != mCurrentType)
+		{
+			if (!mMediaCache.contains(type))
 			{
-				if (!mMediaCache.contains(type))
-				{
-					mMediaCache.put(type, new Media (new File (type.getDirectory()).toURI().toString()));
-				}
-				mCurrentMedia = mMediaCache.get(type);
-				mCurrentType = type;
+				mMediaCache.put(type, new Media (new File (type.getDirectory()).toURI().toString()));
 			}
+			mCurrentMedia = mMediaCache.get(type);
+			mCurrentType = type;
+		}
 			
-			AudioClip player = new AudioClip (mCurrentMedia.getSource());
-			player.setVolume(mSoundVolume);
-			player.play();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		AudioClip player = new AudioClip (mCurrentMedia.getSource());
+		player.setVolume(mSoundVolume);
+		player.play();
 	}
 	
 	/** Reinitializes the BGM playlist to a new styleset of music */

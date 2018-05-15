@@ -1,7 +1,8 @@
 package entities.boss;
 
+import java.util.ArrayList;
+
 import engine.GameEngine;
-import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
 import entities.enemies.Command;
@@ -35,6 +36,15 @@ public abstract class Boss extends Enemy
 	protected BossProjectile mRangedProjectile;
 	/* Flag used to indicate that the boss's difficulity has been adjsuted */
 	protected boolean mAdjustedBossDifficulity;
+	/* The sound type used to specify the boss hit sound.
+	 * Can be overridden by other instances of this class. */
+	protected SoundType mBossHit = SoundType.kEnemyHit;
+	/* The sound type used to specify the boss die sound.
+	 * Can be overridden by other instances of this class. */
+	protected SoundType mBossDie  = SoundType.kBossDie;
+	/* An arraylist of taunts the boss could use while preparing a ranged attack */
+	protected ArrayList <SoundType> mBossTauntList = null;
+	
 	
 	public Boss(EnemyPosition initPosition, Point2D origin, GameEngine controller) 
 	{
@@ -67,7 +77,7 @@ public abstract class Boss extends Enemy
 		{
 			if (mMoveTimer <= 0)
 			{
-				int nextMove = Entity.mRand.nextInt(5);
+				int nextMove = this.mRand.nextInt(5);
 				switch (nextMove)
 				{
 					/* In this case, do a ranged attack */
@@ -75,7 +85,7 @@ public abstract class Boss extends Enemy
 					{
 						this.mPhase = EnemyPhase.kRangedAttack;
 						this.mAmmoType = BossAmmoType.kRanged;
-						mController.playSound(SoundType.kBossTaunt);
+						mController.playSound(this.getRandomTaunt());
 						break;
 					}
 					/* Otherwise, do a projectile attack */
@@ -137,12 +147,12 @@ public abstract class Boss extends Enemy
 		if (mHealth <= 0)
 		{
 			super.die();
-			mController.playSound(SoundType.kBossDie);
+			mController.playSound(this.mBossDie);
 			mController.findCurrentBoss();
 		}
 		else
 		{
-			mController.playSound(SoundType.kBossHit);
+			mController.playSound(this.mBossHit);
 		}
 	}
 	
@@ -168,6 +178,20 @@ public abstract class Boss extends Enemy
 	public void setAmmoType (BossAmmoType newType)
 	{
 		mAmmoType = newType;
+	}
+	
+	/** Selects a random boss taunt for this entity to use */
+	public SoundType getRandomTaunt ()
+	{
+		/* If the boss taunt arraylist is still empty (not overridden),
+		 * return an empty sound taunt */
+		if (this.mBossTauntList == null)
+		{
+			return SoundType.kNull;
+		}
+		
+		/* Otherwise, return a random index of that list  */
+		return mBossTauntList.get(this.mRand.nextInt(mBossTauntList.size()));
 	}
 	
 

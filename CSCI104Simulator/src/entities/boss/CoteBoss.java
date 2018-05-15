@@ -1,10 +1,13 @@
 package entities.boss;
 
+import java.util.ArrayList;
+
 import engine.GameEngine;
 import entities.enemies.CommandType;
 import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
 import javafx.geometry.Point2D;
+import media.SoundType;
 
 public class CoteBoss extends Boss {
 
@@ -24,6 +27,11 @@ public class CoteBoss extends Boss {
 		this.mMoveTime = 300;
 		this.setSprite(this.mController.mCote);
 		this.setRotate(-90.0);
+		
+		// Sets up boss sound files
+		this.mBossHit = SoundType.kCoteHit;
+		this.mBossTauntList = new ArrayList <SoundType> ();
+		this.mBossTauntList.add(SoundType.kCoteTaunt1);
 		
 		/* The boss attacks 20% faster,
 		 * and has 20% more health,
