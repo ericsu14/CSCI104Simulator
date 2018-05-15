@@ -33,6 +33,8 @@ public class SoundController
 	private Queue <MediaPlayer> mPlaylist;
 	/* MAX volume of the BGM */
 	private double mBGMVolume = 0.30;
+	/* An audioclip that is capable of being overwritten by new requests */
+	private AudioClip mReusableSound = null;
 	
 	public SoundController ()
 	{
@@ -102,7 +104,27 @@ public class SoundController
 		player.play();
 	}
 	
-	/** Reinitializes the BGM playlist to a new styleset of music */
+	/** Plays a sound clip that could be interrupted and overridden by new sound requests
+	 * 		@param type - The type of sound to be played */
+	public void playSoundOverwritable (SoundType type)
+	{
+		// NULL check
+		if (type == SoundType.kNull)
+		{
+			return;
+		}
+		
+		if (mReusableSound != null)
+		{
+			mReusableSound.stop();
+		}
+		
+		mReusableSound = new AudioClip (mMediaCache.get(type).getSource());
+		mReusableSound.setVolume(mSoundVolume);
+		mReusableSound.play();
+	}
+	
+	/** Reinitializes the BGM playlist to a new style of music */
 	public void setPlaylist (MusicStyle style)
 	{	
 		mPlaylist.clear();
@@ -135,6 +157,16 @@ public class SoundController
 			
 			mBGMPlayer = mPlaylist.remove();
 			mBGMPlayer.play();
+		}
+	}
+	
+	/** Stops and destroys the current overwritable sound being played */
+	public void stopOverwritableSound ()
+	{
+		if (mReusableSound != null)
+		{
+			mReusableSound.stop();
+			mReusableSound = null;
 		}
 	}
 	

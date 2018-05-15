@@ -17,7 +17,9 @@ public enum SoundType
 	kFireworkBlast ("src/assets/sounds/fireworkBlast.wav"),
 	kBossDie ("src/assets/sounds/bossDie.mp3"),
 	kCoteHit ("src/assets/sounds/coteHit.wav"),
-	kCoteTaunt1 ("src/assets/sounds/coteTaunt1.wav");
+	kCoteTaunt1 ("src/assets/sounds/coteTaunt1.wav"),
+	kCoteTaunt2 ("src/assets/sounds/coteTaunt2.wav"),
+	kCoteTaunt3 ("src/assets/sounds/coteTaunt3.wav");
 	
 	private String mDirectory;
 	

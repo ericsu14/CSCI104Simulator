@@ -741,6 +741,9 @@ public class GameEngine
 	/** Cleans up assets */
 	public void cleanup ()
 	{		
+		/* Stops all sound assets */
+		this.getGameView().getSoundEngine().stopOverwritableSound();
+		
 		/* Cleans up all containers */
 		mDeadEntities.clear();
 		mGameEntities.clear();
@@ -755,7 +758,7 @@ public class GameEngine
 			this.cleanupBossBattle();
 		}
 		this.mBossBattleFlag = false;
-		// System.gc();
+		System.gc();
 	}
 	
 	/** Adds a new entity into the game.
@@ -934,6 +937,13 @@ public class GameEngine
 	public void playSound (SoundType type)
 	{
 		this.mGameView.getSoundEngine().playSound(type);
+	}
+	
+	/** Plays a sound file that can be interrupted and overridden by a new request
+	 * 		@param type - Type of sound that is going to be played */
+	public void playSoundOverwritable (SoundType type)
+	{
+		this.mGameView.getSoundEngine().playSoundOverwritable(type);
 	}
 	
 	/** Decrements the game's enemy count */

@@ -32,6 +32,8 @@ public class CoteBoss extends Boss {
 		this.mBossHit = SoundType.kCoteHit;
 		this.mBossTauntList = new ArrayList <SoundType> ();
 		this.mBossTauntList.add(SoundType.kCoteTaunt1);
+		this.mBossTauntList.add(SoundType.kCoteTaunt2);
+		this.mBossTauntList.add(SoundType.kCoteTaunt3);
 		
 		/* The boss attacks 20% faster,
 		 * and has 20% more health,
@@ -42,6 +44,8 @@ public class CoteBoss extends Boss {
 			mHealth += (mHealth * 0.2);
 			mMovementSpeed += mMovementSpeed * 0.2;
 		}
+		
+		mController.playSoundOverwritable(SoundType.kCoteTaunt3);
 	}
 	
 	@Override

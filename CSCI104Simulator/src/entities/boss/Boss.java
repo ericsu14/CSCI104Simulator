@@ -85,7 +85,7 @@ public abstract class Boss extends Enemy
 					{
 						this.mPhase = EnemyPhase.kRangedAttack;
 						this.mAmmoType = BossAmmoType.kRanged;
-						mController.playSound(this.getRandomTaunt());
+						mController.playSoundOverwritable(this.getRandomTaunt());
 						break;
 					}
 					/* Otherwise, do a projectile attack */
@@ -96,7 +96,6 @@ public abstract class Boss extends Enemy
 						break;
 					}
 				}
-				
 				this.createAttackVectors();
 				mMoveTimer = mMoveTime;
 			}
