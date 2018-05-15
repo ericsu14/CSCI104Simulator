@@ -120,7 +120,7 @@ public class SoundController
 		}
 		
 		mReusableSound = new AudioClip (mMediaCache.get(type).getSource());
-		mReusableSound.setVolume(mSoundVolume);
+		mReusableSound.setVolume(0.6);
 		mReusableSound.play();
 	}
 	

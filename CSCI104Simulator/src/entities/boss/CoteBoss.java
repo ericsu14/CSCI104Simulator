@@ -45,7 +45,7 @@ public class CoteBoss extends Boss {
 			mMovementSpeed += mMovementSpeed * 0.2;
 		}
 		
-		mController.playSoundOverwritable(SoundType.kCoteTaunt3);
+		mController.playSoundOverwritable(this.getRandomTaunt());
 	}
 	
 	@Override
