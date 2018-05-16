@@ -14,8 +14,6 @@ public abstract class Entity extends ImageView
 	protected double mInitialMovementSpeed = 2.0;
 	/* Entity's movement speed */
 	protected double mMovementSpeed;
-	/* Animation timer that allows the entity to rotate based on its current movement */
-	protected AnimationTimer mRotationAnimation;
 	/* Animation timer that allows this entity to move themselves to a desginated waypoint of
 	 * the game grid */
 	protected AnimationTimer mWaypointAnimation;
@@ -58,8 +56,6 @@ public abstract class Entity extends ImageView
 		mPreviousCoord = new Point2D (x, y);
 		mType = EntityType.kUnknown;
 		
-		/* Initializes basic entity animations */
-		initializeBasicAnimations();
 	}
 	
 	/** @return The entity's forward vector */
@@ -72,55 +68,6 @@ public abstract class Entity extends ImageView
 		return forwardVector;
 	}
 	
-	/** Initializes the entity's basic animation timers, such as 
-	 *  rotating based on its current movement */
-	protected void initializeBasicAnimations ()
-	{
-		/* Rotation animation */
-		mRotationAnimation = new AnimationTimer ()
-		{	
-			/* Current position of the entity */
-			private Point2D mCurrentPosition = new Point2D (getX(), getY());
-			/* Angle between the current position and the previous position */
-			private double mTheta;
-			
-			/** On every frame, calculate the angle between the entity's 
-			 *  previous position and the entity's current position
-			 *  and add the result to the rotation angle. */
-			@Override
-			public void handle(long arg0) 
-			{
-				mCurrentPosition = new Point2D (getX(), getY());
-				mCurrentPosition = mCurrentPosition.subtract(mPreviousCoord);
-				
-				/* Calculates the inverse tangent to get the angle change */
-				mTheta = Math.atan2(mCurrentPosition.getX(), -mCurrentPosition.getY());
-				
-				/* Slowly rotates to the new angle based on the current theta */
-				if (mTheta >= 0 && getRotate() < Math.toDegrees(mTheta))
-				{
-					setRotate(getRotate() + mRotationSpeed);
-				}
-				else if (mTheta >= 0 && getRotate() > Math.toDegrees(mTheta))
-				{
-					setRotate(getRotate() - mRotationSpeed);
-				}
-				else if (mTheta < 0 && getRotate() > Math.toDegrees(mTheta))
-				{
-					setRotate (getRotate() - mRotationSpeed);
-				}
-				else if (mTheta < 0 && getRotate() < Math.toDegrees(mTheta))
-				{
-					setRotate (getRotate() + mRotationSpeed);
-				}
-				
-				/* Previous coordinate is now the current coordinate */
-				mPreviousCoord = new Point2D (getX(), getY());
-			}
-			
-		};
-		
-	}
 	
 	/** Moves an entity to a designated coordinate of the graph */
 	public void moveEntity (Point2D destination)
@@ -226,7 +173,7 @@ public abstract class Entity extends ImageView
 	/** Cleans up all assets used by this entity */
 	public void cleanUp()
 	{
-		mRotationAnimation.stop();
+
 	}
 	
 	/** Scales and sets this entity's sprite asset

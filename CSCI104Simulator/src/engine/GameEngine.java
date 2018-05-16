@@ -1036,14 +1036,7 @@ public class GameEngine
 	 *  are no enemies and bosses left */
 	public boolean canEndGame ()
 	{
-		for (Entity e : mGameEntities)
-		{
-			if (e.getType() == EntityType.kEnemy || e.getType() == EntityType.kBoss)
-			{
-				return false;
-			}
-		}
-		return true;
+		return (this.mNumBosses <= 0 && this.mNumEnemies <= 0);
 	}
 	
 	/** Checks if the player is about to encounter a boss battle.
