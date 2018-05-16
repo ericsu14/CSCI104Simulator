@@ -8,6 +8,6 @@ package entities.enemies;
 
 public enum CommandType 
 {
-	kMove, kPrepareAttack, kAttack, kAttackMove, kRetreat,
+	kMove, kPrepareAttack, kAttack, kFalseRetreat, kRetreat,
 	kBossPrepareRangedAttack, kBossRangedAttack
 }

@@ -46,8 +46,8 @@ public abstract class Enemy extends Entity
 	protected int mShotsPerFrame = 10;
 	/* Cooldown timer for the enemy's cannons */
 	protected int mCooldown;
-	/* Determines if this enemy has just used an attack move */
-	public boolean mAttackMoveFlag = false;
+	/* Determines if this enemy has just used a false retreat move*/
+	public boolean mFalseRetreatFlag = false;
 	/* If set to true, then the enemy would attack while moving to their spawn location */
 	protected boolean mSpawnAttackFlag = false;
 	/* The level required before the enemy is able to attack while spawining */
@@ -273,7 +273,7 @@ public abstract class Enemy extends Entity
 	{
 		mCommandQueue.add(new Command (type, this));
 		
-		if (type == CommandType.kAttack || type == CommandType.kAttackMove || type == CommandType.kPrepareAttack
+		if (type == CommandType.kAttack || type == CommandType.kFalseRetreat || type == CommandType.kPrepareAttack
 				|| type == CommandType.kBossPrepareRangedAttack || type == CommandType.kBossPrepareRangedAttack)
 		{
 			++mNumAttackWaypoints;

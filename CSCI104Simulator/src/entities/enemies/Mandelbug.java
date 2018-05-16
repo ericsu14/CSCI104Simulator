@@ -37,7 +37,7 @@ public class Mandelbug extends Enemy
 		/* Creates the attack vector based on the player's position */
 		this.addCommand(CommandType.kPrepareAttack);
 		this.addCommand(CommandType.kAttack);
-		this.addCommand(CommandType.kAttackMove);
+		this.addCommand(CommandType.kFalseRetreat);
 		this.addCommand(CommandType.kPrepareAttack);
 		this.addCommand(CommandType.kAttack);
 		/* Creates the retreat vector */

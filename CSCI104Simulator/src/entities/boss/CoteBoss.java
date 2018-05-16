@@ -64,7 +64,7 @@ public class CoteBoss extends Boss {
 		{
 			addCommand (CommandType.kBossPrepareRangedAttack);
 			addCommand (CommandType.kBossRangedAttack);
-			addCommand (CommandType.kAttackMove);
+			addCommand (CommandType.kFalseRetreat);
 			addCommand (CommandType.kBossPrepareRangedAttack);
 			addCommand (CommandType.kBossRangedAttack);
 			addCommand(CommandType.kRetreat);

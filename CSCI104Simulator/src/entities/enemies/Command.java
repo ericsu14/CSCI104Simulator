@@ -1,4 +1,5 @@
-/** Defines the commands that  */
+/** Defines the commands that are used for the enemies to either move to a location,
+ *  prepare an attack, attack, or retreat in this game. */
 package entities.enemies;
 
 import javafx.geometry.Point2D;
@@ -54,10 +55,10 @@ public class Command
 			{
 				/*  Reloads the ship's cannons if an attack move has just been
 				 *  recently used */
-				if (mOwner.mAttackMoveFlag)
+				if (mOwner.mFalseRetreatFlag)
 				{
 					mOwner.reload();
-					mOwner.mAttackMoveFlag = false;
+					mOwner.mFalseRetreatFlag = false;
 				}
 				
 				/* For this, the enemy should travel directly towards a point near the
@@ -88,10 +89,10 @@ public class Command
 				
 				/*  Reloads the ship's cannons if an attack move has just been
 				 *  recently used */
-				if (mOwner.mAttackMoveFlag)
+				if (mOwner.mFalseRetreatFlag)
 				{
 					mOwner.reload();
-					mOwner.mAttackMoveFlag = false;
+					mOwner.mFalseRetreatFlag = false;
 				}
 				
 				if (mOwner.getEntryPosition() == EnemyPosition.kLeft)
@@ -118,9 +119,9 @@ public class Command
 				break;
 			}
 			
-			case kAttackMove:
+			case kFalseRetreat:
 			{
-				mOwner.mAttackMoveFlag = true;
+				mOwner.mFalseRetreatFlag = true;
 				break;
 			}
 			
