@@ -57,6 +57,15 @@ public class CoteBoss extends Boss {
 			this.mCurrentAmmo = this.mMaxAmmoPool;
 			addCommand(CommandType.kPrepareAttack);
 			addCommand(CommandType.kAttack);
+			
+			// Cote attacks more aggressively in hard mode
+			if (mController.isHardMode())
+			{
+				addCommand(CommandType.kFalseRetreat);
+				addCommand(CommandType.kPrepareAttack);
+				addCommand(CommandType.kAttack);
+			}
+			
 			addCommand(CommandType.kRetreat);
 		}
 		
