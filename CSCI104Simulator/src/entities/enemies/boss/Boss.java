@@ -1,4 +1,4 @@
-package entities.boss;
+package entities.enemies.boss;
 
 import java.util.ArrayList;
 
@@ -10,8 +10,8 @@ import entities.enemies.CommandType;
 import entities.enemies.Enemy;
 import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
-import entities.projectiles.BossProjectile;
-import entities.projectiles.BossRangedProjectile;
+import entities.projectiles.boss.BossProjectile;
+import entities.projectiles.boss.BossRangedProjectile;
 import javafx.geometry.Point2D;
 import media.SoundType;
 import view.Launcher;

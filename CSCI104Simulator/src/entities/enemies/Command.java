@@ -9,8 +9,8 @@ import view.Launcher;
 import java.util.Random;
 
 import entities.EntityType;
-import entities.boss.Boss;
-import entities.boss.BossAmmoType;
+import entities.enemies.boss.Boss;
+import entities.enemies.boss.BossAmmoType;
 import entities.player.Player;
 
 public class Command 

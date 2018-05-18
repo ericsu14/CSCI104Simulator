@@ -1,4 +1,4 @@
-package entities.boss;
+package entities.enemies.boss;
 
 public enum BossAmmoType 
 {

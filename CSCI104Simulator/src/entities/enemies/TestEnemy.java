@@ -1,7 +1,7 @@
 package entities.enemies;
 
 import engine.GameEngine;
-import entities.projectiles.GuidedProjectile;
+import entities.projectiles.enemies.GuidedProjectile;
 import javafx.geometry.Point2D;
 
 public class TestEnemy extends Enemy 

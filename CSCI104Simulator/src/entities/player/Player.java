@@ -3,7 +3,7 @@ import engine.GameEngine;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
-import entities.projectiles.PlayerProjectile;
+import entities.projectiles.player.PlayerProjectile;
 import javafx.geometry.Point2D;
 import media.SoundType;
 

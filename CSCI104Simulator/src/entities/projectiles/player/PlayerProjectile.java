@@ -1,10 +1,11 @@
-package entities.projectiles;
+package entities.projectiles.player;
 
 import engine.GameEngine;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
 import entities.player.Player;
+import entities.projectiles.Projectile;
 import javafx.geometry.Point2D;
 
 public class PlayerProjectile extends Projectile 

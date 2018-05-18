@@ -1,7 +1,7 @@
 package view;
 
 import engine.GameState;
-import entities.boss.Boss;
+import entities.enemies.boss.Boss;
 import factories.ShindlerFactory;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;

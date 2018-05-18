@@ -1,10 +1,11 @@
-package entities.projectiles;
+package entities.projectiles.enemies;
 
 import engine.GameEngine;
 import engine.GameState;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
+import entities.projectiles.Projectile;
 import view.Launcher;
 
 public class EnemyProjectile extends Projectile 

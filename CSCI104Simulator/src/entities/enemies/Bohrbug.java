@@ -1,7 +1,7 @@
 package entities.enemies;
 
 import engine.GameEngine;
-import entities.projectiles.UnguidedProjectile;
+import entities.projectiles.enemies.UnguidedProjectile;
 import javafx.geometry.Point2D;
 import media.SoundType;
 

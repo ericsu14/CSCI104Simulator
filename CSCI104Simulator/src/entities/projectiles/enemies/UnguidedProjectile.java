@@ -1,4 +1,4 @@
-package entities.projectiles;
+package entities.projectiles.enemies;
 
 import engine.GameEngine;
 import entities.Entity;

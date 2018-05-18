@@ -1,7 +1,8 @@
-package entities.projectiles;
+package entities.projectiles.boss;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.projectiles.enemies.EnemyProjectile;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 

@@ -1,7 +1,8 @@
-package entities.projectiles;
+package entities.projectiles.boss;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.projectiles.enemies.EnemyProjectile;
 
 public class BossRangedProjectile extends EnemyProjectile 
 {
