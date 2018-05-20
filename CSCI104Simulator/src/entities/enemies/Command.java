@@ -62,7 +62,7 @@ public class Command
 				}
 				
 				/* For this, the enemy should travel directly towards a point near the
-				 * player's current vacinity at an offset */
+				 * player's current vicinity at an offset */
 				double xOffset, yOffset;
 				
 				if (mOwner.getEntryPosition() == EnemyPosition.kLeft)
