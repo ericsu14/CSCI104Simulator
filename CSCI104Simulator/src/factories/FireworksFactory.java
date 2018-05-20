@@ -560,7 +560,7 @@ public class FireworksFactory
 			}
 			
 			/* Used for calculating the center of the art */
-			if (it == '\r' || it == '\n')
+			if (it == '\n')
 			{
 				++artHeight;
 				if (tmpWidth > artWidth)
@@ -728,7 +728,7 @@ public class FireworksFactory
 			}
 			
 			/* Used for calculating the center of the art */
-			if (it == '\r' || it == '\n')
+			if (it == '\n')
 			{
 				++artHeight;
 				if (tmpWidth > artWidth)
