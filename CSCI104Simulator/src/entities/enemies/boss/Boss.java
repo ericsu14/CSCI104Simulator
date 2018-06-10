@@ -10,8 +10,6 @@ import entities.enemies.CommandType;
 import entities.enemies.Enemy;
 import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
-import entities.projectiles.boss.BossProjectile;
-import entities.projectiles.boss.BossRangedProjectile;
 import javafx.geometry.Point2D;
 import media.SoundType;
 import view.Launcher;
@@ -30,10 +28,6 @@ public abstract class Boss extends Enemy
 	protected int mProjectileAmmoPool;
 	/* The ammo pool for the boss's ranged attack */
 	protected int mRangedAmmoPool;
-	/* The projectile used for the boss's projectile attack */
-	protected BossProjectile mBossProjectile;
-	/* The projectile used for the boss's ranged attack */
-	protected BossProjectile mRangedProjectile;
 	/* Flag used to indicate that the boss's difficulity has been adjsuted */
 	protected boolean mAdjustedBossDifficulity;
 	/* The sound type used to specify the boss hit sound.
@@ -117,23 +111,6 @@ public abstract class Boss extends Enemy
 			mMovementSpeed += 0.3;
 			this.mMaxAmmoPool = 6;
 			mAdjustedBossDifficulity = true;
-		}
-	}
-
-	@Override
-	public void fire() 
-	{
-		if (this.mPhase == EnemyPhase.kAttack)
-		{
-			if (mCurrentAmmo > 0)
-			{
-				mController.queueEntity(new BossProjectile (this, mController));
-				mCurrentAmmo--;
-			}
-		}
-		else
-		{
-			mController.queueEntity(new BossRangedProjectile (this, mController));
 		}
 	}
 	

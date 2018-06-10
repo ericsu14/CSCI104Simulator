@@ -57,6 +57,8 @@ public class GameEngine
 	public ImageView mDamagedBugSprite;
 	/* Binary trees */
 	public ImageView mBinaryTree;
+	/* Speghetti */
+	public ImageView mSpeghetti;
 	
 	/* MEMBER VARIABLES */
 	/* The current level the player is in */
@@ -145,6 +147,7 @@ public class GameEngine
 		mBook = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/theBook.jpeg")));
 		mEnemyLaser = new ImageView  (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/enemyLaser.png")));
 		mDamagedBugSprite = new ImageView  (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/damagedBug.png")));
+		mSpeghetti = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/speghetti.png")));
 		
 		/* Initializes member variables */
 		setCurrentLevel(1);
@@ -1078,6 +1081,12 @@ public class GameEngine
 	{
 		// TODO: Switch music back to normal
 		mGameView.getSoundEngine().setPlaylist(MusicStyle.kGame);
+	}
+	
+	/** @return the game's extra life score requirement */
+	public long getExtraLifeRequirement ()
+	{
+		return mExtraLifeScore;
 	}
 	
 	/** @return True if target is between min and max

@@ -6,6 +6,8 @@ import engine.GameEngine;
 import entities.enemies.CommandType;
 import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
+import entities.projectiles.boss.cote.BinaryTree;
+import entities.projectiles.boss.cote.TheBook;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -77,6 +79,23 @@ public class CoteBoss extends Boss {
 			addCommand (CommandType.kBossPrepareRangedAttack);
 			addCommand (CommandType.kBossRangedAttack);
 			addCommand(CommandType.kRetreat);
+		}
+	}
+	
+	@Override
+	public void fire() 
+	{
+		if (this.mPhase == EnemyPhase.kAttack)
+		{
+			if (mCurrentAmmo > 0)
+			{
+				mController.queueEntity(new BinaryTree (this, mController));
+				mCurrentAmmo--;
+			}
+		}
+		else
+		{
+			mController.queueEntity(new TheBook (this, mController));
 		}
 	}
 

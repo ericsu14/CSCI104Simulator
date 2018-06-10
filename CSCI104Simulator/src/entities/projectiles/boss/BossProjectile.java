@@ -8,20 +8,16 @@ import javafx.geometry.Point2D;
 
 public class BossProjectile extends EnemyProjectile
 {
-	
 	/* Custom rotate */
 	protected double mProjectileRotate;
 	
 	public BossProjectile(Entity owner, GameEngine controller) 
 	{
 		super(owner, controller);
-		this.mSpriteScale = 40.0;
-		this.mMovementSpeed = 7.4;
-		this.setSprite(mController.mBinaryTree);
-		mProjectileRotate = this.getRotate();
 		
 		this.mMaxTurnRadius = -45.0;
 		this.mMinTurnRadius = -135.0;
+		mProjectileRotate = this.getRotate();
 		this.trackEntity(controller.getPlayer());
 	}
 	

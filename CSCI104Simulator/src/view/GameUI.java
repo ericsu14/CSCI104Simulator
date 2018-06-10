@@ -156,11 +156,26 @@ public class GameUI extends StackPane
 			getChildren().removeAll(mCurrentLives.getChildren());
 			mCurrentLives.getChildren().clear();
 			
-			/* Recalculates the amount of lives the player has */
-			for (int i = 0;  i < mLivesRemaining - 1; ++i)
+			/* If the total amount of lives is less than 10, display the player lives
+			 * in a linear fashion. */
+			if (mLivesRemaining < 10)
+			{	
+				/* Recalculates the amount of lives the player has */
+				for (int i = 0;  i < mLivesRemaining - 1; ++i)
+				{
+					ImageView playerIcon = createPlayerIcon();
+					mCurrentLives.getChildren().add(playerIcon);
+				}
+			}
+			/* Otherwise, give a numerical representation of the player's lives */
+			else
 			{
-				ImageView playerIcon = createPlayerIcon();
+				ImageView playerIcon  = createPlayerIcon();
 				mCurrentLives.getChildren().add(playerIcon);
+				
+				Label counter = new Label ("x " + mLivesRemaining);
+				counter.setStyle(CSSConstants.GAME_FONT);
+				mCurrentLives.getChildren().add(counter);
 			}
 		}
 	}
@@ -225,7 +240,7 @@ public class GameUI extends StackPane
 				break;
 			case kGameBriefing:
 				mPromptText.setText("Use the left/right arrow keys to move,");
-				mPromptText2.setText("space bar to shoot.");
+				mPromptText2.setText("space bar to shoot.\n\nExtra life once every " + this.mGameView.getEngine().getExtraLifeRequirement() + " points." );
 				break;
 			default:
 				mPromptText.setText("");
