@@ -6,12 +6,17 @@ import engine.GameEngine;
 import engine.GameState;
 import entities.Entity;
 import entities.player.MoveDirection;
+import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import media.SoundController;
+import util.CSSColor;
+import util.CSSConstants;
 
 public class GameView 
 {
@@ -220,6 +225,63 @@ public class GameView
 			// A really cheap hack, but it works
 			mGameWorld.getChildren().clear();
 		}
+	}
+	
+	/** Briefly displays a string of text at a specified coordinate of the screen.
+	 * 		@param text - The text to be displayed
+	 * 		@param color - The CSS Color of the text
+	 * 		@param position - The point where the text is displayed */
+	public void showTextOnPoint (String text, CSSColor color, Point2D position)
+	{
+		AnimationTimer displayText = new AnimationTimer ()
+		{
+			// Flag used to determine if the text is still in the delay state
+			private boolean mIsDelay;
+			// The amount of delay (in frames) it takes before the text is displayed on the screen
+			private final int mDelayTime = 30;
+			// The max amount of frames the text is displayed on screen before despawning
+			private final int mMaxTime = 90;
+			// Stores the current time (in frames) elapsed
+			private int mCurrentTime;
+			// Stores the label object to be displayed on screen
+			private Label mTextObject;
+			
+			// Init. member variables and displays the text
+			{
+				mCurrentTime = mDelayTime;
+				mTextObject = new Label (text);
+				mTextObject.setStyle(CSSConstants.GAME_FONT_UNCOLORED + color.getColor());
+				mTextObject.relocate(position.getX(), position.getY());
+				mIsDelay = true;
+			}
+			
+			@Override
+			public void handle(long now) 
+			{
+				if (mCurrentTime <= 0)
+				{	
+					// If the text is still waiting to be spawned, spawn it
+					if (mIsDelay)
+					{
+						mIsDelay = false;
+						mGameWorld.getChildren().addAll(mTextObject);
+						mCurrentTime = mMaxTime;
+					}
+					// Otherwise, remove it from the world
+					else
+					{
+						mGameWorld.getChildren().remove(mTextObject);
+						this.stop();
+					}
+				}
+				else
+				{
+					--mCurrentTime;
+				}
+			}
+		};
+		
+		displayText.start();
 	}
 	
 	/** Sets the GameView's game engine */

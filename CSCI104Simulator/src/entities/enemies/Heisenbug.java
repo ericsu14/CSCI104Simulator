@@ -4,6 +4,7 @@ import engine.GameEngine;
 import entities.projectiles.enemies.GuidedProjectile;
 import javafx.geometry.Point2D;
 import media.SoundType;
+import util.CSSColor;
 
 public class Heisenbug extends Enemy {
 

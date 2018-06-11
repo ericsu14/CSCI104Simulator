@@ -12,6 +12,7 @@ import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
 import javafx.geometry.Point2D;
 import media.SoundType;
+import util.CSSColor;
 import view.Launcher;
 
 public abstract class Boss extends Enemy 
@@ -125,6 +126,7 @@ public abstract class Boss extends Enemy
 			super.die();
 			mController.playSound(this.mBossDie);
 			mController.findCurrentBoss();
+			mController.getGameView().showTextOnPoint(this.getScore() + "", CSSColor.kYellow, this.getCenter());
 		}
 		else
 		{

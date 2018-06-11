@@ -11,7 +11,7 @@ public class BinaryTree extends BossProjectile {
 		super(owner, controller);
 		
 		this.mSpriteScale = 40.0;
-		this.mMovementSpeed = 7.4;
+		this.mMovementSpeed = 7.0;
 		this.setSprite(mController.mBinaryTree);
 	}
 	

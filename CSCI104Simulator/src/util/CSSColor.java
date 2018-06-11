@@ -7,7 +7,9 @@ public enum CSSColor
 	kYellow("-fx-text-fill: yellow;"),
 	kBlue("-fx-text-fill: blue;"),
 	kGreen("-fx-text-fill: green;"),
-	kLime ("-fx-text-fill: lime;");
+	kLime ("-fx-text-fill: lime;"),
+	kMagenta ("-fx-text-fill: magenta;"),
+	kCyan ("-fx-text-fill: cyan;");
 	
 	private String mColor;
 	

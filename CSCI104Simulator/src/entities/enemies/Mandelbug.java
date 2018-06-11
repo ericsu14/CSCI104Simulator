@@ -4,6 +4,7 @@ import engine.GameEngine;
 import entities.projectiles.enemies.GuidedProjectile;
 import javafx.geometry.Point2D;
 import media.SoundType;
+import util.CSSColor;
 
 public class Mandelbug extends Enemy
 {
@@ -64,6 +65,7 @@ public class Mandelbug extends Enemy
 		{
 			super.die();
 			mController.playSound(SoundType.kShieldDie);
+			mController.getGameView().showTextOnPoint(this.getScore() + "", CSSColor.kMagenta, this.getPosition());
 		}
 		/* Otherwise, it becomes very anger */
 		else

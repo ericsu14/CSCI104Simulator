@@ -267,6 +267,18 @@ public abstract class Entity extends ImageView
 		return getY() + (this.getFitHeight() / 2.0);
 	}
 	
+	/** Returns the center position of this entity as a coordinate pair */
+	public Point2D getCenter()
+	{
+		return new Point2D (getCenterX(), getCenterY());
+	}
+	
+	/** Returns the position of this entity as a coordinate pair */
+	public Point2D getPosition()
+	{
+		return new Point2D (getX(), getY());
+	}
+	
 	/** @return True if target is between min and max
 	 * 		@param target - Value being compared
 	 * 		@param min - Min. value of selected range
