@@ -153,7 +153,7 @@ public abstract class Enemy extends Entity
 		}
 		/* If this enemy is in the attacking stage, but the game state changes
 		 * from running, stop the current attacking routine. */
-		else if (mPhase == EnemyPhase.kAttack && mController.getGameState() != GameState.kGameRunning)
+		else if ((mPhase == EnemyPhase.kAttack || mPhase == EnemyPhase.kRangedAttack) && mController.getGameState() != GameState.kGameRunning)
 		{
 			stopWaypointAnimation();
 		}

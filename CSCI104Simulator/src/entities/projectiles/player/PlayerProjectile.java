@@ -69,7 +69,6 @@ public class PlayerProjectile extends Projectile
 				/* Spawns an explosion if this projectile hits a boss */
 				if (e.getType() == EntityType.kBoss)
 				{
-					/* Spawns an explosion every time the boss is hit */
 					mController.getGameView().getParticleLayer().spawnExplosion((int)this.getX(), (int)this.getY());
 				}
 				break;

@@ -5,6 +5,7 @@ package entities;
 import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.image.ImageView;
 import engine.GameEngine;
 
@@ -24,7 +25,7 @@ public abstract class Entity extends ImageView
 	/* Pointer to the main launcher */
 	protected GameEngine mController;
 	/* Rotation rate */
-	protected double mRotationSpeed = 2.0;
+	protected double mRotationSpeed = 3.0;
 	/* Scale of this entity's sprite */
 	protected double mSpriteScale = 10.0;
 	/* The initial orientation of this entity */
@@ -75,78 +76,56 @@ public abstract class Entity extends ImageView
 		/* Only construct a new waypoint if the corresponding flag is false */
 		if (!mWaypointFlag)
 		{
-			mWaypointFlag = true;;
+			mWaypointFlag = true;
 			mWaypointAnimation = new AnimationTimer ()
 			{
 				/* The angle the entity would have to face to in order to reach the waypoint */
 				private double mTheta = 0.0;
-				/* The last instance of theta */
-				private double mLastTheta;
-				/* The number of frames before the rotation angle is recalculated */
-				private int mFramesTillSetup = 0;
-				/* True if the first calculated theta is negative */
-				private boolean mIsNegative = false;
-				/* Used to conduct run-once animations */
-				private boolean mHasStart = false;
-				
 				public void handle(long now)
 				{
-					/* Sets up the angle theta if it hasn't been setup already */
-					if (mFramesTillSetup <= 0)
+					// First construct a vector from the player's current position to its destination
+					Point2D entityPosition = getPosition();
+					Point2D waypointVector = destination;
+					waypointVector = waypointVector.subtract (entityPosition);
+					waypointVector = waypointVector.normalize();
+					
+					Point2D forward = getForward();
+					// We then use arccos of the dot product between the entity's forward vector and the waypointVector to get theta
+					mTheta = Math.acos (waypointVector.dotProduct (forward));
+					
+					// We then compute the cross product between the entity's forward and the waypointVector to determine if we should
+					// rotate either clockwise (if z is negative) or counter-clockwise (if z is positive)
+					int mClockwise;
+					
+					Point3D cross = waypointVector.crossProduct (forward);
+					mClockwise = (cross.getZ() < 0.0) ? 1 : 0; 
+					
+					
+					// Depending on the direction, slowly rotate the entity towards theta
+					mTheta = getRotate() + (mTheta * (-1 * mClockwise));
+					
+					if (mClockwise > 0)
 					{
-						Point2D currentPosition = new Point2D (getX(), getY());
-						Point2D waypoint = destination;
-						waypoint = waypoint.subtract(currentPosition);
-						mLastTheta = mTheta;
-						mTheta = Math.toDegrees(Math.atan2(-waypoint.getY(), waypoint.getX()));
-						
-						/* There is a case when if the change of theta is between +- 300 to +- 360,
-						 * the pathfinding algorithm would encounter an infinite loop, since
-						 * arctan2 would force the entity to rotate their negative / positive inverses
-						 * which would cause an infinite loop. This quick hack ensures this never happens.  */
-						if (inRange ((int)mLastTheta, -360, -300) || inRange ((int)mLastTheta, 300, 360))
+						if (getRotate() >= mTheta)
 						{
-							// Instantly rotates the character to theta
-							setRotate (mTheta);
-						}
-						
-						/* Used to determine if the initial theta is either negative or positive */
-						if (!mHasStart)
-						{
-							mIsNegative = (mTheta < 0.0);
-							mHasStart = true;
+							setRotate((int)(getRotate() - mRotationSpeed));
 						}
 						else
 						{
-							/* Some ugly allignment stuff */
-							if (mIsNegative && mTheta >= 0.0)
-							{
-								mTheta -= 360.0;
-							}
-							else if (!mIsNegative && mTheta < 0.0)
-							{
-								mTheta += 360.0;
-							}
+							setRotate((int)(getRotate() + mRotationSpeed));
 						}
 					}
 					
-					/* Once theta has been setup, direct the entity to face and move
-					 * to the waypoint. */
-					if (mTheta >= 0 && getRotate() < mTheta)
+					else
 					{
-						setRotate((int)(getRotate() + mRotationSpeed));
-					}
-					else if (mTheta >= 0 && getRotate() > mTheta)
-					{
-						setRotate((int)(getRotate() - mRotationSpeed));
-					}
-					else if (mTheta < 0 && getRotate() > mTheta)
-					{
-						setRotate ((int)(getRotate() - mRotationSpeed));
-					}
-					else if (mTheta < 0 && getRotate() < mTheta)
-					{
-						setRotate ((int)(getRotate() + mRotationSpeed));
+						if (getRotate() <= mTheta)
+						{
+							setRotate((int)(getRotate() + mRotationSpeed));
+						}
+						else
+						{
+							setRotate((int)(getRotate() - mRotationSpeed));
+						}
 					}
 					
 					Point2D velocity = getForward();
@@ -154,8 +133,6 @@ public abstract class Entity extends ImageView
 					velocity = velocity.multiply(mMovementSpeed);
 					setX (getX() + velocity.getX());
 					setY (getY() + velocity.getY());
-					
-					--mFramesTillSetup;
 					
 					/* If the entity has reached somewhere close to the destination based on the offset,
 					 * stop moving. */
