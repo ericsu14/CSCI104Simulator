@@ -96,14 +96,11 @@ public abstract class Entity extends ImageView
 					// We then compute the cross product between the entity's forward and the waypointVector to determine if we should
 					// rotate either clockwise (if z is negative) or counter-clockwise (if z is positive)
 					int mClockwise;
-					
 					Point3D cross = waypointVector.crossProduct (forward);
-					mClockwise = (cross.getZ() < 0.0) ? 1 : 0; 
+					mClockwise = (cross.getZ() < 0.0) ? 1 : 0; 			
 					
-					
-					// Depending on the direction, slowly rotate the entity towards theta
+					// Depending on the direction of rotation, slowly rotate the entity towards theta
 					mTheta = getRotate() + (mTheta * (-1 * mClockwise));
-					
 					if (mClockwise > 0)
 					{
 						if (getRotate() >= mTheta)
@@ -128,9 +125,11 @@ public abstract class Entity extends ImageView
 						}
 					}
 					
+					// Computes the entity's velocity given the new rotation
 					Point2D velocity = getForward();
-
 					velocity = velocity.multiply(mMovementSpeed);
+					
+					// Moves the player's current position based on the new velocity
 					setX (getX() + velocity.getX());
 					setY (getY() + velocity.getY());
 					
