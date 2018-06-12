@@ -46,6 +46,8 @@ public class CoteBoss extends Boss {
 			mMoveTime -= (int) ((double)(mMoveTime * 0.2));
 			mHealth += (mHealth * 0.2);
 			mMovementSpeed += mMovementSpeed * 0.2;
+			this.mAdjustedRotationSpeed += 0.2;
+			this.mRotationSpeed = this.mAdjustedRotationSpeed;
 		}
 		
 		mController.playSoundOverwritable(SoundType.kCoteTaunt4);

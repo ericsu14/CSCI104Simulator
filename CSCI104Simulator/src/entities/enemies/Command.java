@@ -76,7 +76,15 @@ public class Command
 				
 				// Calculates the random y offset where this enemy should move to. The enemy could either move either over
 				// or under the player's current position
-				yOffset = 50.0 * mRand.nextDouble() * ((Math.pow(-1, mRand.nextInt(2) - 1)));
+				if (mOwner.getType() != EntityType.kBoss)
+				{
+					yOffset = 50.0 * mRand.nextDouble() * ((Math.pow(-1, mRand.nextInt(2) - 1)));
+				}
+				// Unless the owner is a boss. Then hard-set the y offset to 100 for balance reasons
+				else
+				{
+					yOffset = -100.0;
+				}
 				
 				mOwner.setOffset(10);
 				Player p = mOwner.getController().getPlayer();

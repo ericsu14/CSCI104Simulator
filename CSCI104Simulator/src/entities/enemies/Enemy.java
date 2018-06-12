@@ -347,8 +347,8 @@ public abstract class Enemy extends Entity
 	public void adjustDifficulity ()
 	{
 		/* The enemy's movement speed is increased by 1% each level,
-		 * with a max cap of 10%. */
-		double movementThreshold = mInitialMovementSpeed + mInitialMovementSpeed * 0.1;
+		 * with a max cap of 8%. */
+		double movementThreshold = mInitialMovementSpeed + mInitialMovementSpeed * 0.08;
 		double changeOfMovement =  mInitialMovementSpeed * ((mController.getCurrentLevel() - 1) / 100.0);
 		mMovementSpeed = mInitialMovementSpeed + changeOfMovement;
 		

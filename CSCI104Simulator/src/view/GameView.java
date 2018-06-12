@@ -207,7 +207,12 @@ public class GameView
 		
 		playAnimations();
 		mGameEngine.setCurrentLives(mInitLives);
-		mGameEngine.setCurrentLevel(101);
+		// Extra life for hard mode players
+		if (mGameEngine.isHardMode())
+		{
+			mGameEngine.setCurrentLives(mInitLives + 1); 
+		}
+		mGameEngine.setCurrentLevel(1);
 		mGameEngine.setCurrentScore(0);
 		mGameEngine.startGame();
 	}

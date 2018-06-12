@@ -21,8 +21,8 @@ public class GuidedProjectile extends EnemyProjectile
 		
 		this.setSprite(mController.mBook);
 		
-		this.mMaxTurnRadius = -45.0;
-		this.mMinTurnRadius = -135.0;
+		this.mMaxTurnRadius = -30.0;
+		this.mMinTurnRadius = -120.0;
 		this.trackEntity(controller.getPlayer());
 	}
 
