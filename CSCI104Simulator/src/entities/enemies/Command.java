@@ -74,7 +74,9 @@ public class Command
 					xOffset = (mRand.nextInt(mOffsetThreshold) + 30.0);
 				}
 				
-				yOffset = -100.0;
+				// Calculates the random y offset where this enemy should move to. The enemy could either move either over
+				// or under the player's current position
+				yOffset = 50.0 * mRand.nextDouble() * ((Math.pow(-1, mRand.nextInt(2) - 1)));
 				
 				mOwner.setOffset(10);
 				Player p = mOwner.getController().getPlayer();

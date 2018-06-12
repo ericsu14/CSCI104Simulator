@@ -28,7 +28,7 @@ public class Player extends Entity
 	private int mInvincibilityFrames = 240;
 	/* Timer for the player's invincibility */
 	private int mInvincibilityTimer;
-	/* Flag used to determine if this player is invincibile */
+	/* Flag used to determine if this player is invincible */
 	private boolean mInvincible;
 	
 	/** Constructs a new playership

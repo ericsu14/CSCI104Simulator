@@ -24,8 +24,10 @@ public abstract class Entity extends ImageView
 	protected Point2D mPreviousCoord;
 	/* Pointer to the main launcher */
 	protected GameEngine mController;
+	/* Init. rotation rate */
+	protected double mInitRotationSpeed = 3.6;
 	/* Rotation rate */
-	protected double mRotationSpeed = 3.0;
+	protected double mRotationSpeed = mInitRotationSpeed;
 	/* Scale of this entity's sprite */
 	protected double mSpriteScale = 10.0;
 	/* The initial orientation of this entity */
@@ -36,7 +38,7 @@ public abstract class Entity extends ImageView
 	protected EntityType mType;
 	/* Used to approximate the destination point by constructing a box around that point with the
 	 * given offset. Once the entity reaches that area, it would then stop. */
-	protected int mWaypointOffset = 2;
+	protected int mWaypointOffset = 4;
 	/* Random number generator shared across all entities */
 	protected Random mRand = new Random();
 	
@@ -100,7 +102,8 @@ public abstract class Entity extends ImageView
 					mClockwise = (cross.getZ() < 0.0) ? 1 : 0; 			
 					
 					// Depending on the direction of rotation, slowly rotate the entity towards theta
-					mTheta = getRotate() + (mTheta * (-1 * mClockwise));
+					mTheta = getRotate() + (mTheta * (Math.pow(-1, mClockwise)));
+					
 					if (mClockwise > 0)
 					{
 						if (getRotate() >= mTheta)
@@ -140,6 +143,7 @@ public abstract class Entity extends ImageView
 						stopWaypointAnimation();
 					}
 				}
+				
 			};
 			
 			mWaypointAnimation.start();
@@ -271,6 +275,11 @@ public abstract class Entity extends ImageView
 		mWaypointAnimation.stop();
 		mMovementSpeed = mInitialMovementSpeed;
 		mWaypointFlag = false;
+	}
+	
+	private Entity getInstance()
+	{
+		return this;
 	}
 
 }

@@ -96,11 +96,10 @@ public abstract class Enemy extends Entity
 		mNumSpawnWaypoints = mCommandQueue.size();
 		
 		/* If the player's current level reaches a set level (or game is set to hard mode), 
-		 * then the enemy has a 7% chance of attacking while moving to their spawn location */
+		 * then the enemy has a 10% chance of attacking while moving to their spawn location */
 		if (mController.getCurrentLevel() >= mSpawnAttackLevel || mController.isHardMode())
 		{
-			int attackProb = mRand.nextInt(100);
-			if (inRange (attackProb, 0, 9))
+			if (mRand.nextDouble() <= 0.1)
 			{
 				mSpawnAttackFlag = true;
 			}
@@ -218,6 +217,7 @@ public abstract class Enemy extends Entity
 				{
 					mPhase = EnemyPhase.kRetreat;
 					mNumAttackWaypoints = 0;
+					mRotationSpeed = mInitRotationSpeed * 1.5;
 				}
 				break;
 			}
@@ -232,6 +232,7 @@ public abstract class Enemy extends Entity
 					mPhase = EnemyPhase.kIdle;
 					mNumRetreatWaypoints = 0;
 					mCurrentAmmo = mMaxAmmoPool;
+					mRotationSpeed = mInitRotationSpeed;
 				}
 				break;
 			}
