@@ -232,7 +232,7 @@ public abstract class Enemy extends Entity
 					mPhase = EnemyPhase.kIdle;
 					mNumRetreatWaypoints = 0;
 					mCurrentAmmo = mMaxAmmoPool;
-					mRotationSpeed = mInitRotationSpeed;
+					mRotationSpeed = this.mAdjustedRotationSpeed;
 				}
 				break;
 			}
@@ -351,9 +351,22 @@ public abstract class Enemy extends Entity
 		double movementThreshold = mInitialMovementSpeed + mInitialMovementSpeed * 0.1;
 		double changeOfMovement =  mInitialMovementSpeed * ((mController.getCurrentLevel() - 1) / 100.0);
 		mMovementSpeed = mInitialMovementSpeed + changeOfMovement;
+		
+		// Scales the enemy's rotation speed as well
+		double rotationThreshold = this.mInitRotationSpeed + this.mInitRotationSpeed * 0.15;
+		double changeOfRotation = this.mInitRotationSpeed *  ((mController.getCurrentLevel() - 1) / 50.0);
+		this.mRotationSpeed = this.mInitRotationSpeed + changeOfRotation;
+		
+		// Caps the movement speed to a certain amount
 		if (mMovementSpeed > movementThreshold || mController.isHardMode())
 		{
 			mMovementSpeed = movementThreshold;
+		}
+		
+		// Caps the rotation speed increase to a certain amount
+		if (this.mRotationSpeed > rotationThreshold || mController.isHardMode())
+		{
+			mRotationSpeed = rotationThreshold;
 		}
 		
 		/* There is a weird bug when movement speed is 5.4 */
@@ -363,6 +376,7 @@ public abstract class Enemy extends Entity
 		}
 		
 		mInitialMovementSpeed = mMovementSpeed;
+		this.mAdjustedRotationSpeed = mRotationSpeed;
 	}
 	
 	/** Spawns an enemy projectile */

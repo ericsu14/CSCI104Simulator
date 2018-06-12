@@ -28,6 +28,8 @@ public abstract class Entity extends ImageView
 	protected double mInitRotationSpeed = 3.6;
 	/* Rotation rate */
 	protected double mRotationSpeed = mInitRotationSpeed;
+	/* Stores the dynamically adjusted rotation speed */
+	protected double mAdjustedRotationSpeed = mRotationSpeed;
 	/* Scale of this entity's sprite */
 	protected double mSpriteScale = 10.0;
 	/* The initial orientation of this entity */
@@ -165,11 +167,11 @@ public abstract class Entity extends ImageView
 		setFitWidth(mSpriteScale);
 		if (this.getType() != EntityType.kBoss)
 		{
-			this.mWaypointOffset = (int)(mSpriteScale / 10);
+			this.mWaypointOffset = (int)(mSpriteScale / 5);
 		}
 		else
 		{
-			this.mWaypointOffset = (int)(mSpriteScale / 20);
+			this.mWaypointOffset = (int)(mSpriteScale / 10);
 		}
 	}
 	
@@ -275,11 +277,6 @@ public abstract class Entity extends ImageView
 		mWaypointAnimation.stop();
 		mMovementSpeed = mInitialMovementSpeed;
 		mWaypointFlag = false;
-	}
-	
-	private Entity getInstance()
-	{
-		return this;
 	}
 
 }
