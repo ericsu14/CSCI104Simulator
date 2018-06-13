@@ -89,7 +89,7 @@ public class CoteBoss extends Boss {
 	{
 		if (this.mPhase == EnemyPhase.kAttack)
 		{
-			if (mCurrentAmmo > 0)
+			if (mCurrentAmmo > 0 && !this.mFalseRetreatFlag)
 			{
 				mController.queueEntity(new BinaryTree (this, mController));
 				mCurrentAmmo--;

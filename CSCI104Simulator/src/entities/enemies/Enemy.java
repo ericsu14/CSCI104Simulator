@@ -96,10 +96,10 @@ public abstract class Enemy extends Entity
 		mNumSpawnWaypoints = mCommandQueue.size();
 		
 		/* If the player's current level reaches a set level (or game is set to hard mode), 
-		 * then the enemy has a 10% chance of attacking while moving to their spawn location */
+		 * then the enemy has a 7% chance of attacking while moving to their spawn location */
 		if (mController.getCurrentLevel() >= mSpawnAttackLevel || mController.isHardMode())
 		{
-			if (mRand.nextDouble() <= 0.1)
+			if (mRand.nextDouble() <= 0.07)
 			{
 				mSpawnAttackFlag = true;
 			}
@@ -272,6 +272,7 @@ public abstract class Enemy extends Entity
 	/** Adds in a new command with a specified type (other than kMove) */
 	public void addCommand (CommandType type)
 	{
+		if (this.getType() == EntityType.kBoss);
 		mCommandQueue.add(new Command (type, this));
 		
 		if (type == CommandType.kAttack || type == CommandType.kFalseRetreat || type == CommandType.kPrepareAttack

@@ -117,6 +117,11 @@ public class Command
 				}
 				yOffset = -50.0;
 				
+				if (mOwner.getType() == EntityType.kBoss)
+				{
+					yOffset *= 2;
+				}
+				
 				mOwner.setOffset((int)(mOwner.getSpriteScale()));
 				mWaypoint = new Point2D (mOwner.getX() + xOffset, mOwner.getY() + yOffset);
 				mOwner.getController().playSound(SoundType.kEnemyPrepare);
