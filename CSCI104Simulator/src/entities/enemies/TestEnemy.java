@@ -9,7 +9,6 @@ public class TestEnemy extends Enemy
 	public TestEnemy(EnemyPosition initPosition, Point2D origin, int group, GameEngine controller) 
 	{	
 		super (initPosition, origin, group, controller);
-		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 22.0;
 		this.mPointsValue = 1700;

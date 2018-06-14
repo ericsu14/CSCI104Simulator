@@ -64,6 +64,7 @@ public abstract class Enemy extends Entity
 		super(origin.getX(), origin.getY(), controller);
 		this.setCache(true);
 		
+		this.mInitialMovementSpeed = 4.5;
 		mState = EntityState.kJustSpawned;
 		mType = EntityType.kEnemy;
 		mEntryPosition = initPosition;
@@ -349,13 +350,13 @@ public abstract class Enemy extends Entity
 	{
 		/* The enemy's movement speed is increased by 1% each level,
 		 * with a max cap of 8%. */
-		double movementThreshold = mInitialMovementSpeed + mInitialMovementSpeed * 0.08;
+		double movementThreshold = mInitialMovementSpeed + mInitialMovementSpeed * 0.10;
 		double changeOfMovement =  mInitialMovementSpeed * ((mController.getCurrentLevel() - 1) / 100.0);
 		mMovementSpeed = mInitialMovementSpeed + changeOfMovement;
 		
 		// Scales the enemy's rotation speed as well
-		double rotationThreshold = this.mInitRotationSpeed + this.mInitRotationSpeed * 0.15;
-		double changeOfRotation = this.mInitRotationSpeed *  ((mController.getCurrentLevel() - 1) / 50.0);
+		double rotationThreshold = this.mInitRotationSpeed + this.mInitRotationSpeed * 0.10;
+		double changeOfRotation = this.mInitRotationSpeed *  ((mController.getCurrentLevel() - 1) / 100.0);
 		this.mRotationSpeed = this.mInitRotationSpeed + changeOfRotation;
 		
 		// Caps the movement speed to a certain amount

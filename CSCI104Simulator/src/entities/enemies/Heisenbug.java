@@ -11,11 +11,10 @@ public class Heisenbug extends Enemy {
 	{
 		super(initPosition, origin, group, controller);
 		
-		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 22.0;
 		this.mPointsValue = 1000;
-		this.mMaxAmmoPool = 3;
+		this.mMaxAmmoPool = 2;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
 		this.setSprite(controller.mHeisenbugSprite);

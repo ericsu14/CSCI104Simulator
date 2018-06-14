@@ -572,6 +572,9 @@ public class GameEngine
 		int currentGroupCount = 0;
 		int currentGroupLimit = 1;
 		
+		// Denotes the max amount of enemies that could appear in an attack group at a time
+		int maxGroupLimit = 3;
+		
 		/* Width and height of the container */
 		int armyWidth = 0;
 		/* Vector of strings used to copy the contents of the text file */
@@ -671,7 +674,10 @@ public class GameEngine
 				
 				currentX += xSpacing;
 			}
-			++currentGroupLimit;
+			if (currentGroupLimit <= maxGroupLimit)
+			{
+				++currentGroupLimit;
+			}
 			currentX = this.mLeftBorder + xSpacing;
 			currentY += ySpacing;
 		}

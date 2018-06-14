@@ -12,7 +12,6 @@ public class Bohrbug extends Enemy
 	{
 		super(initPosition, origin, group, controller);
 		
-		this.mInitialMovementSpeed = 5.0;
 		this.mMovementSpeed = mInitialMovementSpeed;
 		this.mSpriteScale = 22.0;
 		this.mPointsValue = 750;
