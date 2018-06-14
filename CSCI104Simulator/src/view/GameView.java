@@ -212,7 +212,7 @@ public class GameView
 		{
 			mGameEngine.setCurrentLives(mInitLives + 1); 
 		}
-		mGameEngine.setCurrentLevel(101);
+		mGameEngine.setCurrentLevel(1);
 		mGameEngine.setCurrentScore(0);
 		mGameEngine.startGame();
 	}
