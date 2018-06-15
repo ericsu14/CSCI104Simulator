@@ -3,6 +3,7 @@ package entities.projectiles.boss.cote;
 import engine.GameEngine;
 import entities.Entity;
 import entities.projectiles.boss.BossRangedProjectile;
+import entities.sprites.Sprite;
 
 public class TheBook extends BossRangedProjectile {
 
@@ -12,7 +13,7 @@ public class TheBook extends BossRangedProjectile {
 		
 		this.mSpriteScale = 70.0;
 		this.mMovementSpeed = 8.2;
-		this.setSprite(mController.mBook);
+		this.setSprite(Sprite.KBook);
 	}
 
 }

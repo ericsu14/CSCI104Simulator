@@ -2,6 +2,7 @@ package view;
 
 import engine.GameState;
 import entities.enemies.boss.Boss;
+import entities.sprites.Sprite;
 import factories.ShindlerFactory;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -327,7 +328,7 @@ public class GameUI extends StackPane
 		double iconScale = 20.0;
 		
 		ImageView icon = new ImageView();
-		icon.setImage(mGameView.getEngine().mPlayerShipSprite.getImage());
+		icon.setImage(Sprite.kPlayerShip.getImageView().getImage());
 		icon.setFitWidth (iconScale);
 		icon.setFitHeight(iconScale);
 		

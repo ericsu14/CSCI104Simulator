@@ -2,6 +2,7 @@ package entities.enemies;
 
 import engine.GameEngine;
 import entities.projectiles.enemies.GuidedProjectile;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -17,7 +18,7 @@ public class Heisenbug extends Enemy {
 		this.mMaxAmmoPool = 2;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
-		this.setSprite(controller.mHeisenbugSprite);
+		this.setSprite(Sprite.kHeisenBug);
 		setRotate (-90.0);
 		adjustDifficulity ();
 	}

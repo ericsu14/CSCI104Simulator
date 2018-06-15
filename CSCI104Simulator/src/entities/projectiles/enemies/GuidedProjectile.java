@@ -2,6 +2,7 @@ package entities.projectiles.enemies;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.sprites.Sprite;
 
 public class GuidedProjectile extends EnemyProjectile 
 {
@@ -19,7 +20,7 @@ public class GuidedProjectile extends EnemyProjectile
 			this.mMovementSpeed += 0.2;
 		}
 		
-		this.setSprite(mController.mBook);
+		this.setSprite(Sprite.KBook);
 		
 		this.mMaxTurnRadius = -60.0;
 		this.mMinTurnRadius = -120.0;

@@ -22,8 +22,6 @@ import entities.player.Player;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import media.MusicStyle;
 import media.SoundType;
@@ -32,34 +30,6 @@ import view.GameView;
 import view.Launcher;
 public class GameEngine 
 {
-	/* SPRITE ASSETS*/
-	/* Stores the image file for the dummy test enemy */
-	public ImageView mTestEnemySprite;
-	/* Stores the image file for the playership */
-	public ImageView mPlayerShipSprite;
-	/* Stores the image file for the bohrbug, formally known as the test enemy sprite */
-	public ImageView mBohrbugSprite;
-	/* Stores the image file for the heisenbug */
-	public ImageView mHeisenbugSprite;
-	/* Stores the image file for the mandelbug */
-	public ImageView mMandelBugSprite;
-	/* Stores the image file for the player bullet */
-	public ImageView mPlayerBulletSprite;
-	/* Stores the image file for the linked list projectile */
-	public ImageView mLinkedList;
-	/* The second in command dark lord aCote */
-	public ImageView mCote;
-	/* The book that the dark lord aCote loves more than life itself */
-	public ImageView mBook;
-	/* The enemy's unguided projectile */
-	public ImageView mEnemyLaser;
-	/* The sprite that represents a damaged variant of the mandel bug */
-	public ImageView mDamagedBugSprite;
-	/* Binary trees */
-	public ImageView mBinaryTree;
-	/* Speghetti */
-	public ImageView mSpeghetti;
-	
 	/* MEMBER VARIABLES */
 	/* The current level the player is in */
 	private int mCurrentLevel;
@@ -134,21 +104,6 @@ public class GameEngine
 	public GameEngine (GameView gameView)
 	{	
 		mGameView = gameView;
-		/* Initializes the game's sprite content */
-		mTestEnemySprite = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
-		mPlayerShipSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerShip.png")));
-		mBohrbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/testEnemy.png")));
-		mHeisenbugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/heisenbug.png")));
-		mMandelBugSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/mandelBug.png")));
-		mPlayerBulletSprite = new ImageView (new Image(getClass().getClassLoader().getResourceAsStream("assets/img/playerBullet.png")));
-		mLinkedList = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/linkedList.png")));
-		mBinaryTree = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/binaryTree.png")));
-		mCote = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/cote.png")));
-		mBook = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/theBook.jpeg")));
-		mEnemyLaser = new ImageView  (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/enemyLaser.png")));
-		mDamagedBugSprite = new ImageView  (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/damagedBug.png")));
-		mSpeghetti = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream("assets/img/speghetti.png")));
-		
 		/* Initializes member variables */
 		setCurrentLevel(1);
 		setPlayerScore(0);

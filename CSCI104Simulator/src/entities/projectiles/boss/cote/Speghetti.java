@@ -3,6 +3,7 @@ package entities.projectiles.boss.cote;
 import engine.GameEngine;
 import entities.Entity;
 import entities.projectiles.boss.BossProjectile;
+import entities.sprites.Sprite;
 
 public class Speghetti extends BossProjectile {
 
@@ -13,7 +14,7 @@ public class Speghetti extends BossProjectile {
 		this.mMinTurnRadius = 360.0;
 		this.mSpriteScale = 40.0;
 		this.mMovementSpeed = 10.4;
-		this.setSprite(mController.mSpeghetti);
+		this.setSprite(Sprite.kSpeghetti);
 	}
 	
 }

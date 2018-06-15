@@ -2,6 +2,7 @@ package entities.enemies;
 
 import engine.GameEngine;
 import entities.projectiles.enemies.GuidedProjectile;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 
 public class TestEnemy extends Enemy 
@@ -15,7 +16,7 @@ public class TestEnemy extends Enemy
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
-		this.setSprite(controller.mTestEnemySprite);
+		this.setSprite(Sprite.kTestEnemy);
 		setRotate (-90.0);
 		adjustDifficulity ();
 	}

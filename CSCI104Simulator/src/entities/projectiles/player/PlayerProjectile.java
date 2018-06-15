@@ -6,6 +6,7 @@ import entities.EntityState;
 import entities.EntityType;
 import entities.player.Player;
 import entities.projectiles.Projectile;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 
 public class PlayerProjectile extends Projectile 
@@ -38,7 +39,7 @@ public class PlayerProjectile extends Projectile
 		else
 		{
 			this.mInitialMovementSpeed = 11.0;
-			this.setSprite(controller.mPlayerBulletSprite);
+			this.setSprite(Sprite.kPlayerBullet);
 			setRotate (90.0);
 			
 			/* Movement speed is increased based on the current level

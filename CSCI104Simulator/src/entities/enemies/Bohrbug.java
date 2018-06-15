@@ -2,6 +2,7 @@ package entities.enemies;
 
 import engine.GameEngine;
 import entities.projectiles.enemies.UnguidedProjectile;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -18,7 +19,7 @@ public class Bohrbug extends Enemy
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 70;
-		this.setSprite(controller.mBohrbugSprite);
+		this.setSprite(Sprite.kBohrBug);
 		setRotate (-90.0);
 		adjustDifficulity ();
 	}

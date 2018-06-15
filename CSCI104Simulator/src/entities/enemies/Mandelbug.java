@@ -2,6 +2,7 @@ package entities.enemies;
 
 import engine.GameEngine;
 import entities.projectiles.enemies.GuidedProjectile;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 import media.SoundType;
 import util.CSSColor;
@@ -22,7 +23,7 @@ public class Mandelbug extends Enemy
 		this.mCurrentAmmo = mMaxAmmoPool;
 		this.mShotsPerFrame = 60;
 		this.mWaypointOffset = (int)(mSpriteScale / 10);
-		this.setSprite(mController.mMandelBugSprite);
+		this.setSprite(Sprite.kMandelBug);
 		mHealth = 2;
 		setRotate (-90.0);
 		adjustDifficulity ();
@@ -75,7 +76,7 @@ public class Mandelbug extends Enemy
 			this.mInitialMovementSpeed += 0.2;
 			this.mMaxAmmoPool = 5;
 			this.mSpriteScale = 25.0;
-			this.setSprite(mController.mDamagedBugSprite);
+			this.setSprite(Sprite.kDamagedBug);
 			mController.getGameView().getSoundEngine().playSound(SoundType.kShieldHit);
 		}
 	}

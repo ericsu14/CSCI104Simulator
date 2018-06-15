@@ -4,6 +4,7 @@ import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
 import entities.projectiles.player.PlayerProjectile;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -51,7 +52,7 @@ public class Player extends Entity
 		mFiringFlag = false;
 		mInvincible = false;
 		mCurrentFramesPerShot = mFramesPerShot;
-		setSprite (controller.mPlayerShipSprite);
+		setSprite (Sprite.kPlayerShip);
 	}
 
 	@Override

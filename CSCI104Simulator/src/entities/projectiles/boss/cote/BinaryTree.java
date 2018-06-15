@@ -3,6 +3,7 @@ package entities.projectiles.boss.cote;
 import engine.GameEngine;
 import entities.Entity;
 import entities.projectiles.boss.BossProjectile;
+import entities.sprites.Sprite;
 
 public class BinaryTree extends BossProjectile {
 	
@@ -12,7 +13,7 @@ public class BinaryTree extends BossProjectile {
 		
 		this.mSpriteScale = 40.0;
 		this.mMovementSpeed = 7.0;
-		this.setSprite(mController.mBinaryTree);
+		this.setSprite(Sprite.kBinaryTree);
 	}
 	
 	@Override

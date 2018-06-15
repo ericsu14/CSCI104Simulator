@@ -2,6 +2,7 @@ package entities.projectiles.enemies;
 
 import engine.GameEngine;
 import entities.Entity;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -20,7 +21,7 @@ public class UnguidedProjectile extends EnemyProjectile
 			this.mMovementSpeed = 5.2;
 		}
 		
-		this.setSprite(mController.mEnemyLaser);
+		this.setSprite(Sprite.kEnemyLaser);
 		
 		this.moveEntity(new Point2D (this.getX(), this.getY() + 1000));
 		mController.getGameView().getSoundEngine().playSound(SoundType.kUnguidedProjectile);

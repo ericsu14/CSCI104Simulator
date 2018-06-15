@@ -8,6 +8,7 @@ import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
 import entities.projectiles.boss.cote.BinaryTree;
 import entities.projectiles.boss.cote.TheBook;
+import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -27,7 +28,7 @@ public class CoteBoss extends Boss {
 		this.mAmmoType = BossAmmoType.kProjectile;
 		this.mHealth = 40;
 		this.mMoveTime = 300;
-		this.setSprite(this.mController.mCote);
+		this.setSprite(Sprite.kCote);
 		this.setRotate(-90.0);
 		
 		// Sets up boss sound files

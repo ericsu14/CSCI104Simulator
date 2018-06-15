@@ -8,6 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.image.ImageView;
 import engine.GameEngine;
+import entities.sprites.Sprite;
 
 public abstract class Entity extends ImageView 
 {
@@ -160,9 +161,9 @@ public abstract class Entity extends ImageView
 	
 	/** Scales and sets this entity's sprite asset
 	 * 		@param sprite - The sprite this entity is going to use */
-	public void setSprite (ImageView sprite)
+	public void setSprite (Sprite sprite)
 	{
-		setImage (sprite.getImage());
+		setImage (sprite.getImageView().getImage());
 		setFitHeight(mSpriteScale);
 		setFitWidth(mSpriteScale);
 		if (this.getType() != EntityType.kBoss)
