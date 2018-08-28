@@ -106,3 +106,5 @@ Foo/.project
 Foo/src/application/application.css
 Foo/.project
 Foo/.project
+Foo/.classpath
+Foo/build.fxbuild
