@@ -1,5 +1,7 @@
 package entities.sprites;
 
+import java.io.File;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -19,14 +21,20 @@ public enum Sprite {
 	kDamagedBug ("damagedBug.png"),
 	kSpeghetti ("speghetti.png");
 	
+	/* The name of the image file */
 	private String mSource;
+	/* The image-view object associated with this sprite */
 	private ImageView mImageView;
-	private final String mRootURL = "assets/img/";
+	/* The root directory where this asset file is located */
+	private final String mRootURL = "resources\\img\\";
 	
 	Sprite (String source)
 	{
 		mSource = mRootURL + source;
-		mImageView = new ImageView (new Image (getClass().getClassLoader().getResourceAsStream(mSource)));
+		System.out.println("Source: " + mSource);
+
+		File f = new File (this.mSource);
+		mImageView = new ImageView (new Image (f.toURI().toString()));
 	}
 	
 	public String getSource ()

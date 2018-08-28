@@ -652,36 +652,36 @@ public class GameEngine
 		 * so, do the boss battle */
 		if (this.mBossBattleFlag)
 		{
-			return "src/assets/data/bossLayout.txt";
+			return "resources/data/bossLayout.txt";
 		}
 		if (inRange (this.mCurrentLevel, 1, 2))
 		{
-			return "src/assets/data/layout1.txt";
+			return "resources/data/layout1.txt";
 		}
 		else if (inRange (this.mCurrentLevel, 3, 10))
 		{
-			return "src/assets/data/layout2.txt";
+			return "resources/data/layout2.txt";
 		}
 		
 		else if (inRange  (this.mCurrentLevel, 11, 20))
 		{
-			return "src/assets/data/layout3.txt";
+			return "resources/data/layout3.txt";
 		}
 		else if (inRange (this.mCurrentLevel, 21, 30))
 		{
-			return "src/assets/data/layout4.txt";
+			return "resources/data/layout4.txt";
 		}
 		else if (inRange (this.mCurrentLevel, 31, 40))
 		{
-			return "src/assets/data/layout5.txt";
+			return "resources/data/layout5.txt";
 		}
 		else if (inRange (this.mCurrentLevel, 41, 50))
 		{
-			return "src/assets/data/layout6.txt";
+			return "resources/data/layout6.txt";
 		}
 		else
 		{
-			return "src/assets/data/layout7.txt";
+			return "resources/data/layout7.txt";
 		}
 		
 	}

@@ -98,3 +98,11 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+#(FX) Build Files
+./build/*
+Foo/src/application/Main.java
+Foo/.project
+Foo/src/application/application.css
+Foo/.project
+Foo/.project

@@ -9,6 +9,7 @@ import java.util.Queue;
 
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
@@ -36,6 +37,10 @@ public class SoundController
 	/* An audioclip that is capable of being overwritten by new requests */
 	private AudioClip mReusableSound = null;
 	
+	/* Flag used to check any critical errors occured when trying to load the sound files.
+	 * If so, then the sounds will not play, but the game would continue */
+	private boolean mSoundError = false;
+	
 	public SoundController ()
 	{
 		mCurrentType = SoundType.kNull;
@@ -43,48 +48,55 @@ public class SoundController
 		mBGMCache = new Hashtable <MusicType, MediaPlayer> ();
 		mPlaylist = new LinkedList <MediaPlayer> ();
 		
-		/* Preloads the sound assets */
-		for (SoundType t : SoundType.values())
-		{
-			if (t != SoundType.kNull)
+		try {
+			/* Preloads the sound assets */
+			for (SoundType t : SoundType.values())
 			{
-				mMediaCache.put(t, new Media (new File (t.getDirectory()).toURI().toString()));
-			}
-		}
-		
-		/* Preloads the BGM assets */
-		for (MusicType t : MusicType.values())
-		{
-			if (t != MusicType.kNull)
-			{
-				MediaPlayer media = new MediaPlayer (new Media (new File (t.getDirectory()).toURI().toString()));
-				media.setAutoPlay(false);
-				media.setBalance(0.0);
-				media.setVolume(mBGMVolume);
-				media.setOnEndOfMedia(() -> 
+				if (t != SoundType.kNull)
 				{
-					// Adds itself back to the playlist
-					media.seek(Duration.ZERO);
-					media.stop();
-					mPlaylist.add(media);
-					// Plays the next media in the playlist
-					if (!mPlaylist.isEmpty())
-					{	
-						mBGMPlayer = mPlaylist.remove();
-						mBGMPlayer.play();
-					}
-				}); 
-				mBGMCache.put(t, media);
+					mMediaCache.put(t, new Media (new File (t.getDirectory()).toURI().toString()));
+				}
+			}
+			
+			/* Preloads the BGM assets */
+			for (MusicType t : MusicType.values())
+			{
+				if (t != MusicType.kNull)
+				{
+					MediaPlayer media = new MediaPlayer (new Media (new File (t.getDirectory()).toURI().toString()));
+					media.setAutoPlay(false);
+					media.setBalance(0.0);
+					media.setVolume(mBGMVolume);
+					media.setOnEndOfMedia(() -> 
+					{
+						// Adds itself back to the playlist
+						media.seek(Duration.ZERO);
+						media.stop();
+						mPlaylist.add(media);
+						// Plays the next media in the playlist
+						if (!mPlaylist.isEmpty())
+						{	
+							mBGMPlayer = mPlaylist.remove();
+							mBGMPlayer.play();
+						}
+					}); 
+					mBGMCache.put(t, media);
+				}
 			}
 		}
 		
+		catch (MediaException e) {
+			System.out.println ("Error: Unable to run sound engine. Game will still run, but no music would be played.");
+			this.mSoundError = true;
+		}
+
 	}
 	
 	/** Plays a sound of a certain sound type */
 	public void playSound (SoundType type)
 	{
 		// NULL check
-		if (type == SoundType.kNull)
+		if (type == SoundType.kNull || this.mSoundError)
 		{
 			return;
 		}
@@ -109,7 +121,7 @@ public class SoundController
 	public void playSoundOverwritable (SoundType type)
 	{
 		// NULL check
-		if (type == SoundType.kNull)
+		if (type == SoundType.kNull || this.mSoundError)
 		{
 			return;
 		}
@@ -128,6 +140,11 @@ public class SoundController
 	public void setPlaylist (MusicStyle style)
 	{	
 		mPlaylist.clear();
+		
+		if (this.mSoundError) 
+		{
+			return;
+		}
 		
 		/* Stops the current music being played */
 		if (mBGMPlayer != null)

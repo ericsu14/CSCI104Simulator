@@ -45,7 +45,7 @@ public class StarField extends Pane
 	private int mFireworksTimer;
 	/* Flag that determines if stars shoudl be spawned */
 	private boolean mSpawnStars;
-	/* Sound engined for playing sound assets */
+	/* Sound engine used for playing sound assets */
 	SoundController mSoundEngine;
 	/* Keeps track of the amount of text entities despawned so we can invoke the GC
 	 * at certain points of time */

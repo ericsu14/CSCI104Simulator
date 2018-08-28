@@ -10,10 +10,8 @@ public class Speghetti extends BossProjectile {
 	public Speghetti(Entity owner, GameEngine controller) 
 	{
 		super(owner, controller);
-		this.mMaxTurnRadius = -360.0;
-		this.mMinTurnRadius = 360.0;
-		this.mSpriteScale = 40.0;
-		this.mMovementSpeed = 10.4;
+		this.mSpriteScale = 100.0;
+		this.mMovementSpeed = 4.4;
 		this.setSprite(Sprite.kSpeghetti);
 	}
 	

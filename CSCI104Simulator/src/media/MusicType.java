@@ -11,9 +11,9 @@ public enum MusicType
 	kGameBGM3 (MusicStyle.kGame, "GameBGM3.mp3"),
 	kGameBGM4 (MusicStyle.kGame, "GameBGM4.mp3");
 	
-	private MusicStyle mStyle;
+	private MusicStyle mStyle;     
 	private String mDirectory;
-	private final String mRootURL = "src/assets/BGM/";
+	private final String mRootURL = "resources/BGM/";
 	
 	MusicType (MusicStyle style, String source)
 	{

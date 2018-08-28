@@ -174,7 +174,7 @@ public class GameUI extends StackPane
 				ImageView playerIcon  = createPlayerIcon();
 				mCurrentLives.getChildren().add(playerIcon);
 				
-				Label counter = new Label ("x " + mLivesRemaining);
+				Label counter = new Label ("x " + (mLivesRemaining - 1));
 				counter.setStyle(CSSConstants.GAME_FONT);
 				mCurrentLives.getChildren().add(counter);
 			}

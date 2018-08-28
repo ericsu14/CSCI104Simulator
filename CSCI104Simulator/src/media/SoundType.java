@@ -23,7 +23,7 @@ public enum SoundType
 	kCoteTaunt4 ("coteTaunt4.wav");
 	
 	private String mDirectory;
-	private final String mRootURL = "src/assets/sounds/";
+	private final String mRootURL = "resources/sounds/";
 	
 	/** Constructs a new sound type with a passed in directory */
 	SoundType (String dir)
