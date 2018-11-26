@@ -12,8 +12,12 @@ import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
 import factories.FireworkStyles;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
+import javafx.util.Duration;
 import media.SoundType;
+import util.CSSColor;
 import view.Launcher;
 
 public abstract class Enemy extends Entity
@@ -52,6 +56,8 @@ public abstract class Enemy extends Entity
 	protected boolean mSpawnAttackFlag = false;
 	/* The level required before the enemy is able to attack while spawining */
 	protected int mSpawnAttackLevel = 8;
+	/* The spawn team this enemy is set to be in */
+	protected int mSpawnTeam = -1;
 	
 	/** Declares a new instance of a game enemy.
 	 * 		@param initPosition - The position of the screen where the enemy initially spawns at before moving to its designated
@@ -174,6 +180,24 @@ public abstract class Enemy extends Entity
 			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY());
 			mController.getGameView().getSoundEngine().playSound(SoundType.kEnemyExplode);
 			mController.decrementEnemyCount();
+			
+			/* Distributes a bonus score if the player wipes out an entire spawn team while
+			   they are still spawning */
+			if (mController.checkSpawnTeam(this.mSpawnTeam)) {
+				// For now, the bonus score is based off the points reward of the last enemy killed
+				long bonusScore = this.getScore() * 5;
+				
+				// Waits 90 frames before displaying the bonus score on the UI
+				Timeline delayText = new Timeline(new KeyFrame(
+				        Duration.millis(600),
+					        ae -> { 
+					        	mController.getGameView().showTextOnPoint(bonusScore + "", CSSColor.kYellow, this.getPosition());
+					        	mController.setPlayerScore(mController.getPlayerScore() + bonusScore);
+					        }
+				        ));
+				
+				delayText.play();
+			}
 		}
 		else
 		{
@@ -337,6 +361,16 @@ public abstract class Enemy extends Entity
 	public void setCurrentCooldown (int cooldown)
 	{
 		mCooldown = cooldown;
+	}
+	
+	/** Sets this enemy's current spawn team number */
+	public void setSpawnTeam (int spawnTeam) {
+		this.mSpawnTeam = spawnTeam;
+	}
+	
+	/** Gets this enemy's spawn team number */
+	public int getSpawnTeam () {
+		return this.mSpawnTeam;
 	}
 	
 	/** Reloads the enemy's cannons */

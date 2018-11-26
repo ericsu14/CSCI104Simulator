@@ -86,8 +86,8 @@ public class Command
 					yOffset = -100.0;
 				}
 				
-				mOwner.setOffset(10);
 				Player p = mOwner.getController().getPlayer();
+				mOwner.setOffset((int)p.getSpriteScale());
 				mWaypoint = new Point2D (p.getX() + xOffset, p.getY() + yOffset);
 				break;
 			}

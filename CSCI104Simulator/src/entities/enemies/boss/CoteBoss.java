@@ -67,7 +67,6 @@ public class CoteBoss extends Boss {
 			if (mController.isHardMode())
 			{
 				addCommand(CommandType.kFalseRetreat);
-				addCommand(CommandType.kPrepareAttack);
 				addCommand(CommandType.kAttack);
 			}
 			

@@ -384,7 +384,6 @@ public class GameEngine
 						/* Starts small fireworks show */
 						mGameView.getStarField().setFireworksFlag(true);
 						mGameView.getGameUI().showNotification("!!! CONGRATS !!!", CSSColor.kLime);
-						// System.gc();
 					}
 					
 					if (mPromptFlag)
@@ -573,6 +572,9 @@ public class GameEngine
 		
 		char currentChar;
 		EnemyPosition currentPosition;
+		EnemyPosition lastPosition = EnemyPosition.kLeft;
+		int currentSpawnTeam = 0;
+		
 		for (String line : contents)
 		{
 			for (int i = 0; i < line.length(); ++i)
@@ -588,26 +590,40 @@ public class GameEngine
 				{
 					currentPosition = EnemyPosition.kRight;
 				}
+				if (!lastPosition.equals(currentPosition)) 
+				{
+					++currentSpawnTeam;
+				}
+				lastPosition = currentPosition;
+				
 				switch (currentChar)
 				{
 					/* Spawn test enemy */
 					case 'T':
-						enemyContainer.add(new TestEnemy (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						Enemy testEnemy = new TestEnemy (currentPosition, new Point2D (currentX, currentY), currentGroup, this);
+						testEnemy.setSpawnTeam(currentSpawnTeam);
+						enemyContainer.add(testEnemy);
 						mNumEnemies++;
 						break;
 					/* Spawn Bohrbug */
 					case 'B':
-						enemyContainer.add(new Bohrbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						Enemy bohrbug = new Bohrbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this);
+						bohrbug.setSpawnTeam(currentSpawnTeam);
+						enemyContainer.add(bohrbug);
 						mNumEnemies++;
 						break;
 					/* Spawns heisenbug */
 					case 'H':
-						enemyContainer.add(new Heisenbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						Enemy heisenbug = new Heisenbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this);
+						heisenbug.setSpawnTeam(currentSpawnTeam);
+						enemyContainer.add(heisenbug);
 						mNumEnemies++;
 						break;
 					/* Spawns mandelbug */
 					case 'M':
-						enemyContainer.add(new Mandelbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this));
+						Enemy mandelbug = new Mandelbug (currentPosition, new Point2D (currentX, currentY), currentGroup, this);
+						mandelbug.setSpawnTeam(currentSpawnTeam);
+						enemyContainer.add(mandelbug);
 						mNumEnemies++;
 						break;	
 					/* Spawns the test boss */
@@ -620,6 +636,7 @@ public class GameEngine
 					default:
 						break;
 				}
+				
 				++currentGroupCount;
 				if (currentGroupCount >= currentGroupLimit)
 				{
@@ -1048,6 +1065,23 @@ public class GameEngine
 	public long getExtraLifeRequirement ()
 	{
 		return mExtraLifeScore;
+	}
+	
+	/** Returns true if all enemies of the current spawn team in the spawning phase are dead
+	 * 		@param team - The spawn team number being checked */
+	public boolean checkSpawnTeam (int team) {
+		return this.mGameEntities.stream().filter(e -> e.getType() == EntityType.kEnemy).
+				filter(enemy -> ((Enemy) enemy).getSpawnTeam() == team).count() == 1 && 
+				this.checkSpawningPhase(team) && team != -1;
+	}
+	
+	/** Returns true at least one member of the spawn team is still in the spawning phase 
+	 * 		@param team - The spawn team being checked */
+	public boolean checkSpawningPhase (int team) {
+		return this.mGameEntities.stream().filter(
+				e -> e.getType() == EntityType.kEnemy).filter(
+				enemy -> (((Enemy) enemy).getSpawnTeam() == team)).filter(
+				enemy -> ((Enemy) enemy).getPhase() == EnemyPhase.kSpawning).count() > 0;
 	}
 	
 	/** @return True if target is between min and max
