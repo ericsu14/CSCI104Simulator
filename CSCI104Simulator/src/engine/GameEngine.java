@@ -16,6 +16,7 @@ import entities.enemies.EnemyPosition;
 import entities.enemies.Heisenbug;
 import entities.enemies.Mandelbug;
 import entities.enemies.TestEnemy;
+import entities.enemies.boss.ArmandoBoss;
 import entities.enemies.boss.Boss;
 import entities.enemies.boss.CoteBoss;
 import entities.player.Player;
@@ -631,6 +632,13 @@ public class GameEngine
 						Boss currentBoss = new CoteBoss (currentPosition, new Point2D (currentX, currentY), this);
 						enemyContainer.add(currentBoss);
 						this.mCurrentBoss = currentBoss;
+						++mNumBosses;
+						break;
+					/* Summons the scrum-lord Armando */
+					case 'A':
+						Boss aBoss = new ArmandoBoss (currentPosition, new Point2D (currentX, currentY), this);
+						enemyContainer.add(aBoss);
+						this.mCurrentBoss = aBoss;
 						++mNumBosses;
 						break;
 					default:
