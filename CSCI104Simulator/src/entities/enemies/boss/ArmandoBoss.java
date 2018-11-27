@@ -27,7 +27,7 @@ public class ArmandoBoss extends Boss {
 		this.mPointsValue = 200000;
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
-		this.mShotsPerFrame = 42;
+		this.mShotsPerFrame = 38;
 		this.mAmmoType = BossAmmoType.kProjectile;
 		this.mHealth = 40;
 		this.mMoveTime = 300;
@@ -65,6 +65,9 @@ public class ArmandoBoss extends Boss {
 		// Only rotate Armando when he is moving
 		if (this.mPhase != EnemyPhase.kIdle) {
 			this.setRotate(this.getRotate() + 20.0);
+		}
+		else {
+			this.setRotate(-90.0);
 		}
 	}
 	
