@@ -71,7 +71,7 @@ public abstract class Projectile extends Entity
 					
 					if (getY() <= mMaxY)
 					{
-						setRotate (mTheta);
+						setRotationAngle (mTheta);
 					}
 					
 					Point2D velocity = getForward();

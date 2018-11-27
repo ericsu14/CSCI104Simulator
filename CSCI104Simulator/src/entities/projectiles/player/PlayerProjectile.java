@@ -40,7 +40,7 @@ public class PlayerProjectile extends Projectile
 		{
 			this.mInitialMovementSpeed = 11.0;
 			this.setSprite(Sprite.kPlayerBullet);
-			setRotate (90.0);
+			setRotationAngle (90.0);
 			
 			/* Movement speed is increased based on the current level
 			 * (increase of 1% for each level, with a max. of 35%) */

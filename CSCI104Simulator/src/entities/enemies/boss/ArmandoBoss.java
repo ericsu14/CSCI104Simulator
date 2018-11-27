@@ -13,14 +13,17 @@ import javafx.geometry.Point2D;
 import media.SoundType;
 
 public class ArmandoBoss extends Boss {
-
+	
+	/* Stores the actual rotation angle this boss character uses for movement */
+	private double mActualRotation;
+	
 	public ArmandoBoss(EnemyPosition initPosition, Point2D origin, GameEngine controller) 
 	{
 		super(initPosition, origin, controller);
 
 		this.mInitialMovementSpeed = 6.5;
 		this.mMovementSpeed = mInitialMovementSpeed;
-		this.mSpriteScale = 120.0;
+		this.mSpriteScale = 150.0;
 		this.mPointsValue = 200000;
 		this.mMaxAmmoPool = 5;
 		this.mCurrentAmmo = mMaxAmmoPool;
@@ -30,6 +33,7 @@ public class ArmandoBoss extends Boss {
 		this.mMoveTime = 300;
 		this.setSprite(Sprite.kArmando);
 		this.setRotate(-90.0);
+		this.mActualRotation = this.getRotate();
 		
 		// Sets up boss sound files
 		this.mBossHit = SoundType.kCoteHit;
@@ -52,6 +56,16 @@ public class ArmandoBoss extends Boss {
 		}
 		
 		mController.playSoundOverwritable(SoundType.kCoteTaunt4);
+	}
+	
+	@Override
+	public void update () {
+		super.update();
+		
+		// Only rotate Armando when he is moving
+		if (this.mPhase != EnemyPhase.kIdle) {
+			this.setRotate(this.getRotate() + 20.0);
+		}
 	}
 	
 	@Override
@@ -101,6 +115,16 @@ public class ArmandoBoss extends Boss {
 		{
 			mController.queueEntity(new TheBook (this, mController));
 		}
+	}
+	
+	@Override
+	protected double getRotationAngle () {
+		return this.mActualRotation;
+	}
+	
+	@Override
+	protected void setRotationAngle (double theta) {
+		this.mActualRotation = theta;
 	}
 	
 }

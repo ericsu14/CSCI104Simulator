@@ -120,16 +120,10 @@ public class Player extends Entity
 		}
 	}
 	
-	/** Because the player's sprite never rotates, the player would have to use a slightly altered forward vector calculation algorithm
-	 *  that uses the player's "hidden rotation angle" */
+	/** Overridden because the player's sprite never rotates */
 	@Override
-	public Point2D getForward ()
-	{
-		double forwardX = (Math.cos(Math.toRadians(mPlayerRotation)));
-		double forwardY = -(Math.sin(Math.toRadians(mPlayerRotation)));
-		Point2D forwardVector = new Point2D (forwardX, forwardY);
-		forwardVector.normalize();
-		return forwardVector;
+	public double getRotationAngle () {
+		return this.mPlayerRotation;
 	}
 	
 	/** Sets the player's move direction */

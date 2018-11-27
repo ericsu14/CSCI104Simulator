@@ -284,7 +284,7 @@ public abstract class Enemy extends Entity
 		/* Resets enemy orientation if its new state is Idle */
 		if (mPhase == EnemyPhase.kIdle)
 		{
-			setRotate (mInitialOrientation);
+			setRotationAngle (mInitialOrientation);
 		}
 	}
 	

@@ -67,8 +67,8 @@ public abstract class Entity extends ImageView
 	/** @return The entity's forward vector */
 	public Point2D getForward ()
 	{
-		double forwardX = (Math.cos(Math.toRadians(this.getRotate())));
-		double forwardY = -(Math.sin(Math.toRadians(this.getRotate())));
+		double forwardX = (Math.cos(Math.toRadians(this.getRotationAngle())));
+		double forwardY = -(Math.sin(Math.toRadians(this.getRotationAngle())));
 		Point2D forwardVector = new Point2D (forwardX, forwardY);
 		forwardVector.normalize();
 		return forwardVector;
@@ -105,29 +105,29 @@ public abstract class Entity extends ImageView
 					mClockwise = (cross.getZ() < 0.0) ? 1 : 0; 			
 					
 					// Depending on the direction of rotation, slowly rotate the entity towards theta
-					mTheta = getRotate() + (mTheta * (Math.pow(-1, mClockwise)));
+					mTheta = getRotationAngle() + (mTheta * (Math.pow(-1, mClockwise)));
 					
 					if (mClockwise > 0)
 					{
-						if (getRotate() >= mTheta)
+						if (getRotationAngle() >= mTheta)
 						{
-							setRotate((int)(getRotate() - mRotationSpeed));
+							setRotationAngle((int)(getRotationAngle() - mRotationSpeed));
 						}
 						else
 						{
-							setRotate((int)(getRotate() + mRotationSpeed));
+							setRotationAngle((int)(getRotationAngle() + mRotationSpeed));
 						}
 					}
 					
 					else
 					{
-						if (getRotate() <= mTheta)
+						if (getRotationAngle() <= mTheta)
 						{
-							setRotate((int)(getRotate() + mRotationSpeed));
+							setRotationAngle((int)(getRotationAngle() + mRotationSpeed));
 						}
 						else
 						{
-							setRotate((int)(getRotate() - mRotationSpeed));
+							setRotationAngle((int)(getRotationAngle() - mRotationSpeed));
 						}
 					}
 					
@@ -278,6 +278,18 @@ public abstract class Entity extends ImageView
 		mWaypointAnimation.stop();
 		mMovementSpeed = mInitialMovementSpeed;
 		mWaypointFlag = false;
+	}
+	
+	/** Returns the rotation angle used by this entity. Can be overridden
+	 *  by child classes to implement their own rotation angle */
+	protected double getRotationAngle () {
+		return this.getRotate();
+	}
+	
+	/** Sets the rotation angle used by this entity to a new angle theta.
+	 * 	Can be overridden by child classes to implement their own rotation angle */
+	protected void setRotationAngle (double theta) {
+		this.setRotate(theta);
 	}
 
 }
