@@ -20,7 +20,8 @@ public enum Sprite {
 	kEnemyLaser ("enemyLaser.png"),
 	kDamagedBug ("damagedBug.png"),
 	kSpeghetti ("speghetti.png"),
-	kArmando ("armando.png");
+	kArmando ("armando.png"),
+	kTheFish ("theFish.png");
 	
 	/* The name of the image file */
 	private String mSource;

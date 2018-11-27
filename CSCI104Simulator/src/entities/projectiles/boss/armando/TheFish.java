@@ -1,30 +1,29 @@
-package entities.projectiles.boss.cote;
+package entities.projectiles.boss.armando;
 
 import engine.GameEngine;
 import entities.Entity;
 import entities.projectiles.boss.BossProjectile;
 import entities.sprites.Sprite;
 
-public class Speghetti extends BossProjectile {
+public class TheFish extends BossProjectile {
 	
 	/* Custom rotate */
 	protected double mProjectileRotate;
-	
-	public Speghetti(Entity owner, GameEngine controller) 
-	{
+
+	public TheFish(Entity owner, GameEngine controller) {
 		super(owner, controller);
+		
 		this.mProjectileRotate = this.getRotate();
-		this.mSpriteScale = 100.0;
-		this.mMovementSpeed = 4.4;
-		this.setSprite(Sprite.kSpeghetti);
+		this.mSpriteScale = 50.0;
+		this.mMovementSpeed = 7.0;
+		this.setSprite(Sprite.kTheFish);
 	}
 	
-	@Override
 	public void update () 
 	{
 		super.update();
 		// Spins the projectile around and around
-		this.setRotate(this.getRotate() + 10.0);
+		this.setRotate(this.getRotate() + 20.0);
 	}
 	
 	@Override

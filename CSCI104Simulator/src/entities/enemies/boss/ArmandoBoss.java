@@ -6,7 +6,7 @@ import engine.GameEngine;
 import entities.enemies.CommandType;
 import entities.enemies.EnemyPhase;
 import entities.enemies.EnemyPosition;
-import entities.projectiles.boss.cote.BinaryTree;
+import entities.projectiles.boss.armando.TheFish;
 import entities.projectiles.boss.cote.TheBook;
 import entities.sprites.Sprite;
 import javafx.geometry.Point2D;
@@ -110,7 +110,7 @@ public class ArmandoBoss extends Boss {
 		{
 			if (mCurrentAmmo > 0 && !this.mFalseRetreatFlag)
 			{
-				mController.queueEntity(new BinaryTree (this, mController));
+				mController.queueEntity(new TheFish (this, mController));
 				mCurrentAmmo--;
 			}
 		}
