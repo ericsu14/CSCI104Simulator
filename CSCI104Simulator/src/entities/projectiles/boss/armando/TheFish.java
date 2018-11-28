@@ -15,7 +15,7 @@ public class TheFish extends BossProjectile {
 		
 		this.mProjectileRotate = this.getRotate();
 		this.mSpriteScale = 50.0;
-		this.mMovementSpeed = 7.0;
+		this.mMovementSpeed = 9.0;
 		this.setSprite(Sprite.kTheFish);
 	}
 	

@@ -20,7 +20,9 @@ public enum SoundType
 	kCoteTaunt1 ("coteTaunt1.wav"),
 	kCoteTaunt2 ("coteTaunt2.wav"),
 	kCoteTaunt3 ("coteTaunt3.wav"),
-	kCoteTaunt4 ("coteTaunt4.wav");
+	kCoteTaunt4 ("coteTaunt4.wav"),
+	kArmandoAttack1("armandoAttack1.wav"),
+	kArmandoTaunt1("armandoTaunt1.wav");
 	
 	private String mDirectory;
 	private final String mRootURL = "resources/sounds/";

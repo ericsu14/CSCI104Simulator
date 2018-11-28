@@ -38,10 +38,7 @@ public class ArmandoBoss extends Boss {
 		// Sets up boss sound files
 		this.mBossHit = SoundType.kCoteHit;
 		this.mBossTauntList = new ArrayList <SoundType> ();
-		this.mBossTauntList.add(SoundType.kCoteTaunt1);
-		this.mBossTauntList.add(SoundType.kCoteTaunt2);
-		this.mBossTauntList.add(SoundType.kCoteTaunt3);
-		this.mBossTauntList.add(SoundType.kCoteTaunt4);
+		this.mBossTauntList.add(SoundType.kArmandoTaunt1);
 		
 		/* The boss attacks 20% faster,
 		 * and has 20% more health,
@@ -55,7 +52,7 @@ public class ArmandoBoss extends Boss {
 			this.mRotationSpeed = this.mAdjustedRotationSpeed;
 		}
 		
-		mController.playSoundOverwritable(SoundType.kCoteTaunt4);
+		mController.playSoundOverwritable(SoundType.kArmandoTaunt1);
 	}
 	
 	@Override
@@ -111,6 +108,7 @@ public class ArmandoBoss extends Boss {
 			if (mCurrentAmmo > 0 && !this.mFalseRetreatFlag)
 			{
 				mController.queueEntity(new TheFish (this, mController));
+				mController.playSound(SoundType.kArmandoAttack1);
 				mCurrentAmmo--;
 			}
 		}
