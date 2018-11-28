@@ -82,12 +82,12 @@ public class ArmandoBoss extends Boss {
 			this.mCurrentAmmo = this.mMaxAmmoPool;
 			addCommand(CommandType.kPrepareAttack);
 			addCommand(CommandType.kAttack);
+			addCommand(CommandType.kFalseRetreat);
+			addCommand(CommandType.kAttack);
 			
 			// Armando attacks more aggressively in hard mode
 			if (mController.isHardMode())
 			{
-				addCommand(CommandType.kFalseRetreat);
-				addCommand(CommandType.kAttack);
 				addCommand(CommandType.kFalseRetreat);
 				addCommand(CommandType.kAttack);
 			}
