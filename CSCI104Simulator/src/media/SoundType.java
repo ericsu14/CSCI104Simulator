@@ -22,6 +22,7 @@ public enum SoundType
 	kCoteTaunt3 ("coteTaunt3.wav"),
 	kCoteTaunt4 ("coteTaunt4.wav"),
 	kArmandoAttack1("armandoAttack1.wav"),
+	kArmandoAttack2("armandoAttack2.wav"),
 	kArmandoTaunt1("armandoTaunt1.wav");
 	
 	private String mDirectory;

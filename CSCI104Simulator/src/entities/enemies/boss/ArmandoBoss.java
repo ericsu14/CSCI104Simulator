@@ -16,6 +16,8 @@ public class ArmandoBoss extends Boss {
 	
 	/* Stores the actual rotation angle this boss character uses for movement */
 	private double mActualRotation;
+	/* Stores armando's battle cries */
+	private ArrayList <SoundType> mArmandoCry;
 	
 	public ArmandoBoss(EnemyPosition initPosition, Point2D origin, GameEngine controller) 
 	{
@@ -39,6 +41,10 @@ public class ArmandoBoss extends Boss {
 		this.mBossHit = SoundType.kCoteHit;
 		this.mBossTauntList = new ArrayList <SoundType> ();
 		this.mBossTauntList.add(SoundType.kArmandoTaunt1);
+		
+		// Sets up armando's cries
+		this.mArmandoCry = new ArrayList <SoundType> ();
+		this.mArmandoCry.add(SoundType.kArmandoAttack1);
 		
 		/* The boss attacks 20% faster,
 		 * and has 20% more health,
@@ -108,7 +114,7 @@ public class ArmandoBoss extends Boss {
 			if (mCurrentAmmo > 0 && !this.mFalseRetreatFlag)
 			{
 				mController.queueEntity(new TheFish (this, mController));
-				mController.playSound(SoundType.kArmandoAttack1);
+				mController.playSound(this.getBattleCry());
 				mCurrentAmmo--;
 			}
 		}
@@ -126,6 +132,11 @@ public class ArmandoBoss extends Boss {
 	@Override
 	protected void setRotationAngle (double theta) {
 		this.mActualRotation = theta;
+	}
+	
+	/** Returns a random armando battle cry */
+	private SoundType getBattleCry () {
+		return this.mArmandoCry.get(this.mRand.nextInt(this.mArmandoCry.size()));
 	}
 	
 }
