@@ -36,6 +36,8 @@ public class MainMenu
 	private boolean mIsTestingFireworks = false;
 	/* Keeps track of the amount of active test animations playing */
 	private int mActiveTestAnimations = 0;
+	/* Number of times test fireworks are spawned */
+	private final int mNumTestFireworks = 10;
 	
 	public MainMenu (Launcher launcher)
 	{
@@ -208,8 +210,11 @@ public class MainMenu
 			PauseTransition fireworksSpawner = new PauseTransition (Duration.millis(500));
 			fireworksSpawner.setOnFinished(a -> 
 			{
-				mStarField.spawnExplosion();
-				mStarField.spawnFireworks();
+				for (int i = 0; i < mNumTestFireworks; ++i)
+				{
+					mStarField.spawnExplosion();
+					mStarField.spawnFireworks();
+				}
 				if (mActiveTestAnimations > 0)
 				{
 					mActiveTestAnimations--;

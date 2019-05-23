@@ -21,8 +21,7 @@ public class ShindlerFactory
 			"I'm going to lie and you are all going to lie with me.",
 			"Enough lies and it would all fit together",
 			"What the fork()?",
-			"Our company killed Mother Theresa",
-			"Professor Slacker gives everyone a random {A, B, C, D}.\nGrades should have been an even distribution of these.\nWhat percentage of students get the right grade anyway?",
+			"Lets play a game of Scrabble",
 			"Oh hey, lets put each function into a seperate source file!",
 			"If it is not in set bleh... then it is not in there at all.",
 			"Don't half ass const."
