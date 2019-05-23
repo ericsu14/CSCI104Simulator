@@ -11,7 +11,6 @@ import engine.GameState;
 import entities.Entity;
 import entities.EntityState;
 import entities.EntityType;
-import factories.FireworkStyles;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;

@@ -37,7 +37,7 @@ public class MainMenu
 	/* Keeps track of the amount of active test animations playing */
 	private int mActiveTestAnimations = 0;
 	/* Number of times test fireworks are spawned */
-	private final int mNumTestFireworks = 10;
+	private final int mNumTestFireworks = 5;
 	
 	public MainMenu (Launcher launcher)
 	{
