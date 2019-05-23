@@ -23,7 +23,7 @@ public enum FireworkStyles
 	
 	private String mFileName;
 	private String mFireworks;
-	private final String mRootURL = "resources/fireworks/";
+	private final String mRootURL = "resources\\fireworks\\";
 	
 	FireworkStyles (String filename)
 	{
