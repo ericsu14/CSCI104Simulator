@@ -20,7 +20,8 @@ public enum FireworkStyles
 	fightonsymbol ("fightonsymbol.txt"),
 	USC ("USC.txt"),
 	fireworks3 ("fireworks3.txt"),
-	aCote ("acote.txt");
+	aCote ("acote.txt"),
+	armando ("armando.txt");
 	
 	private String mFileName;
 	private String mFireworks;

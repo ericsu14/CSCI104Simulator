@@ -9,6 +9,7 @@ import entities.enemies.EnemyPosition;
 import entities.projectiles.boss.cote.BinaryTree;
 import entities.projectiles.boss.cote.TheBook;
 import entities.sprites.Sprite;
+import factories.FireworkStyles;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -98,6 +99,18 @@ public class CoteBoss extends Boss {
 		else
 		{
 			mController.queueEntity(new TheBook (this, mController));
+		}
+	}
+	
+	/** Overrides the die function to spawn a specific boss firework */
+	@Override
+	public void die ()
+	{
+		super.die();
+		if (mHealth <= 0)
+		{
+			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY(), FireworkStyles.aCote);
+	
 		}
 	}
 

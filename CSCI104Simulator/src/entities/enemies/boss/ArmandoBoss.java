@@ -9,6 +9,7 @@ import entities.enemies.EnemyPosition;
 import entities.projectiles.boss.armando.TheFish;
 import entities.projectiles.boss.cote.TheBook;
 import entities.sprites.Sprite;
+import factories.FireworkStyles;
 import javafx.geometry.Point2D;
 import media.SoundType;
 
@@ -125,17 +126,31 @@ public class ArmandoBoss extends Boss {
 	}
 	
 	@Override
-	protected double getRotationAngle () {
+	protected double getRotationAngle () 
+	{
 		return this.mActualRotation;
 	}
 	
 	@Override
-	protected void setRotationAngle (double theta) {
+	protected void setRotationAngle (double theta) 
+	{
 		this.mActualRotation = theta;
 	}
 	
+	/** Overrides the die function to spawn a specific boss firework */
+	@Override
+	public void die ()
+	{
+		super.die();
+		if (mHealth <= 0)
+		{
+			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY(), FireworkStyles.armando);
+		}
+	}
+	
 	/** Returns a random armando battle cry */
-	private SoundType getBattleCry () {
+	private SoundType getBattleCry () 
+	{
 		return this.mArmandoCry.get(this.mRand.nextInt(this.mArmandoCry.size()));
 	}
 	

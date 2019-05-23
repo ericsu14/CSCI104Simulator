@@ -201,7 +201,6 @@ public abstract class Enemy extends Entity
 		}
 		else
 		{
-			mController.getGameView().getStarField().spawnExplosion((int)getCenterX(), (int)getCenterY(), FireworkStyles.aCote);
 			mController.decrementBossCount();
 		}
 		
