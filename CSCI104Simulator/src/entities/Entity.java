@@ -88,6 +88,12 @@ public abstract class Entity extends ImageView
 				private double mTheta = 0.0;
 				public void handle(long now)
 				{
+					// Do not run if the game is currently paused
+					if (mController.isPaused())
+					{
+						return;
+					}
+					
 					// First construct a vector from the player's current position to its destination
 					Point2D entityPosition = getPosition();
 					Point2D waypointVector = destination;

@@ -52,6 +52,12 @@ public abstract class Projectile extends Entity
 				 *  target */
 				public void handle (long now)
 				{
+					// Pauses timer if the game is paused
+					if (mController.isPaused())
+					{
+						return;
+					}
+					
 					Point2D currentPosition = new Point2D (getX(), getY());
 					Point2D victimPosition = new Point2D (victim.getX(), victim.getY());
 					

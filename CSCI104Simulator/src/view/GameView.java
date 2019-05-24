@@ -160,6 +160,10 @@ public class GameView
 					{
 						mGameEngine.getPlayer().setFiringFlag(true);
 					}
+					if (e.getCode() == KeyCode.ESCAPE)
+					{
+						mGameEngine.pauseGame();
+					}
 				}
 				else
 				{

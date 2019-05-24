@@ -101,6 +101,8 @@ public class GameEngine
 	/* Flag used to determine which optimization level the game is currently in.
 	 * Switching this flag determines on how the in-game fireworks should be rendered. */
 	private OptimizationFlag mOptimizationFlag = OptimizationFlag.kDefault;
+	/* Flag used to keep track if the game is paused */
+	private boolean mPausedFlag = false;
 	
 	public GameEngine (GameView gameView)
 	{	
@@ -148,6 +150,11 @@ public class GameEngine
 				{
 					cleanup();
 					isGameOver = false;
+				}
+				
+				if (isPaused())
+				{
+					return;
 				}
 				
 				update (now);
@@ -1090,6 +1097,28 @@ public class GameEngine
 				e -> e.getType() == EntityType.kEnemy).filter(
 				enemy -> (((Enemy) enemy).getSpawnTeam() == team)).filter(
 				enemy -> ((Enemy) enemy).getPhase() == EnemyPhase.kSpawning).count() > 0;
+	}
+	
+	/** Pauses / Unpauses the game */
+	public void pauseGame ()
+	{
+		if (!isPaused())
+		{	
+			this.mGameLoop.stop();
+			this.mPausedFlag = true;
+		}
+		else
+		{
+			this.mGameLoop.start();
+			this.mPausedFlag = false;
+		}
+		mGameView.getGameUI().showPromptText(mGameState);
+	}
+	
+	/** Returns the game's paused flag */
+	public boolean isPaused ()
+	{
+		return this.mPausedFlag;
 	}
 	
 	/** @return True if target is between min and max

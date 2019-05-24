@@ -217,6 +217,14 @@ public class GameUI extends StackPane
 	/** Displays the promt text depending on the current status of the game */
 	public void showPromptText(GameState state)
 	{
+		// Paused game condition
+		if (mGameView.getEngine().isPaused())
+		{
+			mPromptText.setText("GAME PAUSED");
+			mPromptText2.setText("");
+			return;
+		}
+		
 		switch (state)
 		{
 			case kGameStart:
