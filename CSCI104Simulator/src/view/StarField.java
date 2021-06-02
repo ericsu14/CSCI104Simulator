@@ -3,6 +3,9 @@ package view;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import media.SoundController;
@@ -199,31 +202,60 @@ public class StarField extends Pane
 				/* Adds in queued assets */
 				if (!mQueuedFireworks.isEmpty())
 				{
-					ArrayList <ConfettiText> explosion;
-					FireworksCommand command = mQueuedFireworks.remove();
-					if (command.mType == FireworkCommandType.kExplosion)
+					
+					// Creates a new task which asynchronously reads ASCII art from disk
+					Task <ArrayList<ConfettiText>> produceParticles = new Task <ArrayList<ConfettiText>> () 
 					{
-						if (!command.mCustom)
+
+						@Override
+						public ArrayList<ConfettiText> call() throws Exception 
 						{
-							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, FireworksFactory.getRandomExplosion(), mOptFlag);
+							ArrayList <ConfettiText> explosion;
+							FireworksCommand command = mQueuedFireworks.remove();
+							if (command.mType == FireworkCommandType.kExplosion)
+							{
+								if (!command.mCustom)
+								{
+									explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, FireworksFactory.getRandomExplosion(), mOptFlag);
+								}
+								else
+								{
+									explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, command.mStyle, mOptFlag);
+								}
+							}
+							else
+							{
+								explosion = FireworksFactory.spawnFireworks((int)Launcher.mWidth, (int)Launcher.mHeight, FireworksFactory.getRandomStyle(), mOptFlag);
+							}
+							return explosion;
 						}
-						else
-						{
-							explosion = FireworksFactory.spawnExplosion(command.mXCoord, command.mYCoord, command.mStyle, mOptFlag);
-						}
-					}
-					else
+						
+					};
+					
+					// Launches a synchronous task once the ASCII art is retrieved from disk
+					produceParticles.setOnSucceeded(new EventHandler <WorkerStateEvent> () 
 					{
-						explosion = FireworksFactory.spawnFireworks((int)Launcher.mWidth, (int)Launcher.mHeight, FireworksFactory.getRandomStyle(), mOptFlag);
-						PauseTransition soundDelay = new PauseTransition (Duration.seconds(2));
-						soundDelay.setOnFinished(e -> 
-						{
-							mSoundEngine.playSound(SoundType.kFireworkBlast);
-						});
-						soundDelay.play();
-					}
-					mSpawnedStars.addAll(explosion);
-					getChildren().addAll(FXCollections.observableArrayList(explosion));
+						@Override
+						public void handle(WorkerStateEvent event) {
+							if (event.getSource().getValue() instanceof ArrayList <?>)
+							{
+								@SuppressWarnings("unchecked")
+								ArrayList <ConfettiText> explosion = (ArrayList <ConfettiText>) event.getSource().getValue();
+								mSpawnedStars.addAll(explosion);
+								getChildren().addAll(FXCollections.observableArrayList(explosion));
+								
+								PauseTransition soundDelay = new PauseTransition (Duration.seconds(2));
+								soundDelay.setOnFinished(e -> 
+								{
+									mSoundEngine.playSound(SoundType.kFireworkBlast);
+								});
+								soundDelay.play();
+							}
+						}
+						
+					});
+					
+					new Thread (produceParticles).run();
 				}
 			}
 			

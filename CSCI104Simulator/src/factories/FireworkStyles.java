@@ -1,7 +1,9 @@
 package factories;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
 public enum FireworkStyles 
 {
@@ -23,7 +25,7 @@ public enum FireworkStyles
 	
 	private String mFileName;
 	private String mFireworks;
-	private final String mRootURL = "resources\\fireworks\\";
+	private final String mRootURL = "resources/fireworks/";
 	
 	FireworkStyles (String filename)
 	{
@@ -48,9 +50,13 @@ public enum FireworkStyles
 			}
 			br.close();
 		}
-		catch (Exception e)
+		catch (FileNotFoundException fne)
 		{
-			e.printStackTrace();
+			fne.printStackTrace();
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
 		}
 		return result;
 	}

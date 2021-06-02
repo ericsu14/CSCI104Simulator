@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -37,6 +39,9 @@ public class SoundController
 	/* An audioclip that is capable of being overwritten by new requests */
 	private AudioClip mReusableSound = null;
 	
+	/* Concurrency support */
+	ExecutorService soundService;
+	
 	/* Flag used to check any critical errors occured when trying to load the sound files.
 	 * If so, then the sounds will not play, but the game would continue */
 	private boolean mSoundError = false;
@@ -47,6 +52,8 @@ public class SoundController
 		mMediaCache = new Hashtable <SoundType, Media> ();
 		mBGMCache = new Hashtable <MusicType, MediaPlayer> ();
 		mPlaylist = new LinkedList <MediaPlayer> ();
+		
+		this.soundService = Executors.newFixedThreadPool(4);
 		
 		try {
 			/* Preloads the sound assets */
@@ -110,10 +117,20 @@ public class SoundController
 			mCurrentMedia = mMediaCache.get(type);
 			mCurrentType = type;
 		}
-			
-		AudioClip player = new AudioClip (mCurrentMedia.getSource());
-		player.setVolume(mSoundVolume);
-		player.play();
+		
+		Runnable soundTask = new Runnable () 
+		{
+			@Override
+			public void run() 
+			{
+				AudioClip player = new AudioClip (mCurrentMedia.getSource());
+				player.setVolume(mSoundVolume);
+				player.play();
+			}
+		};
+		
+		this.soundService.execute(soundTask);
+
 	}
 	
 	/** Plays a sound clip that could be interrupted and overridden by new sound requests

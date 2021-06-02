@@ -28,15 +28,22 @@ public enum Sprite {
 	/* The image-view object associated with this sprite */
 	private ImageView mImageView;
 	/* The root directory where this asset file is located */
-	private final String mRootURL = "resources\\img\\";
+	private final String mRootURL = "resources/img/";
 	
 	Sprite (String source)
 	{
 		mSource = mRootURL + source;
 		System.out.println("Source: " + mSource);
-
-		File f = new File (this.mSource);
-		mImageView = new ImageView (new Image (f.toURI().toString()));
+		
+		try
+		{
+			File f = new File (this.mSource);
+			mImageView = new ImageView (new Image (f.toURI().toString()));
+		}
+		catch (NullPointerException npe)
+		{
+			npe.printStackTrace();
+		}
 	}
 	
 	public String getSource ()
