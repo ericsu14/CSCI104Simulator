@@ -230,7 +230,7 @@ public class MainMenu
 			mActiveTestAnimations++;
 		});
 		
-		Button toggleMusicButton = new Button ("     BGM " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
+		Button toggleMusicButton = new Button ("      BGM " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
 		toggleMusicButton.setFont(new Font ("Consolas", 18));
 		toggleMusicButton.setBackground(Background.EMPTY);
 		toggleMusicButton.setStyle(CSSConstants.WHITE_TEXT);
@@ -242,12 +242,15 @@ public class MainMenu
 		});
 		toggleMusicButton.setOnMouseExited (e -> 
 		{
-			toggleMusicButton.setText("    BGM: " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
+			toggleMusicButton.setText("     BGM: " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
+			toggleMusicButton.setStyle(CSSConstants.WHITE_TEXT);
 		});
 		
 		toggleMusicButton.setOnAction (e -> 
 		{
 			mLauncher.getGameView().getSoundEngine().toggleBGM();
+			toggleMusicButton.setText("-->  BGM: " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
+			toggleMusicButton.setStyle(CSSConstants.WHITE_TEXT + CSSConstants.UNDERLINE_TEXT);
 		});
 		
 		/* Play game button */
