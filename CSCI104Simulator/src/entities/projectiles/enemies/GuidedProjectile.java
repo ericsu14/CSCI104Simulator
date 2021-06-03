@@ -20,7 +20,7 @@ public class GuidedProjectile extends EnemyProjectile
 			this.mMovementSpeed += 0.2;
 		}
 		
-		this.setSprite(Sprite.KBook);
+		this.setSprite(Sprite.kPlayerBullet);
 		
 		this.mMaxTurnRadius = -60.0;
 		this.mMinTurnRadius = -120.0;

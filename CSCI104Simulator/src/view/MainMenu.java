@@ -37,7 +37,7 @@ public class MainMenu
 	/* Keeps track of the amount of active test animations playing */
 	private int mActiveTestAnimations = 0;
 	/* Number of times test fireworks are spawned */
-	private final int mNumTestFireworks = 5;
+	private final int mNumTestFireworks = 3;
 	
 	public MainMenu (Launcher launcher)
 	{
@@ -88,7 +88,7 @@ public class MainMenu
 		VBox header = new VBox();
 		/* Title of the game */
 		Label gameTitle = new Label (mLauncher.mGameTitle);
-		gameTitle.setFont(new Font ("Comic Sans MS", 36));
+		gameTitle.setFont(new Font ("Consolas", 36));
 		gameTitle.setStyle(CSSConstants.WHITE_TEXT);
 		
 		header.getChildren().addAll(gameTitle);
@@ -100,7 +100,7 @@ public class MainMenu
 		
 		/* Difficulty button */
 		Button diffButton = new Button ("     Difficulty: " + mDifficultyString);
-		diffButton.setFont(new Font ("Comic Sans MS", 18));
+		diffButton.setFont(new Font ("Consolas", 18));
 		diffButton.setBackground(Background.EMPTY);
 		diffButton.setStyle(CSSConstants.WHITE_TEXT);
 		
@@ -151,7 +151,7 @@ public class MainMenu
 		Button graphicsButton = new Button ("     Animation Quality: " + mGraphics.getName());
 		graphicsButton.setBackground (Background.EMPTY);
 		graphicsButton.setStyle(CSSConstants.WHITE_TEXT);
-		graphicsButton.setFont(new Font ("Comic Sans MS", 18));
+		graphicsButton.setFont(new Font ("Consolas", 18));
 		
 		Tooltip graphicsDescription = new Tooltip (mGraphics.getDescription());
 		graphicsDescription.setStyle(CSSConstants.GAME_FONT);
@@ -230,9 +230,29 @@ public class MainMenu
 			mActiveTestAnimations++;
 		});
 		
+		Button toggleMusicButton = new Button ("     BGM " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
+		toggleMusicButton.setFont(new Font ("Consolas", 18));
+		toggleMusicButton.setBackground(Background.EMPTY);
+		toggleMusicButton.setStyle(CSSConstants.WHITE_TEXT);
+		
+		toggleMusicButton.setOnMouseEntered (e -> 
+		{
+			toggleMusicButton.setText("-->  BGM: " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
+			toggleMusicButton.setStyle(CSSConstants.WHITE_TEXT + CSSConstants.UNDERLINE_TEXT);
+		});
+		toggleMusicButton.setOnMouseExited (e -> 
+		{
+			toggleMusicButton.setText("    BGM: " + (mLauncher.getGameView().getSoundEngine().isDisabled() ? "Disabled" : "Enabled"));
+		});
+		
+		toggleMusicButton.setOnAction (e -> 
+		{
+			mLauncher.getGameView().getSoundEngine().toggleBGM();
+		});
+		
 		/* Play game button */
 		Button playGame = new Button("     Play Game");
-		playGame.setFont(new Font ("Comic Sans MS", 18));
+		playGame.setFont(new Font ("Consolas", 18));
 		playGame.setBackground(Background.EMPTY);
 		playGame.setStyle(CSSConstants.WHITE_TEXT);
 		
@@ -253,7 +273,7 @@ public class MainMenu
 			mLauncher.switchGameScene();
 		});
 		
-		menuOptions.getChildren().addAll(diffButton, graphicsButton, playGame);
+		menuOptions.getChildren().addAll(diffButton, graphicsButton, toggleMusicButton, playGame);
 		
 		menuOptions.setAlignment(Pos.CENTER);
 		menuOptions.setSpacing(6);

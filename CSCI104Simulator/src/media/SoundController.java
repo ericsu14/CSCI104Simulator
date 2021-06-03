@@ -40,11 +40,14 @@ public class SoundController
 	private AudioClip mReusableSound = null;
 	
 	/* Concurrency support */
-	ExecutorService soundService;
+	private ExecutorService soundService;
 	
 	/* Flag used to check any critical errors occured when trying to load the sound files.
 	 * If so, then the sounds will not play, but the game would continue */
 	private boolean mSoundError = false;
+	
+	/* Checks if music BGM is disabled in this playthrough */
+	private boolean mIsDisabled = false;
 	
 	public SoundController ()
 	{
@@ -92,8 +95,9 @@ public class SoundController
 			}
 		}
 		
-		catch (MediaException e) {
-			System.out.println ("Error: Unable to run sound engine. Game will still run, but no music would be played.");
+		catch (MediaException e) 
+		{
+			System.err.println ("Error: Unable to run sound engine. Game will still run, but no music would be played.");
 			this.mSoundError = true;
 		}
 
@@ -158,7 +162,7 @@ public class SoundController
 	{	
 		mPlaylist.clear();
 		
-		if (this.mSoundError) 
+		if (this.mSoundError || this.mIsDisabled) 
 		{
 			return;
 		}
@@ -202,6 +206,20 @@ public class SoundController
 			mReusableSound.stop();
 			mReusableSound = null;
 		}
+	}
+	
+	/** Turns BGM sounds on or off during gameplay and returns the new value for that flag */
+	public boolean toggleBGM ()
+	{
+		this.setPlaylist (MusicStyle.kNone);
+		this.mIsDisabled = !this.mIsDisabled;
+		return this.mIsDisabled;
+	}
+	
+	/** Returns true if the music player is disabled */
+	public boolean isDisabled ()
+	{
+		return this.mIsDisabled;
 	}
 	
 }
